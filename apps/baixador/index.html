@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baixador de Vídeos</title>
+<style>
+  :root {
+    --fundo: #0f1420;
+    --cartao: #1a2235;
+    --borda: #2a3550;
+    --texto: #e8ecf4;
+    --texto-suave: #8b96ad;
+    --acento: #e53e3e;
+    --acento-audio: #3182ce;
+    --ok: #38a169;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(160deg, #0f1420 0%, #16203a 100%);
+    color: var(--texto);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .app { width: 100%; max-width: 640px; }
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 { font-size: 1.9rem; font-weight: 700; }
+  header h1 .icone { margin-right: 10px; }
+  header p { color: var(--texto-suave); margin-top: 6px; font-size: .95rem; }
+
+  .cartao {
+    background: var(--cartao);
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  }
+  label.rotulo { display: block; font-size: .85rem; color: var(--texto-suave); margin: 18px 0 7px; font-weight: 600; letter-spacing: .3px; }
+  label.rotulo:first-child { margin-top: 0; }
+
+  input[type=text] {
+    width: 100%;
+    background: #101828;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    color: var(--texto);
+    padding: 13px 14px;
+    font-size: .95rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input[type=text]:focus { border-color: var(--acento); }
+
+  .tipo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tipo input { display: none; }
+  .tipo label {
+    text-align: center;
+    padding: 14px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--texto-suave);
+    transition: all .15s;
+    user-select: none;
+  }
+  .tipo label .em { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+  #tipo-video:checked + label { border-color: var(--acento); color: var(--texto); background: rgba(229,62,62,.12); }
+  #tipo-audio:checked + label { border-color: var(--acento-audio); color: var(--texto); background: rgba(49,130,206,.12); }
+
+  .linha-pasta { display: flex; gap: 10px; }
+  .linha-pasta input { flex: 1; }
+  .btn-secundario {
+    background: #232e4a;
+    border: 1px solid var(--borda);
+    color: var(--texto);
+    border-radius: 10px;
+    padding: 0 18px;
+    font-size: .9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  .btn-secundario:hover { background: #2c3a5c; }
+
+  .opcao-playlist { display: flex; align-items: center; gap: 10px; margin-top: 18px; color: var(--texto-suave); font-size: .92rem; cursor: pointer; user-select: none; }
+  .opcao-playlist input { width: 17px; height: 17px; accent-color: var(--acento); cursor: pointer; }
+
+  .btn-principal {
+    width: 100%;
+    margin-top: 24px;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #e53e3e, #c53030);
+    cursor: pointer;
+    transition: transform .1s, filter .15s;
+  }
+  .btn-principal:hover { filter: brightness(1.1); }
+  .btn-principal:active { transform: scale(.98); }
+  .btn-principal:disabled { filter: grayscale(.6); cursor: not-allowed; }
+  .btn-principal.audio { background: linear-gradient(135deg, #3182ce, #2b6cb0); }
+
+  .btn-cancelar {
+    width: 100%; margin-top: 10px; padding: 11px;
+    background: transparent; border: 1px solid var(--borda);
+    color: var(--texto-suave); border-radius: 10px; cursor: pointer; font-size: .9rem;
+    display: none;
+  }
+  .btn-cancelar:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+  .progresso { margin-top: 22px; display: none; }
+  .barra-fundo { background: #101828; border-radius: 99px; height: 14px; overflow: hidden; border: 1px solid var(--borda); }
+  .barra {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--acento), #fc8181);
+    border-radius: 99px;
+    transition: width .3s ease;
+  }
+  .barra.audio { background: linear-gradient(90deg, var(--acento-audio), #63b3ed); }
+  .info-progresso { display: flex; justify-content: space-between; margin-top: 8px; font-size: .85rem; color: var(--texto-suave); }
+
+  .status { margin-top: 16px; padding: 13px 16px; border-radius: 10px; font-size: .92rem; display: none; }
+  .status.ok { display: block; background: rgba(56,161,105,.15); border: 1px solid rgba(56,161,105,.4); color: #9ae6b4; }
+  .status.erro { display: block; background: rgba(229,62,62,.15); border: 1px solid rgba(229,62,62,.4); color: #feb2b2; }
+
+  details { margin-top: 16px; }
+  details summary { color: var(--texto-suave); font-size: .85rem; cursor: pointer; user-select: none; }
+  .log {
+    margin-top: 10px; background: #0a0f1a; border: 1px solid var(--borda);
+    border-radius: 10px; padding: 12px; max-height: 220px; overflow-y: auto;
+    font-family: Consolas, monospace; font-size: .78rem; color: #a0aec0;
+    white-space: pre-wrap; word-break: break-all;
+  }
+  footer { text-align: center; margin-top: 22px; color: var(--texto-suave); font-size: .8rem; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1><span class="icone">⬇️</span>Baixador de Vídeos</h1>
+    <p>YouTube e centenas de outros sites — vídeos em MP4, áudios em MP3</p>
+  </header>
+
+  <div class="cartao">
+    <label class="rotulo">LINK DO VÍDEO</label>
+    <input type="text" id="url" placeholder="Cole aqui a URL (ex: https://www.youtube.com/watch?v=...)" autofocus>
+
+    <label class="rotulo">O QUE BAIXAR</label>
+    <div class="tipo">
+      <input type="radio" name="tipo" id="tipo-video" value="video" checked>
+      <label for="tipo-video"><span class="em">🎬</span>Vídeo (MP4)</label>
+      <input type="radio" name="tipo" id="tipo-audio" value="audio">
+      <label for="tipo-audio"><span class="em">🎵</span>Áudio (MP3)</label>
+    </div>
+
+    <label class="rotulo">PASTA DE DESTINO</label>
+    <div class="linha-pasta">
+      <input type="text" id="pasta" placeholder="Pasta padrão">
+      <button class="btn-secundario" id="btn-procurar">📁 Procurar…</button>
+    </div>
+
+    <label class="opcao-playlist">
+      <input type="checkbox" id="playlist">
+      Baixar a playlist inteira (se a URL for de playlist)
+    </label>
+
+    <button class="btn-principal" id="btn-baixar">⬇️ &nbsp;Baixar</button>
+    <button class="btn-cancelar" id="btn-cancelar">Cancelar download</button>
+
+    <div class="progresso" id="progresso">
+      <div class="barra-fundo"><div class="barra" id="barra"></div></div>
+      <div class="info-progresso">
+        <span id="pct">0%</span>
+        <span id="detalhe"></span>
+      </div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <details>
+      <summary>Ver detalhes técnicos (log)</summary>
+      <div class="log" id="log">Aguardando download…</div>
+    </details>
+  </div>
+
+  <footer>Feito com yt-dlp + ffmpeg · uso pessoal</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let pastasPadrao = { video: "", audio: "" };
+let pastaEditada = false;
+let intervalo = null;
+
+fetch("/pastas-padrao").then(r => r.json()).then(p => {
+  pastasPadrao = p;
+  $("pasta").value = p.video;
+});
+
+function tipoAtual() {
+  return $("tipo-audio").checked ? "audio" : "video";
+}
+
+// troca a pasta padrão ao alternar vídeo/áudio (se o usuário não personalizou)
+document.querySelectorAll('input[name=tipo]').forEach(r => r.addEventListener("change", () => {
+  const t = tipoAtual();
+  if (!pastaEditada) $("pasta").value = pastasPadrao[t];
+  $("btn-baixar").classList.toggle("audio", t === "audio");
+  $("barra").classList.toggle("audio", t === "audio");
+  $("btn-baixar").innerHTML = t === "audio" ? "⬇️ &nbsp;Baixar MP3" : "⬇️ &nbsp;Baixar";
+}));
+
+$("pasta").addEventListener("input", () => {
+  pastaEditada = !Object.values(pastasPadrao).includes($("pasta").value);
+});
+
+$("btn-procurar").addEventListener("click", async () => {
+  $("btn-procurar").disabled = true;
+  try {
+    const r = await fetch("/escolher-pasta").then(r => r.json());
+    if (r.pasta) { $("pasta").value = r.pasta; pastaEditada = true; }
+  } catch (e) {
+    mostrarStatus("erro", "Não consegui abrir o seletor de pastas. Digite o caminho manualmente ou reinicie o servidor (ABRIR.bat).");
+  } finally {
+    $("btn-procurar").disabled = false;
+  }
+});
+
+$("btn-baixar").addEventListener("click", async () => {
+  const url = $("url").value.trim();
+  if (!url) { mostrarStatus("erro", "Cole o link do vídeo primeiro."); return; }
+
+  const resposta = await fetch("/baixar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url,
+      tipo: tipoAtual(),
+      pasta: $("pasta").value.trim(),
+      playlist: $("playlist").checked
+    })
+  });
+  if (!resposta.ok) {
+    const e = await resposta.json();
+    mostrarStatus("erro", e.erro || "Erro ao iniciar o download.");
+    return;
+  }
+  iniciarAcompanhamento();
+});
+
+$("btn-cancelar").addEventListener("click", () => fetch("/cancelar", { method: "POST" }));
+
+function iniciarAcompanhamento() {
+  $("btn-baixar").disabled = true;
+  $("btn-cancelar").style.display = "block";
+  $("progresso").style.display = "block";
+  $("status").className = "status";
+  $("barra").style.width = "0%";
+  $("pct").textContent = "0%";
+  $("detalhe").textContent = "Iniciando…";
+  intervalo = setInterval(atualizar, 800);
+}
+
+async function atualizar() {
+  const s = await fetch("/status").then(r => r.json());
+  const log = $("log");
+  log.textContent = s.linhas.length ? s.linhas.join("\n") : "Aguardando…";
+  log.scrollTop = log.scrollHeight;
+
+  // extrai o progresso da última linha "[download]  45.2% of 10.5MiB at 2.1MiB/s ETA 00:05"
+  for (let i = s.linhas.length - 1; i >= 0; i--) {
+    const m = s.linhas[i].match(/\[download\]\s+([\d.]+)%\s*(.*)/);
+    if (m) {
+      $("barra").style.width = m[1] + "%";
+      $("pct").textContent = Math.floor(m[1]) + "%";
+      $("detalhe").textContent = m[2].replace(/of/, "de").replace(/at/, "a").replace(/ETA/, "resta");
+      break;
+    }
+  }
+
+  if (!s.ativo) {
+    clearInterval(intervalo);
+    $("btn-baixar").disabled = false;
+    $("btn-cancelar").style.display = "none";
+    if (s.ok) {
+      $("barra").style.width = "100%";
+      $("pct").textContent = "100%";
+      $("detalhe").textContent = "";
+      mostrarStatus("ok", "✅ Download concluído! Arquivo salvo em: " + ($("pasta").value || "pasta padrão"));
+    } else if (s.ok === false) {
+      mostrarStatus("erro", "❌ O download falhou. Abra os detalhes técnicos para ver o motivo.");
+    }
+  }
+}
+
+function mostrarStatus(tipo, msg) {
+  const st = $("status");
+  st.className = "status " + tipo;
+  st.textContent = msg;
+}
+
+// Enter no campo de URL dispara o download
+$("url").addEventListener("keydown", e => { if (e.key === "Enter") $("btn-baixar").click(); });
+</script>
+</body>
+</html>
