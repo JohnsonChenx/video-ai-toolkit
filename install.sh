@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install.sh — Claude Video Suite (macOS / Linux)
+# install.sh — Video AI Toolkit (macOS / Linux)
 # Instala: yt-dlp, ffmpeg, Deno, claude-real-video (crv), faster-whisper
 # e as skills do Claude Code.
 # Nota: o agente Escriba (transcricao pt-BR com diarizacao) e voltado a Windows;
@@ -19,7 +19,7 @@ err()  { echo -e "\033[0;31m[erro]\033[0m $*" >&2; }
 
 echo ""
 echo "============================================="
-echo "   Claude Video Suite — Instalador Unix"
+echo "   Video AI Toolkit — Instalador Unix"
 echo "   baixar (yt-dlp) + assistir (crv)"
 echo "============================================="
 echo ""

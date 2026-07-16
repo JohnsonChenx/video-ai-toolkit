@@ -1,4 +1,4 @@
-# install.ps1 — Claude Video Suite (Windows)
+# install.ps1 — Video AI Toolkit (Windows)
 # Instala e configura: yt-dlp, ffmpeg, Deno (runtime JS do YouTube),
 # claude-real-video (crv), faster-whisper, e as skills/agente do Claude Code.
 #
@@ -21,7 +21,7 @@ function Fail($msg)  { Write-Host "[erro] $msg" -ForegroundColor Red }
 
 Write-Host ""
 Write-Host "=============================================" -ForegroundColor Magenta
-Write-Host "   Claude Video Suite - Instalador Windows"    -ForegroundColor Magenta
+Write-Host "   Video AI Toolkit - Instalador Windows"      -ForegroundColor Magenta
 Write-Host "   baixar (yt-dlp) + assistir (crv) + ouvir"   -ForegroundColor Magenta
 Write-Host "=============================================" -ForegroundColor Magenta
 Write-Host ""

@@ -1,4 +1,4 @@
-# 🎬 Claude Video Suite
+# 🎬 Video AI Toolkit
 
 **Dê ao seu agente de IA o poder completo sobre vídeos: baixar, assistir e transcrever — tudo local, tudo grátis.**
 
@@ -20,16 +20,16 @@
 
 ```powershell
 # Windows (PowerShell)
-git clone https://github.com/SEU_USUARIO/claude-video-suite
-cd claude-video-suite
+git clone https://github.com/JohnsonChenx/video-ai-toolkit
+cd video-ai-toolkit
 powershell -ExecutionPolicy Bypass -File install.ps1           # stack de vídeo
 powershell -ExecutionPolicy Bypass -File install.ps1 -Escriba  # + GUI do Escriba
 ```
 
 ```bash
 # macOS / Linux
-git clone https://github.com/SEU_USUARIO/claude-video-suite
-cd claude-video-suite
+git clone https://github.com/JohnsonChenx/video-ai-toolkit
+cd video-ai-toolkit
 bash install.sh
 ```
 
