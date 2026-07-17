@@ -251,32 +251,32 @@ nvidia-smi --query-gpu=memory.used,memory.free --format=csv | Select-Object -Fir
 - VRAM livre <4 GB e modelo é large-v3 → exigir `--batch-size 4 --compute-type int8_float16`
 - Token vazio ou inválido → bloquear e pedir novo
 
-### 2.5 Etapa opcional — Melhorar o áudio ANTES de transcrever
+### 2.5 Qualidade de áudio — análise e tratamento AUTOMÁTICOS
 
-Quando o usuário mencionar áudio ruim ("muito barulho", "gravado de longe",
-"quase não dá pra ouvir"), OU quando uma transcrição sair visivelmente ruim
-(trechos sem sentido, falantes trocados), **ofereça** um pré-processamento de
-redução de ruído antes de (re)transcrever. É opcional — pergunte, não aplique sozinho.
+O `transcrever.py` analisa a qualidade de CADA áudio sozinho, antes de
+transcrever (módulo `audio_quality.py`, distribuído na mesma pasta
+`apps/escriba/`), e aplica o melhor tratamento quando necessário. Você não
+precisa perguntar nada — apenas **informe ao usuário o que a análise decidiu**
+(as linhas `[audio]` do log).
 
-Opções em ordem de custo:
+Como funciona (flag `--denoise`, default `auto`):
+- Mede o **SNR estimado** (fala = percentil 95 do RMS em janelas de 0,5 s;
+  ruído = percentil 10, revelado nas pausas da fala) e detecta **voz abafada**
+  (energia 2,5-8 kHz muito abaixo da banda grave).
+- Decide: SNR ≥ 25 dB → não trata (denoise em áudio limpo borra consoantes);
+  12-25 dB → RNNoise via ffmpeg (zero instalação; o modelo `.rnnn` oficial é
+  baixado automaticamente na primeira vez); < 12 dB → DeepFilterNet se
+  instalado, senão RNNoise; abafado + resemble-enhance instalado → Resemble.
+- Gera `<nome>.limpo.wav` ao lado do original (NUNCA sobrescreve), transcreve
+  sobre o tratado, e as saídas continuam nomeadas pelo original. Re-execuções
+  reaproveitam o `.limpo.wav`; o modo lote ignora os `.limpo` (sem duplicar).
+- Qualquer falha na análise/tratamento → segue com o original (fallback silencioso).
 
-1. **RNNoise via ffmpeg** (zero instalação): baixe um modelo `.rnnn` oficial de
-   https://github.com/GregorR/rnnoise-models e rode:
-   ```powershell
-   # ⚠ o caminho do modelo deve ser RELATIVO — o ":" de C:\ quebra a sintaxe de filtros
-   cd <pasta-do-modelo>; ffmpeg -y -i "<original>" -af "arnndn=m=cb.rnnn" "<limpo.wav>"
-   ```
-2. **DeepFilterNet** (MIT, melhor qualidade): `pip install deepfilternet soundfile` —
-   denoise de fala em 48 kHz, preserva consoantes.
-3. **Resemble Enhance** (Apache 2.0): `pip install resemble-enhance` — para voz
-   abafada/com reverberação: denoise + dereverb + reconstrução de frequências (GPU ajuda).
-
-Regras:
-- **NUNCA sobrescreva o original** — o denoise gera arquivo novo (`<nome>.limpo.wav`)
-  e a transcrição roda sobre ele.
-- Denoise agressivo demais borra consoantes e PIORA a transcrição — na dúvida,
-  transcreva as duas versões de um trecho e compare.
-- Áudio já limpo não ganha nada — não ofereça a etapa se a transcrição saiu boa.
+Controles manuais quando o usuário pedir:
+- `--denoise off` — pular a análise (áudio de estúdio, pressa)
+- `--denoise forcar` — tratar mesmo com SNR bom
+- Upgrades opcionais: `pip install deepfilternet soundfile` (ruído pesado) e
+  `pip install resemble-enhance` (voz abafada/reverberação)
 
 ### 3. Disparo
 **Sempre em background** (transcrição é lenta) com Tee-Object para log:

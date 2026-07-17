@@ -88,7 +88,19 @@ def _free_vram(device):
 
 
 def transcribe_one(audio_path: Path, args, device, batch_size, compute_type, hf_token):
-    audio = whisperx.load_audio(str(audio_path))
+    # Análise automática de qualidade + denoise quando necessário (audio_quality.py).
+    # Saídas continuam nomeadas pelo arquivo ORIGINAL; o .limpo.wav fica ao lado.
+    fonte = audio_path
+    if getattr(args, "denoise", "auto") != "off":
+        try:
+            from audio_quality import preparar_audio
+            limpo = preparar_audio(str(audio_path), modo=args.denoise)
+            if limpo:
+                fonte = Path(limpo)
+        except ImportError:
+            pass  # audio_quality.py ausente: segue com o original
+
+    audio = whisperx.load_audio(str(fonte))
     duration_sec = len(audio) / 16000
     print(f"  duracao: {duration_sec:.1f}s ({duration_sec/60:.1f} min)")
 
@@ -135,7 +147,8 @@ def collect_files(path: Path, recursive: bool) -> list[Path]:
     else:
         candidates = path.iterdir()
     return sorted([f for f in candidates
-                   if f.is_file() and f.suffix.lower() in AUDIO_EXTS])
+                   if f.is_file() and f.suffix.lower() in AUDIO_EXTS
+                   and not f.stem.endswith(".limpo")])  # não retranscrever os tratados
 
 
 def main():
@@ -158,6 +171,10 @@ def main():
     ap.add_argument("--batch-size", type=int, default=0,
                     help="Batch do Whisper (0 = automatico: 8 GPU, 4 CPU). "
                          "Reduza para 4 ou 2 se OOM em large-v3 com VRAM <= 8GB.")
+    ap.add_argument("--denoise", default="auto", choices=["auto", "off", "forcar"],
+                    help="Tratamento automatico de audio antes de transcrever: "
+                         "auto = analisa SNR e trata so se precisar (default); "
+                         "off = nunca; forcar = trata mesmo com audio bom.")
     args = ap.parse_args()
 
     target = Path(args.caminho).resolve()
