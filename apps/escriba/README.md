@@ -2,6 +2,15 @@
 
 Transcrição de áudio/vídeo em pt-BR com **separação de falantes**, 100% local.
 
+## Qualidade de áudio automática
+
+Antes de cada transcrição, o `audio_quality.py` mede o SNR do áudio (fala vs.
+piso de ruído nas pausas) e detecta voz abafada. Se precisar, aplica o melhor
+tratamento sozinho — RNNoise (zero instalação, modelo baixa na 1ª vez),
+DeepFilterNet ou Resemble Enhance se instalados — gerando `<nome>.limpo.wav`
+**sem tocar no original**. Áudio limpo passa direto (denoise desnecessário
+borra consoantes). Controle: `--denoise auto|off|forcar` no `transcrever.py`.
+
 ## Requisitos
 
 1. Rode o instalador da suíte com a flag do Escriba: `install.ps1 -Escriba` (instala PySide6 + keyboard)

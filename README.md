@@ -10,7 +10,7 @@
 |---|---|---|
 | **Skill `youtube`** | Baixa vídeo (sempre MP4) ou só o áudio (sempre MP3) do YouTube e centenas de sites; se autoinstala | "baixa esse vídeo: \<url\>" |
 | **Skill `claude-real-video`** | O Claude "assiste" o vídeo: keyframes por detecção de cena + transcrição + grids 3×3 | "resume esse vídeo: \<url\>" |
-| **Agente `escriba`** | Transcrição pt-BR com separação de falantes (WhisperX + pyannote + CUDA); instala a própria pipeline | "transcreve essa reunião" (Windows) |
+| **Agente `escriba`** | Transcrição pt-BR com separação de falantes (WhisperX + pyannote + CUDA); instala a própria pipeline; **analisa a qualidade do áudio e aplica denoise automaticamente** quando necessário; entrega Resumo Estruturado ou Ata de Reunião | "transcreve essa reunião" (Windows) |
 | **App Baixador** (`apps/baixador/`) | Interface web local de download com seletor de pasta e barra de progresso | dois cliques em `ABRIR.bat` |
 | **App Escriba** (`apps/escriba/`) | GUI de transcrição: arrasta-e-solta, ditado global Ctrl+Alt+D, resumo/ata por IA | `Iniciar Escriba.bat` (Windows) |
 
