@@ -107,6 +107,7 @@
   <a href="#app-escriba">Escriba (GUI)</a>
   <h2>Referência</h2>
   <a href="#frases">Frases prontas</a>
+  <a href="#gemini-key">Configurar GEMINI_API_KEY</a>
   <a href="#problemas">Solução de problemas</a>
   <a href="#privacidade">Privacidade e licenças</a>
 </nav>
@@ -292,8 +293,8 @@ frames, e <b>legenda karaokê</b> (ASS <code>\kf</code> por palavra a partir do 
 </table>
 <div class="box ok"><b>Privacidade vence gatilho</b>
 Conteúdo sensível/de cliente nunca vai para API externa, mesmo com gatilho ativo. E sem
-<code>GEMINI_API_KEY</code> (grátis em aistudio.google.com/apikey) nada bloqueia — o fluxo
-segue local e o agente ensina a criar a chave uma única vez.</div>
+<code>GEMINI_API_KEY</code> nada bloqueia — o fluxo segue local. Para ativar os fallbacks,
+veja <a href="#gemini-key">Configurar GEMINI_API_KEY</a> (2 minutos, grátis).</div>
 
 <h2 id="app-baixador">App Baixador (interface web)<span class="tag">APP</span></h2>
 <p><code>apps/baixador/ABRIR.bat</code> abre <code>http://localhost:8765</code>: cole o link,
@@ -341,6 +342,46 @@ de responder sem ela. Alternativas CLI: <code>BAIXAR.bat</code> (menu) e <code>b
 "Edita esse bruto, corta os erros e silêncios"        → FASE A (plano)
 "Plano aprovado, aplica"                              → FASE B
 "Faz cortes de TikTok do vídeo final"                 → 9:16 + karaokê</code></pre>
+
+<h2 id="gemini-key">Configurar a GEMINI_API_KEY (opcional, grátis)</h2>
+<p>A chave ativa os <b>fallbacks automáticos</b> do agente editor: verificação de vídeo em
+máquinas fracas ou vídeos longos (E2) e geração de imagens para motions (E3). Sem ela, tudo
+continua funcionando no modo local — a chave só destrava os upgrades. Leva ~2 minutos:</p>
+
+<ol>
+  <li><b>Acesse o Google AI Studio</b>: <a href="https://aistudio.google.com/apikey">aistudio.google.com/apikey</a>
+      e entre com qualquer conta Google (não precisa de cartão de crédito).</li>
+  <li><b>Clique em "Create API key"</b> (ou "Criar chave de API"). Se pedir um projeto do
+      Google Cloud, aceite a opção de criar um novo automaticamente.</li>
+  <li><b>Copie a chave</b> — começa com <code>AIza...</code>. Trate como senha: ela sai da
+      tela e não deve ir para arquivos de código, chats ou repositórios.</li>
+  <li><b>Grave como variável de ambiente</b>:
+<pre><code># Windows (PowerShell) — permanente para novas janelas:
+setx GEMINI_API_KEY "AIza...sua-chave..."
+# e também na sessão atual (setx não afeta janelas já abertas):
+$env:GEMINI_API_KEY = "AIza...sua-chave..."
+
+# macOS / Linux — adicione ao ~/.zshrc ou ~/.bashrc:
+export GEMINI_API_KEY="AIza...sua-chave..."</code></pre></li>
+  <li><b>Verifique</b> (deve listar modelos disponíveis):
+<pre><code># Windows (PowerShell)
+$k = [Environment]::GetEnvironmentVariable("GEMINI_API_KEY", "User")
+(Invoke-RestMethod "https://generativelanguage.googleapis.com/v1beta/models?key=$k").models | Select-Object -First 3 name
+
+# macOS / Linux
+curl -s "https://generativelanguage.googleapis.com/v1beta/models?key=$GEMINI_API_KEY" | head -20</code></pre></li>
+</ol>
+
+<div class="box"><b>Limites do tier gratuito</b>
+O free tier tem cotas por dia e por minuto que variam por modelo (generosas para uso
+pessoal). Quando a cota esgota, a API responde HTTP 429 — e é exatamente esse sinal que o
+editor usa para transbordar automaticamente para o ComfyUI local (E3) ou seguir no método
+local (E2). Ou seja: estourar a cota nunca quebra o fluxo.</div>
+
+<div class="box warn"><b>Segurança da chave</b>
+Nunca commite a chave em repositório nem cole em chats. Se vazar, revogue e gere outra na
+mesma página do AI Studio. O toolkit só a lê da variável de ambiente — nenhum arquivo do
+projeto a armazena.</div>
 
 <h2 id="problemas">Solução de problemas</h2>
 <table>
