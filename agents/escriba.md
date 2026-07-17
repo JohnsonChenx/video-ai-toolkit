@@ -243,6 +243,38 @@ Token deve ter escopo: **"Read access to contents of all public gated repos you 
 - Número de falantes se conhecido (`--falantes N`)
 - Se for pasta: recursivo? forçar reprocessamento?
 
+### 1.5 Estimativa de tempo + escolha de precisão (OBRIGATÓRIO antes de disparar)
+
+Logo após receber o pedido, MEÇA a duração do áudio e APRESENTE as duas opções
+com tempo estimado — nunca escolha o modelo sozinho (exceto se o usuário já
+especificou modelo/velocidade no pedido, ou pediu "lote grande" → sugira medium).
+
+**1. Medir duração** (arquivo único):
+```powershell
+ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "<arquivo>"
+```
+Pasta (soma em minutos):
+```powershell
+$t=0; Get-ChildItem "<pasta>" -Include *.mp3,*.m4a,*.wav,*.mp4,*.ogg,*.opus -Recurse | ForEach-Object { $t += [double](ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 $_.FullName) }; "{0:N0} min de áudio" -f ($t/60)
+```
+
+**2. Calcular ETAs** (referência: GPU classe GTX 1660 Ti; GPUs novas são
+proporcionalmente mais rápidas; CPU = 5-15× mais lento):
+- **Rápido (medium)**: ~10% da duração do áudio (1h → ~6 min)
+- **Máxima precisão (large-v3)**: ~20% da duração (1h → ~12 min)
+- Diarização: +1-2 min por hora de áudio em ambos
+- Se `nvidia-smi` falhar (CPU): multiplique por ~8 e avise
+
+**3. Perguntar**:
+> "São ~N min de áudio. Como transcrever?
+> **Rápido** (medium, ~X min) — ótimo para áudio limpo e uso geral
+> **Máxima precisão** (large-v3, ~Y min) — vale para vocabulário técnico,
+> sotaques ou áudio difícil"
+
+Com a resposta, monte o comando (`--modelo large-v3 --compute-type int8_float16
+--batch-size 4` para máxima precisão em 6 GB VRAM). Ao final, reporte o tempo
+REAL vs estimado — isso calibra as próximas estimativas.
+
 ### 2. Pré-check do ambiente
 ```powershell
 nvidia-smi --query-gpu=memory.used,memory.free --format=csv | Select-Object -First 2
