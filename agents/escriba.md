@@ -251,6 +251,26 @@ nvidia-smi --query-gpu=memory.used,memory.free --format=csv | Select-Object -Fir
 - VRAM livre <4 GB e modelo é large-v3 → exigir `--batch-size 4 --compute-type int8_float16`
 - Token vazio ou inválido → bloquear e pedir novo
 
+### 2.4 Fonte é YouTube? LEGENDAS NATIVAS PRIMEIRO
+
+Se a fonte for uma URL do YouTube (ou outro site com legendas) e o usuário
+quiser transcrição/resumo, tente PRIMEIRO as legendas prontas — palestra de 2h:
+legenda = 2 segundos; WhisperX = ~25 min de GPU:
+
+```powershell
+python apps/escriba/legendas.py "<URL>" --saida "<destino>"
+```
+
+Gera `<título>.legenda.txt` ([MM:SS] + texto, pt-BR preferido, en fallback) e
+`.legenda.json`. Regras de decisão:
+- **Legenda encontrada + usuário NÃO precisa de falantes separados** → use a
+  legenda direto (siga para Resumo/Ata). Informe a fonte: "legendas nativas".
+- **Precisa de diarização** (reunião, entrevista, "quem falou o quê") →
+  legendas não separam falantes; baixe o áudio e siga o fluxo WhisperX normal.
+- **Exit 3 (SEM_LEGENDAS)** → fluxo WhisperX normal.
+- **Legenda automática visivelmente ruim** (texto sem sentido) → ofereça re-fazer
+  com WhisperX local, que costuma ser superior à legenda automática do YouTube.
+
 ### 2.5 Qualidade de áudio — análise e tratamento AUTOMÁTICOS
 
 O `transcrever.py` analisa a qualidade de CADA áudio sozinho, antes de
