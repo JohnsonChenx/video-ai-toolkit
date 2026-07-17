@@ -372,11 +372,15 @@ $k = [Environment]::GetEnvironmentVariable("GEMINI_API_KEY", "User")
 curl -s "https://generativelanguage.googleapis.com/v1beta/models?key=$GEMINI_API_KEY" | head -20</code></pre></li>
 </ol>
 
-<div class="box"><b>Limites do tier gratuito</b>
-O free tier tem cotas por dia e por minuto que variam por modelo (generosas para uso
-pessoal). Quando a cota esgota, a API responde HTTP 429 — e é exatamente esse sinal que o
-editor usa para transbordar automaticamente para o ComfyUI local (E3) ou seguir no método
-local (E2). Ou seja: estourar a cota nunca quebra o fluxo.</div>
+<div class="box"><b>Limites do tier gratuito (medidos na prática)</b>
+Texto/análise têm cota folgada para uso pessoal; a cota de <b>imagem</b> é muito limitada
+em contas novas (429 pode vir logo na primeira chamada). Quando a cota esgota, a API
+responde HTTP 429 — exatamente o sinal que o editor usa para transbordar para o ComfyUI
+local (E3) ou seguir no método local (E2). Estourar a cota nunca quebra o fluxo.
+<br><br><b>Modelos:</b> contas novas não acessam <code>gemini-2.5</code>/<code>2.0</code>
+(404 "no longer available to new users"). Liste os modelos
+(<code>/v1beta/models?key=...</code>) e use o flash 3.x mais novo não-preview — ex.:
+<code>gemini-3.1-flash-lite</code> (texto) e <code>gemini-3.1-flash-image</code> (imagem).</div>
 
 <div class="box warn"><b>Segurança da chave</b>
 Nunca commite a chave em repositório nem cole em chats. Se vazar, revogue e gere outra na
@@ -396,6 +400,8 @@ projeto a armazena.</div>
   <tr><td>Muitos SPEAKER_XX numa conversa de 2-3 pessoas</td><td>Over-segmentation do pyannote</td><td>Re-rodar com <code>--falantes N --forcar</code></td></tr>
   <tr><td>GatedRepoError 403 ao diarizar</td><td>Termos dos modelos pyannote não aceitos</td><td>Aceitar os 3 repos gated no HuggingFace (o agente escriba lista os links)</td></tr>
   <tr><td>PySide6 falha ao instalar (OSError de caminho longo)</td><td>Python da Microsoft Store</td><td>O pacote fica funcional mesmo assim — teste o import antes de reinstalar</td></tr>
+  <tr><td>Gemini retorna 404 "model no longer available to new users" (mesmo o modelo aparecendo na lista)</td><td>Contas novas não acessam gemini-2.5/2.0</td><td>Liste os modelos e use o flash 3.x mais novo não-preview (ex.: <code>gemini-3.1-flash-lite</code>)</td></tr>
+  <tr><td>Gemini imagem retorna 429 logo de cara</td><td>Cota de imagem do free tier é muito limitada</td><td>Comportamento esperado — o transbordo E3 para ComfyUI local assume; texto/análise têm cota folgada</td></tr>
 </table>
 
 <h2 id="privacidade">Privacidade e licenças</h2>
