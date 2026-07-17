@@ -217,11 +217,17 @@ re-renderize (máx. 2 ciclos; depois entregue com ressalvas).
 - **Fallback automático → Gemini API (tier gratuito)** quando: máquina FRACA, vídeo
   > 15 min, ou crv falhar. Requer `GEMINI_API_KEY` (grátis em aistudio.google.com/apikey).
   Sem chave e com gatilho ativo: informe UMA vez como criar e siga local (nunca bloqueie).
+  **Modelo**: contas novas não acessam gemini-2.5/2.0 (404 "no longer available to new
+  users") — liste os modelos e use o flash 3.x mais novo não-preview (ex.:
+  `gemini-3.1-flash-lite`).
 - **Privacidade**: conteúdo sensível/cliente NUNCA vai para API externa.
 
 ### E3. Imagens para motions — Gemini free tier primário, ComfyUI transbordo
 
-1. **Gemini API (tier gratuito)** — prompt contextual ao trecho do SRT.
+1. **Gemini API (tier gratuito)** — modelo `gemini-3.1-flash-image` com
+   `responseModalities:["IMAGE"]`, prompt contextual ao trecho do SRT. Atenção: a
+   cota de IMAGEM do free tier é muito limitada (429 pode vir de cara) — para
+   volume, o transbordo abaixo é o caminho principal.
 2. **Transbordo automático → ComfyUI local (SDXL)** em cota esgotada (429) ou sem
    chave — roda em 6 GB VRAM; GPL: uso local livre, não redistribuir.
 3. Sem nenhum: motions template-only (texto/formas) + pendência no relatório.
