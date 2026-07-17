@@ -251,6 +251,33 @@ nvidia-smi --query-gpu=memory.used,memory.free --format=csv | Select-Object -Fir
 - VRAM livre <4 GB e modelo é large-v3 → exigir `--batch-size 4 --compute-type int8_float16`
 - Token vazio ou inválido → bloquear e pedir novo
 
+### 2.5 Etapa opcional — Melhorar o áudio ANTES de transcrever
+
+Quando o usuário mencionar áudio ruim ("muito barulho", "gravado de longe",
+"quase não dá pra ouvir"), OU quando uma transcrição sair visivelmente ruim
+(trechos sem sentido, falantes trocados), **ofereça** um pré-processamento de
+redução de ruído antes de (re)transcrever. É opcional — pergunte, não aplique sozinho.
+
+Opções em ordem de custo:
+
+1. **RNNoise via ffmpeg** (zero instalação): baixe um modelo `.rnnn` oficial de
+   https://github.com/GregorR/rnnoise-models e rode:
+   ```powershell
+   # ⚠ o caminho do modelo deve ser RELATIVO — o ":" de C:\ quebra a sintaxe de filtros
+   cd <pasta-do-modelo>; ffmpeg -y -i "<original>" -af "arnndn=m=cb.rnnn" "<limpo.wav>"
+   ```
+2. **DeepFilterNet** (MIT, melhor qualidade): `pip install deepfilternet soundfile` —
+   denoise de fala em 48 kHz, preserva consoantes.
+3. **Resemble Enhance** (Apache 2.0): `pip install resemble-enhance` — para voz
+   abafada/com reverberação: denoise + dereverb + reconstrução de frequências (GPU ajuda).
+
+Regras:
+- **NUNCA sobrescreva o original** — o denoise gera arquivo novo (`<nome>.limpo.wav`)
+  e a transcrição roda sobre ele.
+- Denoise agressivo demais borra consoantes e PIORA a transcrição — na dúvida,
+  transcreva as duas versões de um trecho e compare.
+- Áudio já limpo não ganha nada — não ofereça a etapa se a transcrição saiu boa.
+
 ### 3. Disparo
 **Sempre em background** (transcrição é lenta) com Tee-Object para log:
 ```powershell
