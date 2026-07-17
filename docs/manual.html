@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video AI Toolkit — Manual Completo</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a2233; --muted: #5a6478; --card: #f5f7fb;
+    --border: #dde3ee; --accent: #c2410c; --accent-soft: #fff1e8;
+    --code-bg: #0f1420; --code-fg: #d6e0f0; --ok: #15803d; --warn: #b45309;
+    --link: #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1420; --fg: #e8ecf4; --muted: #8b96ad; --card: #1a2235;
+      --border: #2a3550; --accent: #fb923c; --accent-soft: #2a1c10;
+      --code-bg: #0a0f1a; --code-fg: #c7d2e8; --ok: #4ade80; --warn: #fbbf24;
+      --link: #7ea8ff;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.65; font-size: 16px;
+  }
+  .layout { display: flex; max-width: 1280px; margin: 0 auto; }
+  nav {
+    width: 260px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+    overflow-y: auto; padding: 28px 18px; border-right: 1px solid var(--border);
+  }
+  nav h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 18px 0 8px; }
+  nav a { display: block; color: var(--fg); text-decoration: none; font-size: .9rem; padding: 4px 10px; border-radius: 6px; }
+  nav a:hover { background: var(--card); }
+  nav a.sub { padding-left: 22px; color: var(--muted); font-size: .85rem; }
+  main { flex: 1; min-width: 0; padding: 40px 48px 80px; }
+  h1 { font-size: 2rem; margin-bottom: 6px; }
+  .subtitle { color: var(--muted); margin-bottom: 32px; font-size: 1.05rem; }
+  h2 { font-size: 1.45rem; margin: 48px 0 14px; padding-top: 18px; border-top: 2px solid var(--border); }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 24px; }
+  h3 { font-size: 1.1rem; margin: 26px 0 10px; }
+  p { margin: 10px 0; }
+  ul, ol { margin: 10px 0 10px 24px; }
+  li { margin: 4px 0; }
+  a { color: var(--link); }
+  code {
+    font-family: Consolas, "Cascadia Code", monospace; font-size: .88em;
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 5px;
+  }
+  pre {
+    background: var(--code-bg); color: var(--code-fg); border-radius: 10px;
+    padding: 14px 18px; overflow-x: auto; margin: 12px 0; font-size: .85rem;
+    line-height: 1.55;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: .92rem; }
+  th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--card); }
+  .tag {
+    display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 9px;
+    border-radius: 99px; background: var(--accent-soft); color: var(--accent);
+    vertical-align: middle; margin-left: 8px; letter-spacing: .03em;
+  }
+  .box {
+    border-left: 4px solid var(--accent); background: var(--card);
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0;
+  }
+  .box.ok { border-left-color: var(--ok); }
+  .box.warn { border-left-color: var(--warn); }
+  .box b:first-child { display: block; margin-bottom: 4px; }
+  .fluxo {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin: 14px 0; font-size: .9rem;
+  }
+  .fluxo span { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; }
+  .fluxo em { color: var(--accent); font-style: normal; font-weight: 700; }
+  footer { margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    nav { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    main { padding: 24px 18px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav>
+  <h2>Início</h2>
+  <a href="#visao-geral">Visão geral</a>
+  <a href="#instalacao">Instalação</a>
+  <h2>Skills</h2>
+  <a href="#skill-youtube">youtube (baixar)</a>
+  <a href="#skill-crv">claude-real-video (assistir)</a>
+  <h2>Agentes</h2>
+  <a href="#agente-escriba">escriba (transcrever)</a>
+  <a href="#escriba-fluxo" class="sub">Fluxo de decisão</a>
+  <a href="#escriba-flags" class="sub">Flags e comandos</a>
+  <a href="#agente-editor">editor (editar)</a>
+  <a href="#editor-fases" class="sub">Fases A/B e 3 passadas</a>
+  <a href="#editor-extensoes" class="sub">Extensões E1-E3</a>
+  <h2>Apps</h2>
+  <a href="#app-baixador">Baixador (web)</a>
+  <a href="#app-escriba">Escriba (GUI)</a>
+  <h2>Referência</h2>
+  <a href="#frases">Frases prontas</a>
+  <a href="#problemas">Solução de problemas</a>
+  <a href="#privacidade">Privacidade e licenças</a>
+</nav>
+
+<main>
+<h1>🎬 Video AI Toolkit</h1>
+<p class="subtitle">Manual completo — dê ao seu agente de IA o ciclo inteiro sobre vídeos:
+<b>baixar → assistir → transcrever → editar</b>. Tudo local, tudo grátis, pt-BR primeiro.</p>
+
+<h2 id="visao-geral">Visão geral</h2>
+<p>O toolkit reúne 2 skills, 2 agentes e 2 aplicativos que funcionam sozinhos ou encadeados
+por linguagem natural em qualquer agente que leia <code>SKILL.md</code> (Claude Code, Codex,
+Gemini CLI, Cursor…):</p>
+
+<table>
+  <tr><th>Peça</th><th>Papel</th><th>Como acionar</th></tr>
+  <tr><td><b>Skill youtube</b></td><td>Baixa vídeo (sempre MP4) ou áudio (sempre MP3) de centenas de sites</td><td>"baixa esse vídeo: &lt;url&gt;"</td></tr>
+  <tr><td><b>Skill claude-real-video</b></td><td>O agente "assiste": keyframes por cena + transcrição + grids</td><td>"resume esse vídeo: &lt;url&gt;"</td></tr>
+  <tr><td><b>Agente escriba</b></td><td>Transcrição pt-BR com separação de falantes; legendas nativas primeiro; denoise automático; Resumo/Ata</td><td>"transcreve essa reunião"</td></tr>
+  <tr><td><b>Agente editor</b></td><td>Edição por conversa: 3 passadas, plano→aprovação, cortes 9:16, karaokê, motions</td><td>"edita esse bruto, corta os erros"</td></tr>
+  <tr><td><b>App Baixador</b></td><td>Interface web local de download com seletor de pasta</td><td>2 cliques em <code>ABRIR.bat</code></td></tr>
+  <tr><td><b>App Escriba</b></td><td>GUI: arrasta-e-solta, ditado Ctrl+Alt+D, Resumo/Ata por botão</td><td><code>Iniciar Escriba.bat</code></td></tr>
+</table>
+
+<div class="fluxo">
+  <span>URL do YouTube</span> → <span><em>legendas nativas?</em></span> →
+  <span>sim: transcrição em ~2 s</span> / <span>não: MP3 → análise SNR → denoise →
+  WhisperX + falantes</span> → <span><em>"Resumo ou Ata?"</em></span> → <span>documento final</span>
+</div>
+
+<h2 id="instalacao">Instalação</h2>
+<p><b>Pré-requisito:</b> Python 3.10+ (Microsoft Store no Windows; <code>brew</code>/<code>apt</code> no resto).</p>
+
+<pre><code># Windows (PowerShell)
+git clone https://github.com/JohnsonChenx/video-ai-toolkit
+cd video-ai-toolkit
+powershell -ExecutionPolicy Bypass -File install.ps1           # stack de vídeo
+powershell -ExecutionPolicy Bypass -File install.ps1 -Escriba  # + GUI do Escriba
+powershell -ExecutionPolicy Bypass -File install.ps1 -Force    # sobrescreve skills existentes
+
+# macOS / Linux
+bash install.sh          # (--force para sobrescrever)</code></pre>
+
+<p>O instalador configura, na ordem:</p>
+<ol>
+  <li><b>ffmpeg</b> — via winget/brew/apt, sempre das fontes oficiais (não redistribuímos GPL)</li>
+  <li><b>yt-dlp + claude-real-video + faster-whisper</b> — via pip</li>
+  <li><b>Deno</b> — runtime JS que o YouTube exige desde 2026; no Windows o winget o instala
+      fora do PATH, então o caminho é registrado em <code>%APPDATA%\yt-dlp\config</code></li>
+  <li><b><code>PYTHONUTF8=1</code></b> permanente (Windows) — sem isso, consoles cp1252 quebram
+      ferramentas no meio da execução</li>
+  <li><b>Skills e agentes</b> copiados para <code>~/.claude/</code></li>
+</ol>
+
+<div class="box warn"><b>⚠ Antivírus que intercepta HTTPS (Avast e afins)</b>
+Se o pip falhar com erro de SSL: <code>python -m pip install --user pip-system-certs</code> e
+rode o instalador de novo. O instalador já usa <code>--source winget</code> para evitar a fonte
+msstore, que quebra pelo mesmo motivo.</div>
+
+<h2 id="skill-youtube">Skill <code>youtube</code> — baixar<span class="tag">SKILL</span></h2>
+<p>Baixa vídeo <b>sempre em MP4</b> (prefere H.264+AAC; outros codecs são remuxados) e áudio
+<b>sempre em MP3</b> na melhor qualidade. Se autoinstala: verifica yt-dlp/ffmpeg/Deno e corrige o que faltar.</p>
+
+<h3>Comandos que ela usa por baixo</h3>
+<pre><code># Vídeo — sempre MP4
+yt-dlp -f "bv*[vcodec^=avc1]+ba[acodec^=mp4a]/bv*+ba/b" --merge-output-format mp4 --remux-video mp4 --no-playlist -o "PASTA\%(title)s.%(ext)s" "URL"
+
+# Áudio — sempre MP3, melhor qualidade
+yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist -o "PASTA\%(title)s.%(ext)s" "URL"
+
+# Playlist inteira (subpasta numerada)
+-o "PASTA\%(playlist_title)s\%(playlist_index)s - %(title)s.%(ext)s"   # e sem --no-playlist</code></pre>
+
+<div class="box"><b>Atenção com URLs de playlist</b>
+<code>watch?v=...&amp;list=...</code> baixa a playlist INTEIRA sem <code>--no-playlist</code>.
+A skill só omite a flag quando o usuário pede a playlist explicitamente.</div>
+
+<p>Falhou com "signature", "extractor" ou HTTP 403? Quase sempre é yt-dlp desatualizado:
+<code>pip install -U yt-dlp</code>.</p>
+
+<h2 id="skill-crv">Skill <code>claude-real-video</code> — assistir<span class="tag">SKILL</span></h2>
+<p>O agente não tem input de vídeo — esta skill dá um: extrai keyframes por detecção de cena
+(com dedup em 2 canais), transcreve (legendas existentes → faster-whisper) e gera
+<b>contact sheets 3×3</b> que economizam ~9× tokens de imagem.</p>
+
+<pre><code>crv "&lt;url-ou-arquivo&gt;" -o crv-out --grid --why "o que o usuário quer saber"
+# vídeos longos:  --max-frames 60
+# sem fala:       --no-transcribe
+# entrevistas:    --speakers   (pip install "claude-real-video[speakers]")</code></pre>
+
+<p>O agente lê primeiro <code>MANIFEST.txt</code> (resumo + transcrição integral), depois os
+grids em <code>grids/</code>, e responde citando timestamps de <code>transcript.json</code>.</p>
+
+<h3>watch vs. claude-real-video — quando usar cada um</h3>
+<table>
+  <tr><th>Situação</th><th>Melhor escolha</th></tr>
+  <tr><td>Olhada rápida em vídeo com legendas nativas</td><td><code>/watch</code> — transcript em segundos, sem GPU</td></tr>
+  <tr><td>"O que acontece aos 12:40?" (trecho focado)</td><td><code>/watch --start/--end</code> — frames densos na janela</td></tr>
+  <tr><td>Análise profunda, resumo com evidência visual</td><td><code>crv --grid</code> — dedup superior + grids econômicos</td></tr>
+  <tr><td>Entrevista/podcast (quem fala o quê)</td><td><code>crv --speakers</code> — diarização local</td></tr>
+  <tr><td>Conteúdo sensível</td><td><code>crv</code> — 100% local, nada sai da máquina</td></tr>
+</table>
+
+<h2 id="agente-escriba">Agente <code>escriba</code> — transcrever<span class="tag">AGENTE</span></h2>
+<p>Transcrição de áudio/vídeo em pt-BR com <b>separação de falantes</b> (WhisperX + pyannote),
+100% local. Instala a própria pipeline do zero ("prepara o ambiente de transcrição") e guia
+o usuário nos únicos passos manuais: conta HuggingFace + aceite dos 3 modelos de diarização + token.</p>
+
+<h3 id="escriba-fluxo">Fluxo de decisão automático</h3>
+<ol>
+  <li><b>Fonte é YouTube?</b> Tenta <b>legendas nativas primeiro</b> (<code>legendas.py</code>,
+      pt-BR preferido): palestra de 2 h = 2 segundos, contra ~25 min de GPU. WhisperX só quando
+      precisa de falantes separados, não há legenda, ou a legenda automática é ruim.</li>
+  <li><b>Estimativa de tempo (obrigatória)</b>: mede a duração via ffprobe e pergunta —
+      <i>"Rápido (medium, ~10% da duração) ou Máxima precisão (large-v3, ~20%)?"</i>
+      Nunca escolhe sozinho; reporta tempo real vs. estimado ao final.</li>
+  <li><b>Qualidade de áudio (automática)</b>: <code>audio_quality.py</code> mede o SNR
+      (fala = p95 do RMS em janelas de 0,5 s; ruído = p10, revelado nas pausas) e detecta voz
+      abafada por bandas. Decide sozinho:
+      <table>
+        <tr><th>Diagnóstico</th><th>Tratamento</th></tr>
+        <tr><td>SNR ≥ 25 dB</td><td>nenhum (denoise em áudio limpo borra consoantes)</td></tr>
+        <tr><td>12–25 dB</td><td>RNNoise via ffmpeg (zero instalação; modelo baixa sozinho)</td></tr>
+        <tr><td>&lt; 12 dB</td><td>DeepFilterNet se instalado, senão RNNoise</td></tr>
+        <tr><td>Voz abafada</td><td>Resemble Enhance se instalado (dereverb)</td></tr>
+      </table>
+      Gera <code>&lt;nome&gt;.limpo.wav</code> <b>sem tocar no original</b>; falhas caem em
+      fallback silencioso. Controle: <code>--denoise auto|off|forcar</code>.</li>
+  <li><b>Transcrição</b>: WhisperX com diarização (<code>[SPEAKER_00]</code>…), saídas
+      <code>.txt</code>/<code>.srt</code>/<code>.json</code> (timestamps por palavra).</li>
+  <li><b>Formato (pergunta obrigatória)</b>: <i>"Resumo Estruturado ou Ata de Reunião?"</i>
+      — nunca adivinha.
+      <ul>
+        <li><b>Resumo Estruturado</b>: Essência (1 frase) · Tema · Pontos-chave com evidência ·
+            Implicações · Ações · Citações → <code>.topicos.md</code></li>
+        <li><b>Ata</b>: Data/horário · Participantes (SPEAKER→nome) · Pauta · Discussão ·
+            Decisões · tabela Prazo|Responsável|Ação · Questões em aberto → <code>.ata.md</code></li>
+      </ul>
+      Regra comum: dado ausente vira "não mencionado"/"a definir" — nada é inventado.</li>
+</ol>
+
+<h3 id="escriba-flags">Flags e comandos principais</h3>
+<pre><code>python transcrever.py &lt;arquivo_ou_pasta&gt;
+  [--modelo medium|large-v3|...]    # default: medium
+  [--falantes N]                    # N exato melhora muito a diarização
+  [--recursivo] [--forcar]          # modo pasta/lote
+  [--denoise auto|off|forcar]       # análise de qualidade automática
+  [--device cuda|cpu] [--batch-size N] [--compute-type ...]
+
+python legendas.py "URL" --saida PASTA     # legendas nativas (pt→en) em .txt/.json
+python audio_quality.py analisar ARQ --json # só medir; "tratar" aplica o denoise</code></pre>
+
+<h2 id="agente-editor">Agente <code>editor</code> — editar<span class="tag">AGENTE</span></h2>
+<p>Edição de vídeo por conversa: transforma bruto de gravação (erros, silêncios, refações)
+em vídeo limpo, com render frame-accurate via ffmpeg (NVENC quando há GPU NVIDIA).</p>
+
+<h3 id="editor-fases">Duas fases + método das 3 passadas</h3>
+<ul>
+  <li><b>FASE A — plano</b>: transcreve (pipeline do escriba, <code>--falantes 1</code>), roda
+      as 3 passadas e entrega <code>plano-cortes.md</code> para aprovação. Não corta nada.</li>
+  <li><b>FASE B — aplicação</b>: só com aprovação explícita ou modo autônomo declarado
+      ("vou dormir, termina"). Extrai os segmentos mantidos com re-encode, concatena,
+      roda QA e entrega.</li>
+</ul>
+<table>
+  <tr><th>Passada</th><th>O que detecta</th><th>Fonte da verdade</th></tr>
+  <tr><td>1 — Erros</td><td>Palavra-chave falada ("corta"), refações, gaguejos, frases abandonadas</td><td>Transcrição (timestamps por palavra)</td></tr>
+  <tr><td>2 — Silêncio real</td><td>Pausas acima do limiar (default 0,6 s, respiro de 0,3 s)</td><td><b>Áudio</b> via silencedetect — nunca a transcrição</td></tr>
+  <tr><td>3 — Redundância</td><td>Mesma ideia dita 2+ vezes (fica a melhor versão)</td><td>Transcrição do vídeo inteiro</td></tr>
+</table>
+<p>Extras validados em produção: cortes verticais 9:16 com crop calibrado por QA visual de
+frames, e <b>legenda karaokê</b> (ASS <code>\kf</code> por palavra a partir do JSON do WhisperX
+— cuidado: a linha <code>Dialogue:</code> tem exatamente 9 campos).</p>
+
+<h3 id="editor-extensoes">Extensões automáticas E1–E3</h3>
+<p>Detectam o gatilho, agem e informam — sem perguntar. O pré-check classifica a máquina
+(<code>FRACA</code> = sem GPU ou RAM &lt; 16 GB) e é isso que dispara os fallbacks.</p>
+<table>
+  <tr><th>Ext.</th><th>Primário</th><th>Fallback automático</th><th>Gatilho do fallback</th></tr>
+  <tr><td><b>E1</b> Motion graphics</td><td>Remotion (React → MP4/WebM alpha)</td><td>Motion Canvas (MIT)</td><td>licença Remotion (&gt;3 pessoas), pedido "só open source", setup falhou</td></tr>
+  <tr><td><b>E2</b> Verificação nota 0-100</td><td>crv + o próprio agente avalia (rubrica: emendas 30 + áudio 25 + cortes 25 + layout 20; entrega só com ≥ 85)</td><td>Gemini API free tier</td><td>máquina FRACA, vídeo &gt; 15 min, crv falhou</td></tr>
+  <tr><td><b>E3</b> Imagens p/ motions</td><td>Gemini API free tier (prompt contextual ao SRT)</td><td>ComfyUI local (SDXL, roda em 6 GB VRAM)</td><td>cota esgotada (429) ou sem chave</td></tr>
+</table>
+<div class="box ok"><b>Privacidade vence gatilho</b>
+Conteúdo sensível/de cliente nunca vai para API externa, mesmo com gatilho ativo. E sem
+<code>GEMINI_API_KEY</code> (grátis em aistudio.google.com/apikey) nada bloqueia — o fluxo
+segue local e o agente ensina a criar a chave uma única vez.</div>
+
+<h2 id="app-baixador">App Baixador (interface web)<span class="tag">APP</span></h2>
+<p><code>apps/baixador/ABRIR.bat</code> abre <code>http://localhost:8765</code>: cole o link,
+escolha <b>Vídeo (MP4)</b> ou <b>Áudio (MP3)</b>, selecione a pasta com o seletor nativo do
+Windows, acompanhe a barra de progresso. Playlist inteira por checkbox; log técnico expansível;
+botão de cancelar. Mantenha a janela preta (servidor) aberta durante o uso — os botões param
+de responder sem ela. Alternativas CLI: <code>BAIXAR.bat</code> (menu) e <code>baixar.ps1</code>.</p>
+
+<h2 id="app-escriba">App Escriba (GUI de transcrição)<span class="tag">APP</span></h2>
+<p><code>apps/escriba/Iniciar Escriba.bat</code> (Windows; deps via <code>install.ps1 -Escriba</code>):</p>
+<ul>
+  <li><b>Arrasta e solta</b> arquivo ou pasta inteira → transcrição com <code>[SPEAKER_XX]</code>
+      (a análise de qualidade + denoise rodam automaticamente por baixo)</li>
+  <li><b>Ditado global</b>: segure <b>Ctrl+Alt+D</b> em qualquer programa, fale, solte — o texto
+      aparece no cursor</li>
+  <li><b>Botões "Resumo Estruturado" e "Ata de reunião"</b> — via Ollama local (grátis) ou
+      Claude API (<code>ANTHROPIC_API_KEY</code>)</li>
+</ul>
+
+<h2 id="frases">Frases prontas (a cola)</h2>
+<pre><code># Pipeline completo numa frase (com legenda nativa, sai em segundos)
+"Baixa essa aula do YouTube, transcreve e me entrega um resumo estruturado: URL"
+
+# O agente assiste (slides/demos importam)
+"Assiste essa aula e resume incluindo o que aparece nos slides: URL"
+
+# Zoom em trecho
+"O que acontece dos 15 aos 20 minutos desse vídeo? URL"
+
+# Curso inteiro
+"Baixa o áudio da playlist inteira e transcreve a pasta toda"
+
+# Reunião com ata
+"Transcreve identificando quem fala"  →  escolher "Ata"
+
+# Velocidade vs precisão (evita a pergunta)
+"...transcreve rápido"            → medium (~10% da duração)
+"...com máxima precisão"          → large-v3 (~20%)
+
+# Tratamento de áudio
+"...sem tratamento de áudio"      → --denoise off
+"...força a limpeza"              → --denoise forcar
+
+# Edição
+"Edita esse bruto, corta os erros e silêncios"        → FASE A (plano)
+"Plano aprovado, aplica"                              → FASE B
+"Faz cortes de TikTok do vídeo final"                 → 9:16 + karaokê</code></pre>
+
+<h2 id="problemas">Solução de problemas</h2>
+<table>
+  <tr><th>Sintoma</th><th>Causa</th><th>Correção</th></tr>
+  <tr><td>YouTube oculta os melhores formatos / aviso "No supported JavaScript runtime"</td><td>Deno ausente ou fora do PATH</td><td>Instalar Deno e registrar em <code>%APPDATA%\yt-dlp\config</code>: <code>--js-runtimes "deno:&lt;caminho&gt;"</code> (o instalador faz isso)</td></tr>
+  <tr><td>Download falha com "signature"/403</td><td>yt-dlp desatualizado</td><td><code>pip install -U yt-dlp</code></td></tr>
+  <tr><td>Ferramenta quebra com UnicodeEncodeError; grids do crv não saem</td><td>Console Windows em cp1252</td><td><code>setx PYTHONUTF8 1</code> (o instalador faz)</td></tr>
+  <tr><td>pip/winget falham com erro de SSL/certificado</td><td>Antivírus interceptando HTTPS</td><td><code>pip install pip-system-certs</code>; winget com <code>--source winget</code>; downloads via PowerShell (não curl do Git Bash)</td></tr>
+  <tr><td>ffmpeg falha em arquivo do OneDrive/Dropbox; arquivo "some"</td><td>Lock de sincronização / arquivo só-nuvem</td><td>Copiar para pasta local curta (ex.: <code>C:\VideoEdit\</code>) antes de processar</td></tr>
+  <tr><td>Filtro arnndn: "Invalid argument" no caminho do modelo</td><td><code>:</code> de <code>C:\</code> quebra a sintaxe de filtros</td><td>Usar caminho RELATIVO para o <code>.rnnn</code> (cd na pasta do modelo)</td></tr>
+  <tr><td>Vídeo renderizado não abre em players de hardware</td><td>zoompan/xfade negociou yuv444p no NVENC</td><td>Terminar o filtergraph com <code>format=yuv420p</code></td></tr>
+  <tr><td>Muitos SPEAKER_XX numa conversa de 2-3 pessoas</td><td>Over-segmentation do pyannote</td><td>Re-rodar com <code>--falantes N --forcar</code></td></tr>
+  <tr><td>GatedRepoError 403 ao diarizar</td><td>Termos dos modelos pyannote não aceitos</td><td>Aceitar os 3 repos gated no HuggingFace (o agente escriba lista os links)</td></tr>
+  <tr><td>PySide6 falha ao instalar (OSError de caminho longo)</td><td>Python da Microsoft Store</td><td>O pacote fica funcional mesmo assim — teste o import antes de reinstalar</td></tr>
+</table>
+
+<h2 id="privacidade">Privacidade e licenças</h2>
+<p><b>Privacidade:</b> todo o processamento (download, frames, transcrição, diarização,
+denoise, edição) roda na sua máquina. As únicas saídas para nuvem são <b>opcionais e
+explícitas</b>: Gemini free tier nas extensões E2/E3 do editor (nunca com conteúdo sensível)
+e Claude API nos resumos do app Escriba (se você configurar a chave).</p>
+<table>
+  <tr><th>Componente</th><th>Licença</th><th>Forma de uso</th></tr>
+  <tr><td>claude-real-video, faster-whisper, Motion Canvas</td><td>MIT</td><td>dependência/uso com atribuição</td></tr>
+  <tr><td>yt-dlp</td><td>Unlicense</td><td>dependência pip</td></tr>
+  <tr><td>WhisperX</td><td>BSD-2</td><td>dependência pip</td></tr>
+  <tr><td>ffmpeg</td><td>LGPL/GPL</td><td><b>não redistribuído</b> — instalador baixa da fonte oficial</td></tr>
+  <tr><td>ComfyUI</td><td>GPL-3.0</td><td>uso local livre; não redistribuímos</td></tr>
+  <tr><td>Remotion</td><td>própria</td><td>grátis para indivíduos/equipes ≤ 3; acima disso, o editor troca sozinho para Motion Canvas</td></tr>
+  <tr><td>Este toolkit</td><td>MIT</td><td>use, modifique, redistribua com atribuição</td></tr>
+</table>
+<div class="box warn"><b>Use com responsabilidade</b>
+Baixe, transcreva e edite apenas conteúdo que você tem direito de usar.</div>
+
+<footer>
+Video AI Toolkit — <a href="https://github.com/JohnsonChenx/video-ai-toolkit">github.com/JohnsonChenx/video-ai-toolkit</a> · MIT ·
+manual gerado a partir do uso real das ferramentas (as pegadinhas desta página custaram horas de verdade).
+</footer>
+</main>
+</div>
+</body>
+</html>

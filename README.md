@@ -4,6 +4,8 @@
 
 > *EN: A one-command toolkit that lets Claude (or any AI agent) download videos (yt-dlp), actually watch them (claude-real-video) and transcribe them with speaker diarization (WhisperX) — fully local, pt-BR first. Install: run `install.ps1` (Windows) or `install.sh` (macOS/Linux).*
 
+📖 **[Manual completo (HTML)](docs/manual.html)** — funcionalidades detalhadas, fluxos de decisão, frases prontas e solução de problemas. Abra no navegador ou via [htmlpreview](https://htmlpreview.github.io/?https://github.com/JohnsonChenx/video-ai-toolkit/blob/main/docs/manual.html).
+
 ## O que vem dentro
 
 | Peça | O que faz | Como usar |
