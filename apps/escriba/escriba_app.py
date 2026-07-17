@@ -55,24 +55,36 @@ OLLAMA_URL = "http://localhost:11434"
 CLAUDE_MODEL = "claude-opus-4-8"
 
 PROMPT_TOPICOS = (
-    "Você resume transcrições de áudio em português brasileiro. "
-    "Produza um resumo em tópicos (Markdown): comece com uma linha de resumo geral, "
-    "depois agrupe os pontos por tema com bullets curtos. Preserve nomes, valores, "
-    "datas, prazos e decisões importantes. Não invente informações."
+    "Você produz resumos estruturados de transcrições de áudio em português brasileiro, "
+    "seguindo um framework fixo (baseado na skill research-summarizer). "
+    "Estruture o resumo em Markdown com EXATAMENTE estas seções: "
+    "1) **Essência** — 1 frase com a conclusão mais importante de todo o conteúdo; "
+    "2) **Tema central** — 1-2 frases sobre o assunto e o contexto; "
+    "3) **Pontos-chave** — lista numerada, cada ponto com a evidência/trecho que o sustenta "
+    "(preserve nomes, valores, datas e prazos exatos); "
+    "4) **E daí? (Implicações)** — por que isso importa, o que muda; "
+    "5) **Ações sugeridas** — próximos passos concretos extraídos do conteúdo; "
+    "6) **Citações notáveis** — 1-3 falas marcantes entre aspas. "
+    "Não invente informações; o que não estiver na transcrição, marque como 'não mencionado'."
 )
 
 PROMPT_ATA = (
     "Você redige atas de reunião em português brasileiro a partir de transcrições "
-    "diarizadas, nas quais os falantes aparecem como [SPEAKER_00], [SPEAKER_01], etc. "
+    "diarizadas, nas quais os falantes aparecem como [SPEAKER_00], [SPEAKER_01], etc., "
+    "seguindo o template da skill summarize-meeting. "
     "Identifique os participantes pelos nomes citados no contexto sempre que possível, "
     "associando cada SPEAKER a um nome real; quando não for possível, mantenha o rótulo "
-    "SPEAKER_XX. Estruture a ata em Markdown com as seções: "
-    "1) Participantes (com o mapeamento SPEAKER → nome); "
-    "2) Pauta / temas discutidos; "
-    "3) Principais discussões (atribuindo posições a cada participante); "
-    "4) Decisões tomadas; "
-    "5) Ações e pendências (com responsável e prazo quando identificáveis). "
-    "Não invente informações que não estejam na transcrição."
+    "SPEAKER_XX. Estruture a ata em Markdown com EXATAMENTE estas seções: "
+    "1) **Data e horário** — se identificáveis no conteúdo; senão, 'não mencionado'; "
+    "2) **Participantes** — com o mapeamento SPEAKER → nome e papel quando citado; "
+    "3) **Pauta** — título curto do tema da reunião; "
+    "4) **Resumo da discussão** — pontos-chave em bullets, atribuindo posições a cada participante; "
+    "5) **Decisões tomadas** — lista objetiva; "
+    "6) **Ações e pendências** — tabela Markdown com colunas: Prazo | Responsável | Ação; "
+    "7) **Questões em aberto** — o que ficou sem resposta ou bloqueado. "
+    "Use linguagem simples e acessível, sem jargão. Seja objetivo: registre o que foi "
+    "discutido, não opiniões suas. Não invente informações que não estejam na transcrição; "
+    "prazos e responsáveis não identificáveis ficam como 'a definir'."
 )
 
 
@@ -453,8 +465,8 @@ class EscribaWindow(QMainWindow):
         self.cmb_engine.addItem("Detectando motores...")
         h.addWidget(self.cmb_engine, 1)
         v.addLayout(h)
-        self.btn_topics = QPushButton("Resumir em tópicos")
-        self.btn_minutes = QPushButton("Ata da reunião (com participantes)")
+        self.btn_topics = QPushButton("Resumo Estruturado")
+        self.btn_minutes = QPushButton("Ata de reunião (com participantes)")
         self.btn_topics.setEnabled(False)
         self.btn_minutes.setEnabled(False)
         v.addWidget(self.btn_topics)
@@ -687,7 +699,7 @@ class EscribaWindow(QMainWindow):
         engine = self.engines[min(idx, len(self.engines) - 1)]
         self.btn_topics.setEnabled(False)
         self.btn_minutes.setEnabled(False)
-        rotulo = "ata da reunião" if kind == "ata" else "resumo em tópicos"
+        rotulo = "ata de reunião" if kind == "ata" else "resumo estruturado"
         self.status.showMessage(f"Gerando {rotulo} com {engine[0]}...")
         self.log_line(f"Gerando {rotulo} ({engine[0]})...")
         threading.Thread(target=summarize,
@@ -697,7 +709,7 @@ class EscribaWindow(QMainWindow):
     def on_summary_done(self, kind: str, result: str):
         self.btn_topics.setEnabled(True)
         self.btn_minutes.setEnabled(True)
-        header = "ATA DA REUNIÃO" if kind == "ata" else "RESUMO EM TÓPICOS"
+        header = "ATA DE REUNIÃO" if kind == "ata" else "RESUMO ESTRUTURADO"
         self.txt.append(f"\n\n{'=' * 50}\n{header}\n{'=' * 50}\n\n{result}")
         self.status.showMessage(f"{header.capitalize()} pronto.")
         if self.current_audio is not None:

@@ -267,6 +267,30 @@ python "<caminho>\transcrever.py" "<arquivo-ou-pasta>" [opções] 2>&1 | Tee-Obj
 - Se muitos `SPEAKER_XX` detectados (>número plausível) → sugerir `--falantes N --forcar`
 - Se transcrição parece com erros graves → sugerir modelo maior
 
+### 6. Resumo/Ata (OBRIGATÓRIO perguntar o formato)
+
+Sempre que o usuário pedir "resumo", "ata", "resume isso" ou similar sobre uma
+transcrição — ou quando você concluir uma transcrição e ele quiser um condensado —
+**se ele NÃO tiver especificado o formato no pedido, PERGUNTE antes de gerar**:
+
+> "Qual formato você quer? **Resumo Estruturado** (essência, pontos-chave com
+> evidência, implicações, ações) ou **Ata de Reunião** (participantes, decisões,
+> tabela de ações com responsável e prazo)?"
+
+Nunca escolha sozinho; os dois formatos servem a usos diferentes. Com a resposta:
+
+- **Resumo Estruturado** → seções: Essência (1 frase), Tema central, Pontos-chave
+  numerados com a evidência que os sustenta, Implicações ("e daí?"), Ações
+  sugeridas, Citações notáveis. Salvar como `<base>.topicos.md`.
+- **Ata de Reunião** → seções: Data/horário, Participantes (mapear SPEAKER_XX →
+  nomes citados no contexto), Pauta, Resumo da discussão, Decisões tomadas,
+  tabela de Ações (Prazo | Responsável | Ação), Questões em aberto. Salvar como
+  `<base>.ata.md`.
+
+Regra comum: nada de inventar — dado ausente vira "não mencionado" / "a definir".
+(O app GUI `apps/escriba/escriba_app.py` oferece os mesmos dois formatos como
+botões "Resumo Estruturado" e "Ata de reunião".)
+
 ## Configurações recomendadas por contexto
 
 | Cenário | Comando |
