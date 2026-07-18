@@ -33,6 +33,8 @@ The user gives you a video (URL or file path) and asks what's in it, to summariz
 
 4. Answer the user's question, citing transcript timings (from `transcript.json`) where available.
 
+5. **Clean up (mandatory).** After delivering the answer, delete the entire output folder (`crv-out/<slug>`) — it holds the downloaded video, frames and grids, which are working files, not deliverables. Nothing temporary survives the process. Keep the folder ONLY if (a) the user explicitly asked to keep the frames/transcript, (b) `--kb` was used (then keep just the digest), or (c) the user signals follow-up questions about the same video — then delete at the end of the conversation instead.
+
 ## Notes
 
 - Video analysis and output generation run on your machine — the source video never gets uploaded by the tool. If you then paste the extracted frames or transcript into a cloud LLM, that data goes to that provider.

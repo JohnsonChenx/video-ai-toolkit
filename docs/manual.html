@@ -201,6 +201,12 @@ A skill só omite a flag quando o usuário pede a playlist explicitamente.</div>
 <p>O agente lê primeiro <code>MANIFEST.txt</code> (resumo + transcrição integral), depois os
 grids em <code>grids/</code>, e responde citando timestamps de <code>transcript.json</code>.</p>
 
+<div class="box ok"><b>Limpeza automática (regra da casa)</b>
+Ao final do processo de assistir, <b>tudo que não é o entregável final é apagado</b>: a pasta
+de trabalho (vídeo baixado, frames, grids, legendas temporárias) é removida após a resposta.
+Os arquivos só permanecem se você pedir explicitamente para mantê-los ou sinalizar que fará
+perguntas de acompanhamento sobre o mesmo vídeo.</div>
+
 <h3>watch vs. claude-real-video — quando usar cada um</h3>
 <table>
   <tr><th>Situação</th><th>Melhor escolha</th></tr>

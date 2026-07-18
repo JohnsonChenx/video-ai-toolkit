@@ -80,8 +80,11 @@ def _slug(nome: str) -> str:
     return re.sub(r"\s+", " ", s)[:80] or "video"
 
 
-def baixar_legendas(url: str, destino: Path) -> tuple[Path | None, str]:
-    """Baixa legendas pt/en em VTT (sem baixar o vídeo). Devolve (vtt, título)."""
+def baixar_legendas(url: str, destino: Path) -> tuple[Path | None, str, Path]:
+    """Baixa legendas pt/en em VTT (sem baixar o vídeo).
+
+    Devolve (vtt, título, pasta_tmp). O chamador DEVE apagar pasta_tmp ao final
+    (regra da casa: só o entregável final permanece na máquina)."""
     if shutil.which("yt-dlp") is None:
         raise SystemExit("yt-dlp não encontrado. Instale: pip install -U yt-dlp")
     tmp = Path(tempfile.mkdtemp(prefix="legendas-"))
@@ -103,8 +106,8 @@ def baixar_legendas(url: str, destino: Path) -> tuple[Path | None, str]:
     for marcadores in ((".pt-BR.", ".pt."), (".en.", ".en-US.", ".en-orig.")):
         pref = [c for c in candidatos if any(m in c.name for m in marcadores)]
         if pref:
-            return pref[0], titulo
-    return (candidatos[0], titulo) if candidatos else (None, titulo)
+            return pref[0], titulo, tmp
+    return (candidatos[0], titulo, tmp) if candidatos else (None, titulo, tmp)
 
 
 def main():
@@ -117,18 +120,22 @@ def main():
     destino = Path(args.saida).expanduser().resolve()
     destino.mkdir(parents=True, exist_ok=True)
 
-    vtt, titulo = baixar_legendas(args.url, destino)
-    if vtt is None:
-        print("SEM_LEGENDAS: o vídeo não tem legendas pt/en — use o pipeline "
-              "WhisperX (transcrever.py) sobre o áudio baixado.")
-        sys.exit(3)
+    vtt, titulo, tmp = baixar_legendas(args.url, destino)
+    try:
+        if vtt is None:
+            print("SEM_LEGENDAS: o vídeo não tem legendas pt/en — use o pipeline "
+                  "WhisperX (transcrever.py) sobre o áudio baixado.")
+            sys.exit(3)
 
-    segs = parse_vtt(vtt)
-    if not segs:
-        print("SEM_LEGENDAS: arquivo de legenda vazio/ilegível — use WhisperX.")
-        sys.exit(3)
+        segs = parse_vtt(vtt)
+        if not segs:
+            print("SEM_LEGENDAS: arquivo de legenda vazio/ilegível — use WhisperX.")
+            sys.exit(3)
 
-    idioma = ".pt" if ".pt" in vtt.name else (".en" if ".en" in vtt.name else "")
+        idioma = ".pt" if ".pt" in vtt.name else (".en" if ".en" in vtt.name else "")
+    finally:
+        # regra da casa: nada de temporário sobrevive ao processo
+        shutil.rmtree(tmp, ignore_errors=True)
     txt = destino / f"{titulo}.legenda.txt"
     with open(txt, "w", encoding="utf-8") as f:
         for s in segs:
