@@ -28,6 +28,39 @@ Por isso o trabalho tem duas fases distintas:
 
 Se o pedido já chega com autonomia declarada, execute A+B em sequência sem parar.
 
+## Engrenagem 0 — Comando de voz embutido no vídeo ("pato preto")
+
+O usuário pode **gravar o briefing de edição dentro do próprio vídeo**: ao terminar
+de gravar, fala a palavra-chave **"pato preto"** e, a partir daí, diz o que quer
+editar. Ex.: *"…e é isso, valeu. **Pato preto**, quero um corte para stories de no
+máximo 1 minuto, inclua alguns motions e a legenda karaokê com a cor de pintar em azul."*
+
+**Por que "pato preto"**: plosivas fortes (P, P, T) são os fonemas mais estáveis para
+transcrição — fricativas falham (ex.: "vaca" vira "faca"). E "preto" não colide com
+"amarelo/vermelho", que costuma ser a palavra de ERRO (marca refação no meio) → o mesmo
+"pato" serve às duas funções sem ambiguidade.
+
+**Quando disparar:** bruto **sem** instruções de edição no chat (ou o usuário diz "o
+comando está no vídeo"). Rode a detecção no início da FASE A, após transcrever. Se o
+briefing já veio no chat, o chat vence.
+
+```bash
+python apps/editor/detectar_comando_voz.py <transcricao.json> --silencios <silencio.txt>
+```
+
+Devolve JSON: `corte_em` (s), `comando` (briefing falado), `confianca` (alta/media),
+`cancelado`, `silencio_usado`. Regras:
+
+- **⚠️ Detecte pela transcrição do WhisperX (medium+), não por uma transcrição fraca.**
+  Modelos pequenos chegam a APAGAR a frase da palavra-chave.
+- **A palavra-chave e tudo depois NÃO entram no vídeo final** — `corte_em` já recua ao
+  silêncio anterior; o 1º item do plano é `corte "pato preto": <corte_em> → fim`.
+- **`comando` vira o briefing** — trate como se digitado no chat (formato, motions, cor
+  do karaokê → `gen_karaoke.py`, prints de site, split-screen).
+- **`confianca: media`** = casou por fuzzy; cite o trecho no plano para conferência.
+- **`cancelado: true`** ("pato preto cancela") → ignore o comando mas AINDA corte.
+- **`encontrou: false`** → sem comando embutido; siga o workflow normal.
+
 ## Ambiente esperado (Windows)
 
 | Componente | Requisito | Notas |
@@ -37,6 +70,7 @@ Se o pedido já chega com autonomia declarada, execute A+B em sequência sem par
 | Transcrição | `apps/escriba/transcrever.py` (desta suíte) | WhisperX local, HF_TOKEN configurado |
 | Python | 3.10+ | no Windows: `python` (não `python3`) e `PYTHONUTF8=1` |
 | Working dir de edição | pasta local curta FORA de pastas sincronizadas (ex.: `C:\VideoEdit\<projeto>\`) | ver pegadinha nº 1 |
+| Scripts auxiliares | `apps/editor/` desta suíte | `detectar_comando_voz.py`, `gen_karaoke.py`, `split_screen.py`, `web-shot/web-shot.js` |
 
 ### Pré-check (rode no início de toda sessão)
 
@@ -185,9 +219,14 @@ ffmpeg -y -i "renders\<final>.mp4" -ss <ini> -to <fim> `
 - Crop central por default; se o rosto sair do enquadre, extraia um frame, LEIA e
   calibre o offset x.
 - 2–3 min por corte, um assunto por corte, nomeado pelo assunto.
-- **Legenda karaokê** (palavra pintada em sincronia com a fala): ASS com tag
-  `\kf<centésimos>` por palavra a partir do JSON do WhisperX. Atenção: a linha
-  `Dialogue:` tem EXATAMENTE 9 campos — vírgula extra vira "vírgula fantasma" no texto.
+- **Legenda karaokê** (palavra pintada em sincronia com a fala): use
+  `apps/editor/gen_karaoke.py` — gera o `.ass` do JSON do WhisperX. A **cor de pintar**
+  é o 5º argumento (`amarelo` padrão, `azul`, etc. — ou `#RRGGBB`):
+  ```bash
+  python apps/editor/gen_karaoke.py <trecho>.json kar.ass 300 64 azul
+  ```
+  Atenção: a linha `Dialogue:` do ASS tem EXATAMENTE 9 campos — vírgula extra vira
+  "vírgula fantasma" no texto.
 
 ## Extensões preparadas (uso AUTOMÁTICO quando o gatilho disparar)
 
@@ -231,6 +270,43 @@ re-renderize (máx. 2 ciclos; depois entregue com ressalvas).
 2. **Transbordo automático → ComfyUI local (SDXL)** em cota esgotada (429) ou sem
    chave — roda em 6 GB VRAM; GPL: uso local livre, não redistribuir.
 3. Sem nenhum: motions template-only (texto/formas) + pendência no relatório.
+
+### E4. Print de site / notícia — captura via Chrome local (web-shot)
+
+Quando o briefing pedir **inserir print de um site/notícia**:
+
+```bash
+cd apps/editor/web-shot && npm install     # uma vez (instala puppeteer-core)
+node web-shot.js --url "https://www.exemplo.com/" --out shot.png
+# opções: --sel "article" | --full | --dark | --wait 4000
+```
+
+- Usa o **Chrome/Edge já instalado** (puppeteer-core, não baixa Chromium). Fecha
+  banners de cookie/consent; captura em 2x (nítido no vídeo). Retorna JSON `{ok, out,
+  titulo}`.
+- **⚠️ Sites com anti-bot bloqueiam** (captcha/paywall — ex.: alguns grandes jornais).
+  Quando cair nisso: tente uma URL de artigo específico ou versão AMP/mobile; se
+  persistir, avise o usuário e sugira fonte alternativa. **Nunca burlar** captcha/paywall.
+- **Inserção**: o print vira pop-up/overlay OU a metade de baixo de um split-screen
+  (E5). Split é melhor quando a referência não pode tapar o rosto.
+
+### E5. Split-screen — layout dividido ao meio
+
+Durante uma janela de tempo, divide a tela 9:16: **metade de cima = a pessoa**
+(zoom-out leve, cabeça+meio corpo), **metade de baixo = referência** (imagem/vídeo);
+fora da janela, tela cheia. Transição por **corte seco**.
+
+```bash
+python apps/editor/split_screen.py --video in.mp4 --ref ref.png --ini 5 --fim 8 --out out.mp4 --run
+# defaults: --zoom 1.0 (largura cheia, cabeça aos ombros) --foco-y 0.45
+```
+
+- `zoom=1.0, foco_y=0.45` mostra cabeça + meio corpo sem achatar; `zoom<1` dá zoom-in
+  no rosto (corta o topo — evite salvo pedido).
+- Imagem estática precisa de loop (o script cuida); vídeo entra direto.
+- **Pegadinha**: não usar `clip()/min()/max()` no filtergraph do ffmpeg — vírgula
+  dentro de função quebra o parser ("No such filter"). O script pré-calcula os valores.
+- Não empilhe split + pop-up no mesmo instante (o split some sob o pop-up).
 
 ## Erros conhecidos e correções
 

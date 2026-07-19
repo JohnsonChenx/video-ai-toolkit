@@ -346,17 +346,21 @@ python "<caminho>\transcrever.py" "<arquivo-ou-pasta>" [opções] 2>&1 | Tee-Obj
 - Se muitos `SPEAKER_XX` detectados (>número plausível) → sugerir `--falantes N --forcar`
 - Se transcrição parece com erros graves → sugerir modelo maior
 
-### 6. Resumo/Ata (OBRIGATÓRIO perguntar o formato)
+### 6. Resumo/Ata (DEFAULT automático pelo nº de falantes; pergunta só se ambíguo)
 
 Sempre que o usuário pedir "resumo", "ata", "resume isso" ou similar sobre uma
 transcrição — ou quando você concluir uma transcrição e ele quiser um condensado —
-**se ele NÃO tiver especificado o formato no pedido, PERGUNTE antes de gerar**:
+**decida o formato pelo TIPO de conteúdo, sem perguntar**:
 
-> "Qual formato você quer? **Resumo Estruturado** (essência, pontos-chave com
-> evidência, implicações, ações) ou **Ata de Reunião** (participantes, decisões,
-> tabela de ações com responsável e prazo)?"
+- **Conversa entre 2+ pessoas em REUNIÃO** (diarização detectou vários falantes
+  dialogando) → **Ata de Reunião** (default).
+- **Monólogo / apresentação / aula / palestra** (1 falante dominante) → **Resumo
+  Estruturado** (default).
 
-Nunca escolha sozinho; os dois formatos servem a usos diferentes. Com a resposta:
+Anuncie a escolha ("Detectei N falantes em reunião → vou gerar uma Ata") para o usuário
+poder corrigir, mas não trave esperando confirmação. Se o usuário já disse o formato no
+pedido, o pedido vence. **Pergunte só** no caso genuinamente ambíguo (ex.: 2 falantes
+mas é entrevista/podcast, não reunião). Com o formato definido:
 
 - **Resumo Estruturado** → seções: Essência (1 frase), Tema central, Pontos-chave
   numerados com a evidência que os sustenta, Implicações ("e daí?"), Ações
