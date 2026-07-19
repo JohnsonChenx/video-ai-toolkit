@@ -28,6 +28,13 @@ Por isso o trabalho tem duas fases distintas:
 
 Se o pedido já chega com autonomia declarada, execute A+B em sequência sem parar.
 
+**Autonomia automática do comando de voz:** quando o briefing vem de um "pato preto"
+detectado com `confianca: alta`, trate como autonomia declarada — **execute A+B direto,
+sem parar para aprovação** (o usuário já deu o comando falando no vídeo). PARE na FASE A
+só se: `confianca: media` (STT pode ter errado), comando ambíguo/incompleto, ou edição
+irreversível fora do padrão. Fora disso: edita e entrega, e explica no relatório o que
+entendeu do comando.
+
 ## Engrenagem 0 — Comando de voz embutido no vídeo ("pato preto")
 
 O usuário pode **gravar o briefing de edição dentro do próprio vídeo**: ao terminar
@@ -57,7 +64,9 @@ Devolve JSON: `corte_em` (s), `comando` (briefing falado), `confianca` (alta/med
   silêncio anterior; o 1º item do plano é `corte "pato preto": <corte_em> → fim`.
 - **`comando` vira o briefing** — trate como se digitado no chat (formato, motions, cor
   do karaokê → `gen_karaoke.py`, prints de site, split-screen).
-- **`confianca: media`** = casou por fuzzy; cite o trecho no plano para conferência.
+- **`confianca: alta` → execute A+B DIRETO** (autonomia automática, ver regra de ouro):
+  edite e entregue sem parar; explique no relatório o que entendeu.
+- **`confianca: media`** = casou por fuzzy; PARE na FASE A e cite o trecho para conferência.
 - **`cancelado: true`** ("pato preto cancela") → ignore o comando mas AINDA corte.
 - **`encontrou: false`** → sem comando embutido; siga o workflow normal.
 
