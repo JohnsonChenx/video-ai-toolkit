@@ -317,6 +317,20 @@ python apps/editor/split_screen.py --video in.mp4 --ref ref.png --ini 5 --fim 8 
   dentro de função quebra o parser ("No such filter"). O script pré-calcula os valores.
 - Não empilhe split + pop-up no mesmo instante (o split some sob o pop-up).
 
+## Estilos de edição nomeados
+
+O usuário pode pedir a edição "no estilo X". Estilos disponíveis:
+
+- **Invest** (`skills/invest/SKILL.md` desta suíte) — estética de notícia/economia
+  dinâmica: legendas bloco-CAPS na altura do peito, cartões de dados persistentes
+  para números, manchetes reais via web-shot como prova, flash duotônico de ênfase,
+  punch-in entre frases, logos ao citar empresas, ritmo denso (~1 evento visual/1,5s
+  no modo rápido). **Leia a skill inteira antes da FASE B** e siga a "Receita de
+  aplicação" dela. Gatilhos: "estilo invest", "estilo notícia dinâmica".
+
+Estilo nomeado no pedido (chat ou comando de voz) muda a FASE B inteira: as decisões
+de legenda/motion/transição vêm da skill do estilo, não dos defaults do agente.
+
 ## Erros conhecidos e correções
 
 | Sintoma | Causa | Correção |

@@ -67,7 +67,7 @@ python3 -m pip install --user -U yt-dlp claude-real-video faster-whisper && ok "
 # --- 6. Skills do Claude Code ---
 CLAUDE_DIR="$HOME/.claude"
 if [[ -d "$CLAUDE_DIR" ]]; then
-    for skill in youtube claude-real-video; do
+    for skill in youtube claude-real-video invest; do
         dest="$CLAUDE_DIR/skills/$skill"
         if [[ -e "$dest" && $FORCE -eq 0 ]]; then
             warn "Skill '$skill' ja existe — pulando (use --force para sobrescrever)"

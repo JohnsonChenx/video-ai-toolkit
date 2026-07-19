@@ -103,7 +103,7 @@ if ([Environment]::GetEnvironmentVariable("PYTHONUTF8", "User") -ne "1") {
 # --- 6. Skills + agente do Claude Code ---
 $claudeDir = "$env:USERPROFILE\.claude"
 if (Test-Path $claudeDir) {
-    foreach ($skill in @("youtube", "claude-real-video")) {
+    foreach ($skill in @("youtube", "claude-real-video", "invest")) {
         $dest = "$claudeDir\skills\$skill"
         if ((Test-Path $dest) -and -not $Force) {
             Warn "Skill '$skill' ja existe em $dest - pulando (use -Force para sobrescrever)"
