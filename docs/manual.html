@@ -206,26 +206,45 @@ livre antes. Os temporários são apagados ao final — nada de trabalho sobrevi
 
 <h2 id="instalacao">Instalação</h2>
 
-<div class="box ok">
-<b>Atalho: deixe o agente instalar</b>
-Se você já tem o Claude Code, clone o repo e peça <i>"instala o video-ai-toolkit"</i>. A skill
-<code>instalar</code> faz um check-up, roda o instalador do seu sistema e <b>corrige as falhas
-conhecidas na hora</b> em vez de te deixar com um erro. Serve também para reparar uma
-instalação que parou: <i>"conserta a instalação"</i>. Os passos manuais abaixo continuam
-valendo para quem prefere fazer à mão.
-</div>
+<p><b>Pré-requisitos:</b> Python 3.10+, <code>git</code> e — para a instalação guiada — o
+Claude Code. Escolha uma das três formas abaixo (da mais simples à mais manual).</p>
 
-<h3>1. Clone o repositório</h3>
+<h3>Forma 1 — Guiada pelo agente (recomendada)</h3>
+<div class="box ok">
+<b>Três passos</b>
+<ol style="margin-top:6px">
+  <li>Tenha o <b>Claude Code</b> instalado</li>
+  <li>Clone o repo e abra o Claude Code na pasta:
+      <pre><code>git clone https://github.com/JohnsonChenx/video-ai-toolkit.git
+cd video-ai-toolkit</code></pre></li>
+  <li>Peça: <i>"instala o video-ai-toolkit"</i></li>
+</ol>
+A skill <code>instalar</code> faz um check-up do que já existe, roda o instalador do seu
+sistema e <b>diagnostica e corrige as falhas conhecidas na hora</b> (Deno fora do PATH,
+<code>PYTHONUTF8</code>, SSL do antivírus, repos gated…) em vez de te deixar com um erro.
+Serve também para <b>reparar</b>: <i>"conserta a instalação"</i>.
+</div>
+<p><small><b>Por que o clone (passo 2) é preciso:</b> a skill <code>instalar</code> vive dentro
+do repositório — o agente só sabe que ela existe depois que os arquivos estão na máquina.</small></p>
+
+<h3>Forma 2 — Comando único (clone + instalação)</h3>
+<p>Cole <b>uma linha</b> no terminal:</p>
+<h4>Windows (PowerShell)</h4>
+<pre><code>git clone https://github.com/JohnsonChenx/video-ai-toolkit; cd video-ai-toolkit; powershell -ExecutionPolicy Bypass -File install.ps1</code></pre>
+<h4>macOS / Linux</h4>
+<pre><code>git clone https://github.com/JohnsonChenx/video-ai-toolkit &amp;&amp; cd video-ai-toolkit &amp;&amp; bash install.sh</code></pre>
+
+<h3>Forma 3 — Passo a passo</h3>
+<h4>1. Clone o repositório</h4>
 <pre><code>git clone https://github.com/JohnsonChenx/video-ai-toolkit.git
 cd video-ai-toolkit</code></pre>
-
-<h3>2. Rode o instalador</h3>
-<h4>Windows (PowerShell)</h4>
+<h4>2. Rode o instalador</h4>
+<p>Windows (PowerShell):</p>
 <pre><code>powershell -ExecutionPolicy Bypass -File install.ps1
 
-# sobrescrever skills/agentes já instalados:
-powershell -ExecutionPolicy Bypass -File install.ps1 -Force</code></pre>
-<h4>macOS / Linux</h4>
+powershell -ExecutionPolicy Bypass -File install.ps1 -Escriba  # + GUI do Escriba
+powershell -ExecutionPolicy Bypass -File install.ps1 -Force    # sobrescrever o já instalado</code></pre>
+<p>macOS / Linux:</p>
 <pre><code>bash install.sh</code></pre>
 
 <h3>O que o instalador faz</h3>

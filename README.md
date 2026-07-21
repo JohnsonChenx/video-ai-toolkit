@@ -21,7 +21,25 @@
 
 ## Instalação
 
-**Pré-requisito:** Python 3.10+ ([Microsoft Store](https://apps.microsoft.com/search?query=python) no Windows, `brew`/`apt` no resto).
+**Pré-requisito:** Python 3.10+ ([Microsoft Store](https://apps.microsoft.com/search?query=python) no Windows, `brew`/`apt` no resto) e `git`.
+
+### Comando único (clone + instalação)
+
+Cole **uma linha** no terminal:
+
+```powershell
+# Windows (PowerShell)
+git clone https://github.com/JohnsonChenx/video-ai-toolkit; cd video-ai-toolkit; powershell -ExecutionPolicy Bypass -File install.ps1
+```
+
+```bash
+# macOS / Linux
+git clone https://github.com/JohnsonChenx/video-ai-toolkit && cd video-ai-toolkit && bash install.sh
+```
+
+Depois disso, abra o Claude Code na pasta `video-ai-toolkit` e já pode conversar com as ferramentas.
+
+### Passo a passo (se preferir ver cada etapa)
 
 ```powershell
 # Windows (PowerShell)
@@ -42,7 +60,15 @@ O instalador cuida de: **yt-dlp**, **ffmpeg** (fonte oficial via winget/brew/apt
 
 ### Instalação guiada pelo agente
 
-Se você já tem o Claude Code, pode simplesmente pedir: **"instala o video-ai-toolkit"**. A skill `instalar` faz um check-up do que já existe, roda o instalador certo para o seu sistema e — o pulo do gato — **diagnostica e corrige as falhas conhecidas na hora** (Deno fora do PATH, `PYTHONUTF8`, SSL do antivírus, repos gated do HuggingFace…) em vez de te deixar sozinho com um erro. Também serve para **reparar** uma instalação que parou de funcionar: "conserta a instalação" / "o crv parou de funcionar".
+Prefere deixar o Claude conduzir? São **3 passos**:
+
+1. Tenha o **Claude Code** instalado
+2. `git clone https://github.com/JohnsonChenx/video-ai-toolkit` e abra o Claude Code nessa pasta
+3. Peça: **"instala o video-ai-toolkit"**
+
+A skill `instalar` faz um check-up do que já existe, roda o instalador certo para o seu sistema e — o pulo do gato — **diagnostica e corrige as falhas conhecidas na hora** (Deno fora do PATH, `PYTHONUTF8`, SSL do antivírus, repos gated do HuggingFace…) em vez de te deixar sozinho com um erro. Também serve para **reparar** uma instalação que parou de funcionar: "conserta a instalação" / "o crv parou de funcionar".
+
+> Por que o clone (passo 2) é necessário: a skill `instalar` vive dentro do repositório, então o agente só sabe que ela existe depois que os arquivos estão na sua máquina.
 
 Não usa Claude Code? As skills funcionam em qualquer agente que leia `SKILL.md` (Codex, OpenCode, Gemini CLI…) — copie as pastas de `skills/` para o diretório de skills do seu agente.
 
