@@ -103,7 +103,7 @@ if ([Environment]::GetEnvironmentVariable("PYTHONUTF8", "User") -ne "1") {
 # --- 6. Skills + agente do Claude Code ---
 $claudeDir = "$env:USERPROFILE\.claude"
 if (Test-Path $claudeDir) {
-    foreach ($skill in @("youtube", "claude-real-video", "invest")) {
+    foreach ($skill in @("youtube", "claude-real-video", "invest", "instalar")) {
         $dest = "$claudeDir\skills\$skill"
         if ((Test-Path $dest) -and -not $Force) {
             Warn "Skill '$skill' ja existe em $dest - pulando (use -Force para sobrescrever)"
@@ -113,13 +113,15 @@ if (Test-Path $claudeDir) {
             Ok "Skill '$skill' instalada"
         }
     }
-    $agentDest = "$claudeDir\agents\escriba.md"
-    if ((Test-Path $agentDest) -and -not $Force) {
-        Warn "Agente 'escriba' ja existe - pulando (use -Force para sobrescrever)"
-    } else {
-        New-Item -ItemType Directory -Force "$claudeDir\agents" | Out-Null
-        Copy-Item "$root\agents\escriba.md" $agentDest -Force
-        Ok "Agente 'escriba' instalado"
+    New-Item -ItemType Directory -Force "$claudeDir\agents" | Out-Null
+    foreach ($agent in @("escriba", "editor")) {
+        $agentDest = "$claudeDir\agents\$agent.md"
+        if ((Test-Path $agentDest) -and -not $Force) {
+            Warn "Agente '$agent' ja existe - pulando (use -Force para sobrescrever)"
+        } else {
+            Copy-Item "$root\agents\$agent.md" $agentDest -Force
+            Ok "Agente '$agent' instalado"
+        }
     }
 } else {
     Warn "Pasta ~\.claude nao encontrada (Claude Code nao instalado?) - skills nao copiadas."

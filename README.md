@@ -15,6 +15,7 @@
 | **Agente `escriba`** | Transcrição pt-BR com separação de falantes (WhisperX + pyannote + CUDA); instala a própria pipeline; **analisa a qualidade do áudio e aplica denoise automaticamente** quando necessário; entrega Resumo Estruturado ou Ata de Reunião | "transcreve essa reunião" (Windows) |
 | **Agente `editor`** | Edição de vídeo por conversa: método das 3 passadas (erros → silêncio real → redundância), comando de voz embutido ("pato preto"), plano de cortes para aprovação, render ffmpeg/NVENC, cortes 9:16 com legenda karaokê, split-screen, motion graphics (Remotion/Motion Canvas) e verificação com nota 0-100 | "edita esse bruto, corta os erros" (Windows) |
 | **Skill `invest`** | Estilo de edição "notícia dinâmica": legendas bloco-CAPS, cartões de dados para números, manchetes reais como prova, flash de ênfase, ritmo denso — aplicado pelo agente editor | "edita no estilo invest" |
+| **Skill `instalar`** | Instala, verifica e **repara** o toolkit conduzindo passo a passo; diagnostica e corrige as falhas conhecidas automaticamente | "instala o video-ai-toolkit" |
 | **App Baixador** (`apps/baixador/`) | Interface web local de download com seletor de pasta e barra de progresso | dois cliques em `ABRIR.bat` |
 | **App Escriba** (`apps/escriba/`) | GUI de transcrição: arrasta-e-solta, ditado global Ctrl+Alt+D, resumo/ata por IA | `Iniciar Escriba.bat` (Windows) |
 
@@ -37,7 +38,11 @@ cd video-ai-toolkit
 bash install.sh
 ```
 
-O instalador cuida de: **yt-dlp**, **ffmpeg** (fonte oficial via winget/brew/apt), **Deno** (runtime JS que o YouTube exige desde 2026, incluindo o registro no config do yt-dlp), **claude-real-video**, **faster-whisper**, a variável `PYTHONUTF8` no Windows, e a cópia das skills para `~/.claude/`.
+O instalador cuida de: **yt-dlp**, **ffmpeg** (fonte oficial via winget/brew/apt), **Deno** (runtime JS que o YouTube exige desde 2026, incluindo o registro no config do yt-dlp), **claude-real-video**, **faster-whisper**, a variável `PYTHONUTF8` no Windows, e a cópia das skills e agentes para `~/.claude/`.
+
+### Instalação guiada pelo agente
+
+Se você já tem o Claude Code, pode simplesmente pedir: **"instala o video-ai-toolkit"**. A skill `instalar` faz um check-up do que já existe, roda o instalador certo para o seu sistema e — o pulo do gato — **diagnostica e corrige as falhas conhecidas na hora** (Deno fora do PATH, `PYTHONUTF8`, SSL do antivírus, repos gated do HuggingFace…) em vez de te deixar sozinho com um erro. Também serve para **reparar** uma instalação que parou de funcionar: "conserta a instalação" / "o crv parou de funcionar".
 
 Não usa Claude Code? As skills funcionam em qualquer agente que leia `SKILL.md` (Codex, OpenCode, Gemini CLI…) — copie as pastas de `skills/` para o diretório de skills do seu agente.
 
