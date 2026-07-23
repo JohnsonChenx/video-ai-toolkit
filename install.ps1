@@ -92,6 +92,30 @@ if ($denoExe) {
     Warn "Deno nao encontrado/instalado - o YouTube pode ocultar os melhores formatos. Instale manualmente: winget install DenoLand.Deno"
 }
 
+# --- 4b. agent-browser CLI (automacao de browser p/ o agente editor) ---
+$npm = Get-Command npm -ErrorAction SilentlyContinue
+if ($npm) {
+    if (Get-Command agent-browser -ErrorAction SilentlyContinue) {
+        Ok "agent-browser ja instalado"
+    } else {
+        Info "Instalando agent-browser (CLI de automacao de browser) via npm..."
+        npm install -g agent-browser 2>&1 | Select-Object -Last 3
+        # o npm 10+ pode bloquear o postinstall; roda ele a mao se o comando nao responder
+        if (-not (Get-Command agent-browser -ErrorAction SilentlyContinue) -or -not (agent-browser --version 2>$null)) {
+            $abDir = Join-Path (npm root -g 2>$null) "agent-browser"
+            $piScript = Join-Path $abDir "scripts\postinstall.js"
+            if (Test-Path $piScript) {
+                Info "Rodando postinstall do agent-browser (baixa o binario nativo do release oficial)..."
+                Push-Location $abDir; node scripts/postinstall.js 2>&1 | Select-Object -Last 3; Pop-Location
+            }
+        }
+        if (agent-browser --version 2>$null) { Ok "agent-browser instalado" }
+        else { Warn "agent-browser instalado mas fora do PATH desta sessao - abra um novo PowerShell." }
+    }
+} else {
+    Warn "npm nao encontrado - pulando agent-browser (opcional, usado pelo agente editor). Instale o Node.js e rode de novo."
+}
+
 # --- 5. PYTHONUTF8 (sem isso o crv quebra no console cp1252 e os grids nao saem) ---
 if ([Environment]::GetEnvironmentVariable("PYTHONUTF8", "User") -ne "1") {
     setx PYTHONUTF8 1 | Out-Null
@@ -112,6 +136,15 @@ if (Test-Path $claudeDir) {
             Copy-Item "$root\skills\$skill\SKILL.md" "$dest\SKILL.md" -Force
             Ok "Skill '$skill' instalada"
         }
+    }
+    # agent-browser tem subpastas (references/, templates/) - copia recursiva
+    $abDest = "$claudeDir\skills\agent-browser"
+    if ((Test-Path $abDest) -and -not $Force) {
+        Warn "Skill 'agent-browser' ja existe - pulando (use -Force para sobrescrever)"
+    } else {
+        New-Item -ItemType Directory -Force $abDest | Out-Null
+        Copy-Item "$root\skills\agent-browser\*" $abDest -Recurse -Force
+        Ok "Skill 'agent-browser' instalada"
     }
     New-Item -ItemType Directory -Force "$claudeDir\agents" | Out-Null
     foreach ($agent in @("escriba", "editor")) {

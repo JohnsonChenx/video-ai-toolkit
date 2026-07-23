@@ -15,6 +15,7 @@
 | **Agente `escriba`** | Transcrição pt-BR com separação de falantes (WhisperX + pyannote + CUDA); instala a própria pipeline; **analisa a qualidade do áudio e aplica denoise automaticamente** quando necessário; entrega Resumo Estruturado ou Ata de Reunião | "transcreve essa reunião" (Windows) |
 | **Agente `editor`** | Edição de vídeo por conversa: método das 3 passadas (erros → silêncio real → redundância), comando de voz embutido ("pato preto"), plano de cortes para aprovação, render ffmpeg/NVENC, cortes 9:16 com legenda karaokê, split-screen, motion graphics (Remotion/Motion Canvas) e verificação com nota 0-100 | "edita esse bruto, corta os erros" (Windows) |
 | **Skill `invest`** | Estilo de edição "notícia dinâmica": legendas bloco-CAPS, cartões de dados para números, manchetes reais como prova, flash de ênfase, ritmo denso — aplicado pelo agente editor | "edita no estilo invest" |
+| **Skill `agent-browser`** | Automação de browser para o agente: captura prints que exigem **interação antes** (login, fechar banner, clicar numa aba, rolar até um gráfico) — vai além do print de uma tacada | usada pelo agente `editor` (E4b) |
 | **Skill `instalar`** | Instala, verifica e **repara** o toolkit conduzindo passo a passo; diagnostica e corrige as falhas conhecidas automaticamente | "instala o video-ai-toolkit" |
 | **App Baixador** (`apps/baixador/`) | Interface web local de download com seletor de pasta e barra de progresso | dois cliques em `ABRIR.bat` |
 | **App Escriba** (`apps/escriba/`) | GUI de transcrição: arrasta-e-solta, ditado global Ctrl+Alt+D, resumo/ata por IA | `Iniciar Escriba.bat` (Windows) |
@@ -56,7 +57,7 @@ cd video-ai-toolkit
 bash install.sh
 ```
 
-O instalador cuida de: **yt-dlp**, **ffmpeg** (fonte oficial via winget/brew/apt), **Deno** (runtime JS que o YouTube exige desde 2026, incluindo o registro no config do yt-dlp), **claude-real-video**, **faster-whisper**, a variável `PYTHONUTF8` no Windows, e a cópia das skills e agentes para `~/.claude/`.
+O instalador cuida de: **yt-dlp**, **ffmpeg** (fonte oficial via winget/brew/apt), **Deno** (runtime JS que o YouTube exige desde 2026, incluindo o registro no config do yt-dlp), **claude-real-video**, **faster-whisper**, **agent-browser** (CLI via npm, se o Node estiver presente), a variável `PYTHONUTF8` no Windows, e a cópia das skills e agentes para `~/.claude/`.
 
 ### Instalação guiada pelo agente
 
@@ -104,6 +105,7 @@ Todo o processamento (download, extração de frames, transcrição, diarizaçã
 | Componente | Autor | Licença |
 |---|---|---|
 | [claude-real-video](https://github.com/HUANGCHIHHUNGLeo/claude-real-video) | HUANGCHIHHUNGLeo | MIT (usado via PyPI; skill adaptada com atribuição) |
+| [agent-browser](https://github.com/vercel-labs/agent-browser) | Vercel Labs | MIT (CLI via npm — **não redistribuído**; skill adaptada com atribuição, ver `skills/agent-browser/ATTRIBUTION.md`) |
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | yt-dlp team | Unlicense |
 | [WhisperX](https://github.com/m-bain/whisperX) / [faster-whisper](https://github.com/SYSTRAN/faster-whisper) | m-bain / SYSTRAN | BSD-2 / MIT |
 | [ffmpeg](https://ffmpeg.org) | FFmpeg team | LGPL/GPL — **não redistribuído aqui**; o instalador baixa das fontes oficiais |

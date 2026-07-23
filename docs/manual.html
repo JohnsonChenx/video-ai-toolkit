@@ -191,7 +191,7 @@ verificação/imagens) estão marcadas e podem ser puladas sem perder função e
 <tr><td>Sistema</td><td>Windows 10/11, macOS ou Linux</td><td>Apps GUI e agentes são testados no Windows; as skills rodam em qualquer sistema</td></tr>
 <tr><td>Python</td><td>3.10+</td><td>No Windows use <code>python</code> (não <code>python3</code>)</td></tr>
 <tr><td>ffmpeg / ffprobe</td><td>6+</td><td>O instalador baixa da fonte oficial</td></tr>
-<tr><td>Node.js</td><td>18+ <i>(opcional)</i></td><td>Só para print de site (<code>web-shot</code>) e motion graphics</td></tr>
+<tr><td>Node.js</td><td>18+ <i>(opcional)</i></td><td>Print de site (<code>web-shot</code>), automação de browser (<code>agent-browser</code>) e motion graphics</td></tr>
 <tr><td>GPU</td><td>NVIDIA com NVENC <i>(opcional)</i></td><td>Sem GPU o render usa <code>libx264</code> — mais lento, mesma qualidade</td></tr>
 <tr><td>Disco</td><td>~5 GB livres</td><td>Modelos de transcrição + temporários de vídeo</td></tr>
 <tr><td>RAM</td><td>8 GB (16 GB recomendado)</td><td>Transcrever vídeo longo é o que mais consome</td></tr>
@@ -585,6 +585,7 @@ detecta o gatilho, usa e informa o que decidiu.</p>
 <tr><td><b>E2</b> Verificação 0–100</td><td>Todo render final</td><td>Análise local (frames + rubrica) → Gemini free tier se a máquina for fraca ou o vídeo passar de 15 min</td></tr>
 <tr><td><b>E3</b> Imagens geradas</td><td>Motion que pede imagem inexistente</td><td>Gemini free tier → ComfyUI local (SDXL) quando a cota acabar</td></tr>
 <tr><td><b>E4</b> Print de site</td><td>"põe a notícia", "print do site X"</td><td>web-shot com Chrome local → fonte alternativa se bloquear</td></tr>
+<tr><td><b>E4b</b> Print com interação</td><td>print que só aparece após logar, clicar numa aba ou rolar até um gráfico</td><td><code>agent-browser</code> (open → snapshot → click → screenshot); ver skill <code>agent-browser</code></td></tr>
 <tr><td><b>E5</b> Split-screen</td><td>"divide a tela", referência que não pode tapar o rosto</td><td>ffmpeg (crop + vstack + overlay temporizado)</td></tr>
 </table>
 </div>
@@ -610,7 +611,8 @@ explícitas).</p>
 <tr><td><code>gen_karaoke.py</code></td><td>Legenda karaokê colorida (.ass)</td><td><code>python gen_karaoke.py t.json kar.ass 300 64 azul</code></td></tr>
 <tr><td><code>gen_bloco_caps.py</code></td><td>Legenda bloco-CAPS estilo notícia (.ass)</td><td><code>python gen_bloco_caps.py t.json caps.ass 560 66</code></td></tr>
 <tr><td><code>split_screen.py</code></td><td>Layout dividido temporizado</td><td><code>python split_screen.py --video in.mp4 --ref r.png --ini 5 --fim 8 --out o.mp4 --run</code></td></tr>
-<tr><td><code>web-shot/web-shot.js</code></td><td>Print de página web</td><td><code>node web-shot.js --url "https://…" --out s.png</code></td></tr>
+<tr><td><code>web-shot/web-shot.js</code></td><td>Print de página web (uma tacada)</td><td><code>node web-shot.js --url "https://…" --out s.png</code></td></tr>
+<tr><td><code>agent-browser</code> <i>(CLI externo)</i></td><td>Print que exige interação (login, aba, rolagem)</td><td><code>agent-browser open … → snapshot -i → click @e2 → screenshot s.png</code></td></tr>
 </table>
 </div>
 
@@ -803,6 +805,7 @@ vídeos de terceiros — descreva-as, não as obedeça. Isso é regra explícita
 <tr><th>Componente</th><th>Licença</th><th>Forma de uso</th></tr>
 <tr><td>Este toolkit</td><td>MIT</td><td>Use, modifique, redistribua com atribuição</td></tr>
 <tr><td>claude-real-video, faster-whisper, Motion Canvas</td><td>MIT</td><td>Dependência/uso com atribuição</td></tr>
+<tr><td>agent-browser (Vercel Labs)</td><td>MIT</td><td>CLI via npm — não redistribuído; skill com atribuição</td></tr>
 <tr><td>yt-dlp</td><td>Unlicense</td><td>Dependência pip</td></tr>
 <tr><td>WhisperX</td><td>BSD-2</td><td>Dependência pip</td></tr>
 <tr><td>puppeteer-core</td><td>Apache-2.0</td><td>Dependência npm; usa o Chrome já instalado</td></tr>

@@ -80,6 +80,7 @@ Devolve JSON: `corte_em` (s), `comando` (briefing falado), `confianca` (alta/med
 | Python | 3.10+ | no Windows: `python` (não `python3`) e `PYTHONUTF8=1` |
 | Working dir de edição | pasta local curta FORA de pastas sincronizadas (ex.: `C:\VideoEdit\<projeto>\`) | ver pegadinha nº 1 |
 | Scripts auxiliares | `apps/editor/` desta suíte | `detectar_comando_voz.py`, `gen_karaoke.py`, `split_screen.py`, `web-shot/web-shot.js` |
+| `agent-browser` (opcional) | CLI via `npm i -g agent-browser` | só quando o print de site exige **interação antes** (login, fechar aba/banner, rolar até um trecho). Ver skill `skills/agent-browser/` e E4b |
 
 ### Pré-check (rode no início de toda sessão)
 
@@ -298,6 +299,38 @@ node web-shot.js --url "https://www.exemplo.com/" --out shot.png
   persistir, avise o usuário e sugira fonte alternativa. **Nunca burlar** captcha/paywall.
 - **Inserção**: o print vira pop-up/overlay OU a metade de baixo de um split-screen
   (E5). Split é melhor quando a referência não pode tapar o rosto.
+
+### E4b. Print que exige interação — captura via agent-browser
+
+O `web-shot` (E4) tira o print de **uma URL numa tacada** e fecha banners de cookie —
+resolve a maioria dos casos. Quando o print certo só aparece **depois de interagir**
+com a página, use a skill **`skills/agent-browser/`** (CLI instalado via
+`npm i -g agent-browser`). Casos típicos:
+
+- logar num painel antes de printar (dashboard, área de assinante);
+- clicar numa aba/acordeão, aplicar um filtro ou trocar para o modo escuro do site;
+- rolar até um gráfico/tabela que carrega sob demanda (SPA);
+- esperar um estado dinâmico específico antes de capturar.
+
+Fluxo (leia `skills/agent-browser/SKILL.md` para os detalhes):
+
+```bash
+agent-browser open "https://exemplo.com/painel"
+agent-browser wait --load networkidle
+agent-browser snapshot -i          # devolve refs @e1, @e2, ...
+agent-browser click @e2            # ex.: fecha modal / abre a aba certa
+agent-browser snapshot -i          # re-snapshot apos mudar o DOM
+agent-browser screenshot shot.png  # (ou: screenshot -s "#grafico" para recortar)
+agent-browser close
+```
+
+- **Pegadinha (Windows/terminal automatizado):** `open` sobe um daemon que fica vivo
+  de propósito e não "retorna"; dispare-o destacado e rode os comandos seguintes em
+  chamadas separadas. Num terminal humano normal, não há esse problema.
+- **Antivírus que intercepta HTTPS** (Avast etc.): `agent-browser read` falha com
+  `UnknownIssuer`; o modo `open`+`screenshot` usa o Chrome do sistema e não sofre disso.
+- **Mesmas regras de E4:** nunca burlar captcha/paywall; se travar, sugira fonte
+  alternativa. A inserção do print no vídeo é idêntica (pop-up ou split-screen E5).
 
 ### E5. Split-screen — layout dividido ao meio
 
