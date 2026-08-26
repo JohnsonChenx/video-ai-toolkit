@@ -1,0 +1,499 @@
+<title>Lisboa em 10 Dias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#F0F2F4; --surface:#FFFFFF; --surface-2:#E6EAEE;
+  --ink:#12171C; --ink-2:#48525C; --ink-3:#7A848F;
+  --line:#DBE0E6; --line-strong:#C2C9D1;
+  --azul:#1B5A87; --azul-soft:#E2EBF2;
+  --ocre:#8F6410; --telha:#A8402C; --telha-soft:#F6E5E1;
+  --bar:#1B5A87;
+  --s1:#E2EBF2; --s2:#AEC8DC; --s3:#5A8FB4; --s4:#1B5A87;
+  --s1-ink:#48525C; --s2-ink:#12171C; --s3-ink:#FFFFFF; --s4-ink:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1418; --surface:#161C22; --surface-2:#1F262E;
+    --ink:#EAEEF2; --ink-2:#A4AEB8; --ink-3:#737D88;
+    --line:#28303A; --line-strong:#39424D;
+    --azul:#78B0D8; --azul-soft:#122130;
+    --ocre:#CDA047; --telha:#E07A64; --telha-soft:#2E1A16;
+    --bar:#4C90BE;
+    --s1:#18222B; --s2:#2C4A5F; --s3:#4C7FA3; --s4:#8CBDDD;
+    --s1-ink:#A4AEB8; --s2-ink:#DCE7EE; --s3-ink:#0A1015; --s4-ink:#0A1015;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --surface:#161C22; --surface-2:#1F262E;
+  --ink:#EAEEF2; --ink-2:#A4AEB8; --ink-3:#737D88;
+  --line:#28303A; --line-strong:#39424D;
+  --azul:#78B0D8; --azul-soft:#122130;
+  --ocre:#CDA047; --telha:#E07A64; --telha-soft:#2E1A16;
+  --bar:#4C90BE;
+  --s1:#18222B; --s2:#2C4A5F; --s3:#4C7FA3; --s4:#8CBDDD;
+  --s1-ink:#A4AEB8; --s2-ink:#DCE7EE; --s3-ink:#0A1015; --s4-ink:#0A1015;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);margin:0;padding:0 20px 96px;
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.5rem,7vw,4.1rem);font-weight:700;line-height:1.02;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.6vw,2.15rem);font-weight:600;line-height:1.14;letter-spacing:-.012em}
+h3{font-size:1.14rem;font-weight:600;line-height:1.3}
+p{margin:0}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+header{padding:72px 0 40px;display:flex;flex-direction:column;gap:22px}
+.rule{display:flex;gap:5px;align-items:center}
+.rule i{display:block;height:4px;border-radius:2px}
+.rule i:nth-child(1){width:34px;background:var(--telha)}
+.rule i:nth-child(2){width:52px;background:var(--azul)}
+.rule i:nth-child(3){width:16px;background:var(--ocre)}
+.lede{font-size:1.14rem;color:var(--ink-2);max-width:60ch}
+.lede b{color:var(--ink);font-weight:600}
+.premise{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.premise span{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.74rem;
+  border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;
+  color:var(--ink-2);background:var(--surface)}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px}
+.kpi{background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:5px}
+.kpi .k{font-size:1.72rem;font-weight:600;letter-spacing:-.02em;line-height:1;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.kpi .k.hero{color:var(--telha)}
+.kpi .l{font-size:.78rem;color:var(--ink-3);line-height:1.35}
+
+section{padding:52px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
+.shead{display:flex;flex-direction:column;gap:9px}
+.prose{max-width:64ch}
+
+.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--telha);
+  border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:9px}
+.callout.calm{border-left-color:var(--azul)}
+.callout h3{font-family:"Archivo",sans-serif;font-size:.95rem;font-weight:600}
+.callout p{font-size:.95rem;color:var(--ink-2)}
+
+ul.clean{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+ul.clean li{position:relative;padding-left:20px;color:var(--ink-2);font-size:.97rem}
+ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
+  border-radius:1.5px;background:var(--azul)}
+ul.clean li b{color:var(--ink);font-weight:600}
+
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:520px}
+caption{text-align:left;font-size:.82rem;color:var(--ink-3);padding-bottom:10px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.68rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-strong)}
+td.n,th.n{text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tr.total td{border-top:2px solid var(--line-strong);font-weight:600;padding-top:14px}
+tr.sub td{color:var(--ink-2)}
+tr.pickrow td{background:var(--telha-soft)}
+tr.pickrow td:first-child{box-shadow:inset 3px 0 0 var(--telha)}
+td small{display:block;color:var(--ink-3);font-size:.82rem;margin-top:2px}
+.badge{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--telha);display:block;margin-top:3px}
+
+.days{display:flex;flex-direction:column}
+.day{display:grid;grid-template-columns:62px 1fr;gap:20px;padding:17px 0;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:0}
+.day .d{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;font-weight:600;
+  letter-spacing:.09em;color:var(--telha);padding-top:3px;text-transform:uppercase}
+.day .body{display:flex;flex-direction:column;gap:6px}
+.day .t{font-weight:600;font-size:1rem;letter-spacing:-.005em}
+.day .x{font-size:.94rem;color:var(--ink-2)}
+.day.trip{background:var(--azul-soft);margin:0 -14px;padding-left:14px;padding-right:14px;border-radius:6px}
+.day.trip .d{color:var(--azul)}
+.dinner{font-size:.88rem;color:var(--ink-2);border-left:2px solid var(--ocre);padding-left:11px;margin-top:3px}
+.dinner b{color:var(--ink);font-weight:600}
+.cost{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.76rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.cost b{color:var(--ocre);font-weight:600}
+
+figure{margin:0;display:flex;flex-direction:column;gap:16px}
+figcaption{font-size:.82rem;color:var(--ink-3)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.brow{display:grid;grid-template-columns:130px 1fr 90px;gap:14px;align-items:center}
+.brow .bl{font-size:.85rem;color:var(--ink-2);text-align:right}
+.btrack{height:22px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.bfill{height:100%;width:var(--w);background:var(--bar);border-radius:0 4px 4px 0}
+.brow .bv{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.83rem;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+@media (max-width:600px){.brow{grid-template-columns:100px 1fr 80px;gap:9px}}
+
+.months{display:grid;grid-template-columns:repeat(12,minmax(64px,1fr));gap:4px;min-width:680px}
+.mo{border-radius:6px;padding:11px 7px 12px;display:flex;flex-direction:column;gap:6px;
+  align-items:center;text-align:center}
+.mo .m{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.76rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase}
+.mo .v{font-size:.66rem;line-height:1.2;font-weight:500}
+.mo.r1{background:var(--s1);color:var(--s1-ink)} .mo.r2{background:var(--s2);color:var(--s2-ink)}
+.mo.r3{background:var(--s3);color:var(--s3-ink)} .mo.r4{background:var(--s4);color:var(--s4-ink)}
+.mo.pick{box-shadow:inset 0 0 0 2px var(--telha)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.legend div{display:flex;gap:7px;align-items:center;font-size:.8rem;color:var(--ink-2)}
+.legend i{width:13px;height:13px;border-radius:3px;display:block}
+
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.check{background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:7px}
+.check .h{font-weight:600;font-size:.93rem;display:flex;gap:8px;align-items:baseline}
+.check .h em{font-family:"IBM Plex Mono",ui-monospace,monospace;font-style:normal;font-size:.68rem;
+  color:var(--telha);letter-spacing:.08em}
+.check p{font-size:.87rem;color:var(--ink-2)}
+
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px}
+.lever{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;
+  display:flex;flex-direction:column;gap:8px}
+.lever .amt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:1.16rem;font-weight:600;
+  color:var(--azul);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.lever .h{font-weight:600;font-size:.94rem}
+.lever p{font-size:.87rem;color:var(--ink-2)}
+
+footer{padding:44px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+footer p{font-size:.84rem;color:var(--ink-3)}
+footer a{color:var(--azul);text-decoration:underline;text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--telha);outline-offset:3px;border-radius:2px}
+.srcs{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.82rem}
+@media (max-width:600px){body{padding:0 16px 72px}header{padding:48px 0 32px}
+  .day{grid-template-columns:1fr;gap:6px}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="rule"><i></i><i></i><i></i></div>
+  <div class="eyebrow">Planejamento de viagem &middot; Base única em Lisboa &middot; Dois viajantes</div>
+  <h1>Lisboa em 10 dias</h1>
+  <p class="lede">Um endereço no Príncipe Real, três bate-voltas de trem e nove jantares escolhidos. Fecha em <b>R$&nbsp;30.208</b> para o casal &mdash; e é preciso dizer de saída: <b>não cabe em R$&nbsp;15.000</b>.</p>
+  <div class="premise">
+    <span>2 pessoas · orçamento único</span>
+    <span>Saída de São Paulo (GRU)</span>
+    <span>10 dias / 9 noites</span>
+    <span>€ 1 ≈ R$ 6,01 · US$ 1 ≈ R$ 5,15</span>
+    <span>Pesquisado em 26/08/2026</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="k hero">30.208</div><div class="l">Total do casal, meia-estação, com reserva de 12%</div></div>
+    <div class="kpi"><div class="k">15.104</div><div class="l">Por pessoa &mdash; o orçamento inteiro da Argentina</div></div>
+    <div class="kpi"><div class="k">3.020</div><div class="l">Por dia, para os dois</div></div>
+    <div class="kpi"><div class="k">8</div><div class="l">Dias cheios de verdade, não 10</div></div>
+  </div>
+</header>
+
+<section id="veredito">
+  <div class="shead">
+    <div class="eyebrow">O número honesto</div>
+    <h2>Portugal muda a escala do problema</h2>
+  </div>
+  <p class="prose">O teto de R$&nbsp;15.000 que governou o planejamento de Buenos Aires <b>cobre metade desta viagem</b>. A passagem sozinha custa R$&nbsp;8.000 para o casal &mdash; mais do que a viagem inteira à Argentina custava em aéreo, hospedagem e comida somados. Não há corte de roteiro que resolva isso: o piso honesto para dez dias em Lisboa, bem feitos, é de cerca de <b>R$&nbsp;25.500</b>.</p>
+
+  <div class="split">
+    <div class="lever">
+      <span class="amt">R$ 30.208</span>
+      <span class="h">Recomendado &mdash; meia-estação</span>
+      <p>Abril–maio ou fim de setembro–outubro. Apartamento inteiro no Príncipe Real, uma noite de estrela Michelin, três bate-voltas.</p>
+    </div>
+    <div class="lever">
+      <span class="amt">R$ 26.532</span>
+      <span class="h">Fevereiro</span>
+      <p>O mês mais barato do ano nas duas pontas: passagem e hospedagem. Lisboa fria e chuvosa, mas a cidade funciona &mdash; e é de museu, tasca e café.</p>
+    </div>
+    <div class="lever">
+      <span class="amt">R$ 25.506</span>
+      <span class="h">Enxuto</span>
+      <p>Fevereiro, apartamento na Graça ou Avenidas Novas, duas noites de restaurante trocadas por tasca, Regaleira trocada pelo Castelo dos Mouros.</p>
+    </div>
+    <div class="lever">
+      <span class="amt">R$ 15.000</span>
+      <span class="h">O teto anterior</span>
+      <p>Cobre 50% da viagem recomendada. Como orçamento de Portugal, ele não escolhe entre versões: ele impede a viagem.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>Três correções de premissa que a pesquisa impôs</h3>
+    <p><b>Dez dias de viagem são nove noites, e oito dias cheios.</b> O voo do Brasil é noturno &mdash; a noite da ida não é diária. Ele pousa entre 9h e 12h, com o casal sem dormir, o que faz do dia 1 meia jornada. E o voo de volta sai ao meio-dia, o que inutiliza o dia 10. Planejei em cima disso: o dia 10 não tem jantar nem passeio, só café e aeroporto.</p>
+  </div>
+</section>
+
+<section id="roteiro">
+  <div class="shead">
+    <div class="eyebrow">Dia a dia</div>
+    <h2>O roteiro</h2>
+  </div>
+  <p class="prose">Base única no <b>Príncipe Real / Chiado alto</b>, escolhida por um motivo específico: os bate-voltas saem de <b>quatro estações em linhas diferentes</b> &mdash; Rossio para Sintra, Cais do Sodré para Cascais, Entrecampos ou Oriente para Évora &mdash; e esse é o único par de bairros que alcança todas sem baldeação sofrida. Os dias de bate-volta estão destacados. Valores para os dois juntos.</p>
+
+  <div class="days">
+    <div class="day">
+      <div class="d">Dia 1</div>
+      <div class="body">
+        <div class="t">Chegada, Baixa e Chiado a pé</div>
+        <div class="x">Pouso de manhã sem ter dormido. Uber até o bairro, malas guardadas, e nada de ambicioso: Praça do Comércio, Rua Augusta, Chiado, Bertrand, Largo do Carmo. Fim de tarde no Miradouro de São Pedro de Alcântara.</div>
+        <div class="dinner"><b>Jantar:</b> Taberna da Rua das Flores &mdash; não aceita reserva, e é por isso que está aqui: num dia de voo não há mesa a perder. <span class="num">R$ 360</span></div>
+        <div class="cost">Dia · <b>R$ 189</b> em passeios</div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 2</div>
+      <div class="body">
+        <div class="t">Alfama, Castelo e fado</div>
+        <div class="x">Sé de Lisboa, Portas do Sol, Santa Luzia e os becos. Castelo de São Jorge depois das 16h, quando a luz fica boa e a fila acaba. Almoço no Zé da Mouraria &mdash; porção descomunal, só dinheiro, chegue às 12h15.</div>
+        <div class="dinner"><b>Jantar:</b> O Velho Eurico, tasca de lisboeta, e <b>fado depois</b> no Mesa de Frades &mdash; capela azulejada por onde passaram Carminho e Camané. <span class="num">R$ 280 + R$ 210</span></div>
+        <div class="cost">Dia · <b>R$ 400</b> em passeios e fado</div>
+      </div>
+    </div>
+    <div class="day trip">
+      <div class="d">Dia 3</div>
+      <div class="body">
+        <div class="t">Sintra &mdash; bate-volta pesado</div>
+        <div class="x">Primeiro trem, 8h–8h30. Pena de manhã com hora marcada, Regaleira à tarde. Dois palácios é o teto do dia. Leia o bloco de alerta abaixo antes de comprar qualquer coisa.</div>
+        <div class="dinner"><b>Jantar:</b> Pizzaria Lisboa, no Chiado &mdash; quatro horas de ladeira não terminam em menu de sete tempos. <span class="num">R$ 235</span></div>
+        <div class="cost">Dia · <b>R$ 926</b> &mdash; o mais caro da viagem</div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 4</div>
+      <div class="body">
+        <div class="t">Belém</div>
+        <div class="x">Escolhido para vir logo depois de Sintra por um motivo só: <b>Belém é plano</b>. A igreja dos Jerónimos é grátis e é onde estão Vasco da Gama e Camões; o claustro custa e vale. Pastéis de Belém &mdash; entre no salão em vez de pegar a fila do balcão.</div>
+        <div class="dinner"><b>Jantar:</b> Time Out Market &mdash; o dia termina no Cais do Sodré e o mercado é ali. Vá às 19h; um senta e guarda mesa. <span class="num">R$ 310</span></div>
+        <div class="cost">Dia · <b>R$ 554</b> em passeios</div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 5</div>
+      <div class="body">
+        <div class="t">Gulbenkian e Príncipe Real &mdash; e a noite</div>
+        <div class="x">A Gulbenkian reabriu em julho de 2026 depois de dezesseis meses de obras: está nova, e por isso ganha um dia em vez de meia tarde. Depois, o bairro de vocês a pé &mdash; Embaixada, Jardim Botânico, o Miradouro da Senhora do Monte.</div>
+        <div class="dinner"><b>Jantar:</b> <b>Sála</b>, uma estrela Michelin, na Baixa &mdash; a noite de destino. É dia a pé de propósito: o jantar é o programa. <span class="num">R$ 1.560</span></div>
+        <div class="cost">Dia · <b>R$ 233</b> em passeios</div>
+      </div>
+    </div>
+    <div class="day trip">
+      <div class="d">Dia 6</div>
+      <div class="body">
+        <div class="t">Évora &mdash; bate-volta pesado</div>
+        <div class="x">Intercidades, 1h30. <b>São só quatro ligações por dia</b>, e isso define o dia inteiro: trem das 8h, volta às 19h, assento marcado, reserve antes. Templo Romano, Catedral, Capela dos Ossos, Praça do Giraldo. Cidade inteira Patrimônio da Humanidade, tudo a pé.</div>
+        <div class="dinner"><b>Jantar:</b> Taberna &mdash; Bairro do Avillez, colada na base e reservável. <span class="num">R$ 330</span></div>
+        <div class="cost">Dia · <b>R$ 517</b> em passeios</div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 7</div>
+      <div class="body">
+        <div class="t">Alcântara, LX Factory e Estrela</div>
+        <div class="x">Museu Nacional de Arte Antiga de manhã &mdash; o museu que turista pula e português defende. Tarde na LX Factory, com a Ler Devagar. Basílica e Jardim da Estrela no fim do dia.</div>
+        <div class="dinner"><b>Jantar:</b> <b>Ponto Final</b>, em Cacilhas &mdash; ferry de dez minutos do Cais do Sodré, mesas literalmente sobre o Tejo, Lisboa acendendo do outro lado. Vá cedo pelo pôr do sol. <b>Fecha às terças.</b> <span class="num">R$ 540</span></div>
+        <div class="cost">Dia · <b>R$ 284</b> em passeios</div>
+      </div>
+    </div>
+    <div class="day trip">
+      <div class="d">Dia 8</div>
+      <div class="body">
+        <div class="t">Cascais e Estoril &mdash; bate-volta leve</div>
+        <div class="x">Trem de Cais do Sodré, 40 minutos, e <b>ele corre colado no mar a viagem inteira</b> &mdash; é passeio, não deslocamento. Boca do Inferno, Farol de Santa Marta, e a volta a pé pelo paredão Cascais–Estoril, três quilômetros à beira-mar, de graça.</div>
+        <div class="dinner"><b>Jantar:</b> Taberna Sal Grosso, em São Bento &mdash; petiscos modernos a preço de português. <span class="num">R$ 415</span></div>
+        <div class="cost">Dia · <b>R$ 221</b> &mdash; o mais barato</div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 9</div>
+      <div class="body">
+        <div class="t">Dia livre &mdash; e a despedida</div>
+        <div class="x">Deixado em branco de propósito. Em ordem de recomendação: <b>Óbidos de ônibus</b> (R$ 315), <b>Graça e a Feira da Ladra</b> se cair numa terça ou sábado, ou <b>não fazer nada</b>, que depois de Sintra e Évora é opção legítima. Se o Museu do Azulejo tiver reaberto, é aqui que ele entra.</div>
+        <div class="dinner"><b>Jantar:</b> <b>Cervejaria Ramiro</b> &mdash; gambas, percebes, sapateira, e o prego no pão como sobremesa. Isso não é piada, é o rito. Noite de gula sem cerimônia, na véspera do voo. <span class="num">R$ 635</span></div>
+        <div class="cost">Reserva do dia · <b>R$ 378</b></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">Dia 10</div>
+      <div class="body">
+        <div class="t">Partida</div>
+        <div class="x">O voo de volta sai por volta do meio-dia, então este dia não é um dia. Café e nata na Manteigaria da esquina, check-out, Uber até o aeroporto com folga. Sem passeio, sem jantar &mdash; e é por isso que o roteiro tem oito dias cheios, não dez.</div>
+        <div class="cost">Dia · <b>R$ 252</b> em transporte e refeições</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sintra">
+  <div class="shead">
+    <div class="eyebrow">O único ponto que estraga o dia</div>
+    <h2>Sintra, antes de comprar qualquer coisa</h2>
+  </div>
+  <ul class="clean">
+    <li><b>O bilhete da Pena tem horário marcado em janelas de 30 minutos e esgota diariamente.</b> Compre online 2 a 4 semanas antes. Não existe plano B no dia.</li>
+    <li><b>A hora do bilhete é a de entrar no palácio, não no parque.</b> Chegue 45 minutos antes: só a subida do portão até lá leva vinte.</li>
+    <li><b>Comprado antecipado, o bilhete é remarcável dentro de um ano</b> &mdash; o que elimina o risco de comprar cedo. Compre cedo.</li>
+    <li><b>Não use o ônibus 434.</b> No verão a fila passa de uma hora. Dois trechos de tuk-tuk para o casal saem por cerca de €30 contra €37 do passe duplo &mdash; mais barato e sem fila. A dois, transporte fechado ganha do bilhete por pessoa.</li>
+    <li><b>Volte antes das 17h ou depois das 19h.</b> O trem do fim da tarde vai em pé.</li>
+    <li><b>Para cortar R$ 227:</b> troque a Quinta da Regaleira, que subiu para €30 por pessoa em 2026, pelo Castelo dos Mouros &mdash; mais barato e com a melhor vista da serra. O que se perde é o poço iniciático, que não tem substituto.</li>
+  </ul>
+</section>
+
+<section id="custos">
+  <div class="shead">
+    <div class="eyebrow">Orçamento</div>
+    <h2>Para onde vai o dinheiro</h2>
+  </div>
+
+  <div class="scroller">
+    <table>
+      <caption>Valores para as duas pessoas somadas, meia-estação, ao câmbio de € 1 ≈ R$ 6,01</caption>
+      <thead><tr><th scope="col">Item</th><th scope="col" class="n">Total</th></tr></thead>
+      <tbody>
+        <tr><td>Aéreo GRU–LIS ida e volta, 2 pessoas<small>R$ 4.000 por pessoa, com bagagem inclusa na tarifa</small></td><td class="n">8.000</td></tr>
+        <tr><td>Apartamento inteiro, Príncipe Real, 9 noites<small>Diária real de R$ 850 &mdash; já com limpeza, taxa de serviço, desconto semanal e taxa turística municipal</small></td><td class="n">7.650</td></tr>
+        <tr class="sub"><td>Nove jantares<small>Uma noite de destino, quatro muito boas, quatro de bairro</small></td><td class="n">4.665</td></tr>
+        <tr class="sub"><td>Cafés da manhã e almoços<small>R$ 45 e R$ 140 por dia, do casal</small></td><td class="n">1.850</td></tr>
+        <tr class="sub"><td>Couvert<small>Pão, azeitonas e queijo são cobrados em Portugal. Ao longo de nove jantares, isso soma</small></td><td class="n">325</td></tr>
+        <tr><td>Passeios, ingressos e bate-voltas<small>Sintra 926 · Évora 517 · Cascais 221 · dia livre 378 · cidade 1.959</small></td><td class="n">4.001</td></tr>
+        <tr><td>Seguro viagem, 2 apólices<small>Cobertura Schengen de € 30.000</small></td><td class="n">400</td></tr>
+        <tr><td>eSIM</td><td class="n">80</td></tr>
+        <tr class="sub"><td>Subtotal</td><td class="n">26.971</td></tr>
+        <tr><td>Reserva de imprevistos, 12%</td><td class="n">3.237</td></tr>
+        <tr class="total"><td>Total do casal</td><td class="n">30.208</td></tr>
+        <tr class="total"><td>Por pessoa</td><td class="n">15.104</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <div class="bars" role="img" aria-label="Composição do orçamento: aéreo R$ 8.000, hospedagem R$ 7.650, comida R$ 6.840, passeios R$ 4.001, reserva R$ 3.237, seguro e eSIM R$ 480.">
+      <div class="brow"><span class="bl">Aéreo</span><span class="btrack"><span class="bfill" style="--w:100%"></span></span><span class="bv">R$ 8.000</span></div>
+      <div class="brow"><span class="bl">Hospedagem</span><span class="btrack"><span class="bfill" style="--w:95.6%"></span></span><span class="bv">R$ 7.650</span></div>
+      <div class="brow"><span class="bl">Comida</span><span class="btrack"><span class="bfill" style="--w:85.5%"></span></span><span class="bv">R$ 6.840</span></div>
+      <div class="brow"><span class="bl">Passeios</span><span class="btrack"><span class="bfill" style="--w:50.0%"></span></span><span class="bv">R$ 4.001</span></div>
+      <div class="brow"><span class="bl">Reserva</span><span class="btrack"><span class="bfill" style="--w:40.5%"></span></span><span class="bv">R$ 3.237</span></div>
+      <div class="brow"><span class="bl">Seguro e eSIM</span><span class="btrack"><span class="bfill" style="--w:6.0%"></span></span><span class="bv">R$ 480</span></div>
+    </div>
+    <figcaption>Aéreo e hospedagem somam mais da metade. É o inverso de Buenos Aires, onde a comida dominava &mdash; aqui o custo de <em>chegar</em> e de <em>ficar</em> é que pesa.</figcaption>
+  </figure>
+
+  <div class="callout calm">
+    <h3>A sétima noite custa um terço das outras</h3>
+    <p>No apartamento escolhido, o desconto de estadia longa entra na sétima noite e <b>incide retroativamente sobre todas</b>. Na prática: as seis primeiras saem a uma média de € 161, e a sétima sai por € 51 &mdash; menos de um terço. Quem fica seis noites em Lisboa está pagando caro por não ficar sete. As nove noites daqui passam do limiar com folga, e é o principal motivo pelo qual apartamento vence hotel neste caso.</p>
+  </div>
+</section>
+
+<section id="mes">
+  <div class="shead">
+    <div class="eyebrow">A maior decisão de custo</div>
+    <h2>O mês vale mais que qualquer corte</h2>
+  </div>
+  <p class="prose">Na passagem, a distância entre março e julho é de R$ 2.000 por pessoa. Na hospedagem, entre fevereiro e agosto é de mais de 60%. Somadas, as duas pontas fazem a <b>mesma viagem custar de R$ 25.500 a R$ 40.000</b>. Nenhuma escolha de hotel, restaurante ou passeio chega perto disso.</p>
+
+  <div class="scroller">
+    <div class="months" role="img" aria-label="Avaliação de cada mês combinando preço de passagem e de hospedagem: fevereiro, março, outubro e novembro ideais; abril, maio e janeiro bons; setembro e dezembro regulares; junho, julho e agosto evitar.">
+      <div class="mo r3"><span class="m">Jan</span><span class="v">Bom</span></div>
+      <div class="mo r4 pick"><span class="m">Fev</span><span class="v">Ideal</span></div>
+      <div class="mo r4 pick"><span class="m">Mar</span><span class="v">Ideal</span></div>
+      <div class="mo r3"><span class="m">Abr</span><span class="v">Bom</span></div>
+      <div class="mo r3"><span class="m">Mai</span><span class="v">Bom</span></div>
+      <div class="mo r1"><span class="m">Jun</span><span class="v">Evitar</span></div>
+      <div class="mo r1"><span class="m">Jul</span><span class="v">Evitar</span></div>
+      <div class="mo r1"><span class="m">Ago</span><span class="v">Evitar</span></div>
+      <div class="mo r2"><span class="m">Set</span><span class="v">Regular</span></div>
+      <div class="mo r4 pick"><span class="m">Out</span><span class="v">Ideal</span></div>
+      <div class="mo r4 pick"><span class="m">Nov</span><span class="v">Ideal</span></div>
+      <div class="mo r2"><span class="m">Dez</span><span class="v">Regular</span></div>
+    </div>
+  </div>
+  <div class="legend">
+    <div><i style="background:var(--s4)"></i> Ideal</div>
+    <div><i style="background:var(--s3)"></i> Bom</div>
+    <div><i style="background:var(--s2)"></i> Regular</div>
+    <div><i style="background:var(--s1)"></i> Evitar</div>
+    <div><i style="background:transparent;box-shadow:inset 0 0 0 2px var(--telha)"></i> Recomendação</div>
+  </div>
+
+  <ul class="clean">
+    <li><b>Outubro ou a segunda quinzena de maio</b> é a recomendação se o critério for a viagem, e não o preço: clima bom, dias longos, hospedagem em meia-estação. É o cenário de R$ 30.208.</li>
+    <li><b>Fevereiro</b> é a recomendação se o critério for o dinheiro: é barato nas duas pontas ao mesmo tempo, e derruba o total para R$ 26.532. Lisboa é fria e chuvosa, mas este roteiro é de museu, tasca, fado e café &mdash; sobrevive à chuva melhor que a maioria.</li>
+    <li><b>Junho, julho e agosto estão fora.</b> A hospedagem multiplica por 1,4 a 1,8 e a passagem é o pico do ano. Junho tem ainda as festas de Santo António, quando a diária dobra.</li>
+    <li><b>Setembro parece baixa temporada e não é</b> &mdash; é o segundo mês mais caro em passagem. Cuidado com essa armadilha.</li>
+    <li><b>Reserve cedo, e cancelável.</b> Lisboa suspendeu novas licenças de alojamento local nas freguesias sob pressão desde 2024: a oferta legal de apartamento não cresce, a demanda sim.</li>
+  </ul>
+</section>
+
+<section id="reservas">
+  <div class="shead">
+    <div class="eyebrow">Com prazo</div>
+    <h2>O que reservar, e quando</h2>
+  </div>
+  <div class="checks">
+    <div class="check">
+      <div class="h"><em>01</em> A passagem, primeiro</div>
+      <p>Ida e volta simples GRU–LIS, com bagagem inclusa na tarifa. Multi-trecho pelo Porto não compensa: não há voo direto e o roteiro é de base única. <b>Atenção à tarifa TAP Discount, que não inclui mala</b> &mdash; comprá-la depois custa R$ 545 a 1.090 por pessoa, e a Basic costuma ser a compra certa mesmo parecendo mais cara na tela.</p>
+    </div>
+    <div class="check">
+      <div class="h"><em>02</em> Sintra, 2 a 4 semanas antes</div>
+      <p>Bilhete da Pena com hora marcada. Esgota. É remarcável dentro de um ano, então não há motivo para adiar.</p>
+    </div>
+    <div class="check">
+      <div class="h"><em>03</em> Sála, 2 a 3 meses antes</div>
+      <p>Poucos lugares, uma estrela. Se optarem pelo Belcanto no lugar, reservem hoje &mdash; três meses é o padrão, e ele sozinho custa mais que as outras oito noites somadas.</p>
+    </div>
+    <div class="check">
+      <div class="h"><em>04</em> Évora, com assento marcado</div>
+      <p>Só quatro ligações de Intercidades por dia. Sem reserva, o dia não acontece. Confirme também que o dia de Cacilhas não cai numa terça, quando o Ponto Final fecha.</p>
+    </div>
+    <div class="check">
+      <div class="h"><em>05</em> O apartamento, e o número de registo</div>
+      <p>Todo alojamento local legal em Portugal exibe número RNAL. <b>Não reserve sem ver o número</b> &mdash; anúncio sem ele pode ser derrubado, e você descobre duas semanas antes de viajar. Confirme também elevador, andar, janela dupla e máquina de lavar.</p>
+    </div>
+    <div class="check">
+      <div class="h"><em>06</em> Ramiro, 2 a 3 semanas antes</div>
+      <p>A reserva pelo site exige cartão de crédito e caução de € 25 por pessoa. Sem reserva, a fila passa fácil de uma hora.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>Quatro coisas que invertem o que valia em Buenos Aires</h3>
+    <p><b>Portugal janta cedo</b> &mdash; serviço das 19h30 às 22h, e cozinha de bairro fecha o pedido às 22h; chegar às 22h30 "no horário ibérico" é ficar sem jantar. <b>Cartão é universal e vantajoso</b> &mdash; não carreguem dólar em espécie, só € 80 a 100 para as tascas que ainda são só dinheiro. <b>"Meia-dose"</b> é o equivalente português da porção argentina: está na carta, sai por 60% e derruba o custo real da noite em um quarto. E <b>o couvert é cobrado</b>: pela lei portuguesa não pode ser, se vocês não pediram <em>e</em> não tocaram &mdash; mas uma azeitona já conta como consumo. Pergunte o preço sem constrangimento; o português pergunta.</p>
+  </div>
+</section>
+
+<section id="limites">
+  <div class="shead">
+    <div class="eyebrow">Rigor</div>
+    <h2>O que não foi verificado</h2>
+  </div>
+  <p class="prose">Este planejamento foi produzido por quatro pesquisas independentes, e nem todas puderam confirmar tudo. O que segue é o que <b>não</b> está confirmado, porque um orçamento é tão confiável quanto a parte mais fraca dele.</p>
+  <ul class="clean">
+    <li><b>Nenhum anúncio de hospedagem foi aberto.</b> O acesso a Booking, Airbnb e agregadores estava bloqueado na sessão de pesquisa. As faixas de diária vêm de fontes secundárias e servem para dimensionar o orçamento e escolher o bairro &mdash; <b>não são cotação</b>. Os hotéis citados são ponto de partida de busca. A cotação real exige as datas na mão.</li>
+    <li><b>As datas não foram definidas</b>, e essa é a maior fonte de erro de todo o orçamento: a mesma hospedagem varia de R$ 5.100 a R$ 13.500 conforme o mês.</li>
+    <li><b>Restrição alimentar não foi declarada.</b> Montei como onívoro. Lisboa é difícil para vegetarianos na faixa de tasca, e as noites do Ponto Final e do Ramiro são inegociavelmente marisco &mdash; se houver restrição, três noites precisam ser refeitas.</li>
+    <li><b>O Museu Nacional do Azulejo está fechado para obras</b> desde novembro de 2025, com reabertura prevista para o segundo semestre de 2026 e sem data confirmada. Não planejem em cima dele; confiram na véspera.</li>
+    <li><b>Horários de voo e disponibilidade não foram confirmados</b> para datas específicas, e preços de restaurante em Lisboa se movem. Trate tudo como ordem de grandeza e revalide antes de reservar.</li>
+    <li><b>Informação que circula errada:</b> a gratuidade dominical nos museus nacionais portugueses vale para <b>residentes em Portugal</b>. Turista brasileiro paga. E o restaurante Alma, que ainda aparece em listas de 2026, <b>fechou</b> no fim de 2025.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Sobre os números:</strong> consolidados em 26 de agosto de 2026 a partir de quatro pesquisas independentes &mdash; aéreo, hospedagem, passeios e restaurantes &mdash; para duas pessoas saindo de São Paulo, ao câmbio de € 1 ≈ R$ 6,01 e US$ 1 ≈ R$ 5,15. Onde os relatórios divergiam na ordem dos dias, na contagem do fado e no aproveitamento do último dia, a reconciliação está explicada no texto.</p>
+  <div class="srcs">
+    <a href="https://www.parquesdesintra.pt/pt/planear-a-visita/bilhetes-palacio-da-pena/">Bilhetes da Pena &mdash; Parques de Sintra</a>
+    <a href="https://www.cp.pt/StaticFiles/Passageiros/1_horarios/precos/ic/precos-intercidades-lisboa-evora-beja.pdf">Intercidades Lisboa–Évora &mdash; CP</a>
+    <a href="https://informacao.lisboa.pt/en/news/detail/tourist-tax-on-overnight-stays-rises-to-4-euros">Taxa turística de Lisboa</a>
+    <a href="https://www.deco.proteste.pt/familia-consumo/ferias-lazer/dicas/restaurantes-regras-cobranca-entradas-gelo-copos-agua">Regras do couvert &mdash; DECO Proteste</a>
+    <a href="https://www.publico.pt/2025/09/11/fugas/noticia/henrique-sa-pessoa-fecha-alma-chiado-final-ano-tera-nova-casa-2026-2146725">Fecho do Alma &mdash; Público</a>
+    <a href="https://www.google.com/travel/flights/flights-from-sao-paulo-to-lisbon.html?gl=BR&hl=pt-BR">Tarifas GRU–LIS &mdash; Google Flights</a>
+    <a href="https://www.portugalist.com/noisiest-lisbon-neighbourhoods/">Bairros mais ruidosos de Lisboa &mdash; Portugalist</a>
+  </div>
+</footer>
+
+</div>
