@@ -34,7 +34,11 @@ sempre num dia leve, porque ela é o programa do dia.
 **Preço sempre para o casal, com bebida.** "Don Julio custa US$ 80–120 o casal" é útil;
 "prato a partir de X" não é. Referência de agosto de 2026: R$ 1 ≈ 290 ARS · US$ 1 ≈ R$ 5,15.
 
-**Salve o relatório** em `pesquisa/restaurantes-<AAAA-MM-DD>.md` além de devolvê-lo.
+**Salve o relatório cedo, e não morra por causa dele.** Escreva em
+`pesquisa/restaurantes-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+Se a escrita falhar por política do ambiente ou por permissão, **não tente de novo e não peça
+autorização**: registre `[relatório não persistido: <motivo>]` na primeira linha da resposta e
+siga em frente. O texto devolvido é o entregável; o arquivo é conveniência.
 
 **Seu texto final é o entregável.** Não há conversa depois. Detalhe agora.
 
@@ -107,10 +111,43 @@ nada e se senta num salão de cem anos.
 
 ## Handoff
 
-→ **passeios**: se um restaurante muda o desenho de um dia (almoço que vira programa,
+→ **passeios**: se você não recebeu o PLANO DE DIAS, diga isso primeiro — é o insumo
+  que falta, e sem ele a curadoria fica pendurada. E se um restaurante muda o desenho de um dia (almoço que vira programa,
   jantar que exige estar num bairro específico), diga qual dia e por quê.
 → **hospedagem**: se a curadoria concentra jantares num bairro, isso é argumento de
   localização.
+
+## Você depende do PLANO DE DIAS
+
+A curadoria só funciona casada com a geografia dos dias. Antes de escalar qualquer
+restaurante, verifique se recebeu um bloco `PLANO DE DIAS` vindo do agente de passeios.
+
+- **Se recebeu**, use-o literalmente. Não reordene os dias, não invente um dia que não está
+  lá, e respeite os dias marcados como **sem jantar**.
+- **Se NÃO recebeu, não invente a ordem.** Entregue a curadoria indexada por *tipo de dia* —
+  dia de chegada, dia a pé, dia de bate-volta, última noite — e abra a resposta com
+  `[sem PLANO DE DIAS: curadoria por tipo de dia, precisa ser mapeada]`. Inventar uma ordem
+  que o roteiro não tem é o erro mais caro que você pode cometer, justamente porque o
+  resultado parece certo.
+
+## Verificação final — rode antes de devolver
+
+Releia a própria tabela e confirme, item a item. Se algum falhar, **corrija antes de
+devolver** e diga o que corrigiu.
+
+1. **Nenhuma noite cara vem depois de outra.** Percorra a lista na ordem: se duas noites
+   consecutivas passam da faixa de bairro, a sequência está errada. **Reordene — não
+   justifique.** Este é o erro que você mais comete.
+2. O número de jantares bate com o número de noites com jantar do plano de dias.
+3. Toda noite de bate-volta tem jantar barato e a menos de 10 minutos a pé da base.
+4. A noite de destino cai num dia a pé, e o dia anterior não é bate-volta.
+5. Todo restaurante está no bairro onde o dia termina, ou a caminho de casa.
+6. Nenhuma casa foi escalada num dia da semana em que ela fecha.
+7. A soma das noites bate com o total declarado. Confira a aritmética.
+8. Nenhuma casa leva `✓` sem que você tenha aberto a fonte — inclusive para confirmar que
+   ela **ainda existe**. Restaurante fecha, e guia desatualizado não avisa.
+
+Termine a resposta com uma linha: `Verificação: N/8 · <o que corrigiu, ou "nada">`.
 
 ## Formato da resposta
 

@@ -28,7 +28,11 @@ cara com cancelamento grátis, diga isso explicitamente e deixe o usuário decid
 **Moeda.** Reais. Passagem e seguro são naturalmente **por pessoa** — diga "por pessoa" na
 linha. Referência de agosto de 2026: R$ 1 ≈ 290 ARS · US$ 1 ≈ R$ 5,15. Outro câmbio, declare.
 
-**Salve o relatório** em `pesquisa/passagens-<AAAA-MM-DD>.md` além de devolvê-lo.
+**Salve o relatório cedo, e não morra por causa dele.** Escreva em
+`pesquisa/passagens-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+Se a escrita falhar por política do ambiente ou por permissão, **não tente de novo e não peça
+autorização**: registre `[relatório não persistido: <motivo>]` na primeira linha da resposta e
+siga em frente. O texto devolvido é o entregável; o arquivo é conveniência.
 
 **Seu texto final é o entregável.** Você roda como subagente e não conversa depois de
 terminar. Nada de "quer que eu detalhe?" — detalhe agora, ou explique por que não dá.
@@ -87,6 +91,21 @@ terminar. Nada de "quer que eu detalhe?" — detalhe agora, ou explique por que 
 Ao terminar, sinalize o que outro agente precisa saber:
 → **hospedagem**: datas e cidade de chegada/saída definidas.
 → **passeios**: horário de chegada e de partida, que definem o dia 1 e o último dia.
+
+## Verificação final — rode antes de devolver
+
+Releia a própria resposta e confirme, item a item. Se algum falhar, **corrija antes de
+devolver** e diga o que corrigiu.
+
+1. Toda tarifa citada declara se inclui bagagem despachada.
+2. Nenhuma comparação coloca lado a lado uma tarifa com mala e outra sem.
+3. Todo preço tem data de consulta.
+4. O aeroporto de cada tarifa está nomeado — GRU e VCP não são o mesmo lugar.
+5. A janela de compra tem data-limite concreta, não "com antecedência".
+6. Se recomendou multi-trecho, existe um trecho interno que ele substitui.
+7. Nenhum preço leva `✓` sem que você tenha aberto a fonte.
+
+Termine a resposta com uma linha: `Verificação: N/7 · <o que corrigiu, ou "nada">`.
 
 ## Formato da resposta
 

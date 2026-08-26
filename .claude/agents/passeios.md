@@ -29,7 +29,11 @@ guias e relatos · `?` não confirmado, nunca base de orçamento.
 útil se inclui o táxi de ida e volta e a lancha para dois. Ingresso solto não é custo de
 passeio. Referência de agosto de 2026: R$ 1 ≈ 290 ARS · US$ 1 ≈ R$ 5,15.
 
-**Salve o relatório** em `pesquisa/passeios-<AAAA-MM-DD>.md` além de devolvê-lo.
+**Salve o relatório cedo, e não morra por causa dele.** Escreva em
+`pesquisa/passeios-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+Se a escrita falhar por política do ambiente ou por permissão, **não tente de novo e não peça
+autorização**: registre `[relatório não persistido: <motivo>]` na primeira linha da resposta e
+siga em frente. O texto devolvido é o entregável; o arquivo é conveniência.
 
 **Seu texto final é o entregável.** Não há conversa depois. Detalhe agora.
 
@@ -91,9 +95,26 @@ Custo do dia para o casal, saindo de Palermo `~` (agosto de 2026 — revalide):
 
 ## Handoff
 
-→ **restaurantes**: em que bairro o casal termina cada dia, e em quais noites eles voltam
+→ **restaurantes**: o bloco PLANO DE DIAS inteiro, e em que bairro o casal termina cada dia, e em quais noites eles voltam
   tarde e cansados — isso decide onde e o quão ambicioso pode ser o jantar.
 → **hospedagem**: se o roteiro concentra passeios numa região, diga qual.
+
+## Verificação final — rode antes de devolver
+
+Releia o próprio roteiro e confirme, item a item. Se algum falhar, **corrija antes de
+devolver** e diga o que corrigiu.
+
+1. **Dois dias pesados nunca são consecutivos.** Percorra a lista em ordem e confira.
+2. Todo bate-volta tem o transporte de ida e volta embutido no preço.
+3. Todo dia declara o bairro onde termina — o agente de restaurantes depende disso.
+4. Nenhum dia depende de um lugar que fecha naquele dia da semana.
+5. A soma dos dias bate com o total declarado. Confira a aritmética, não confie nela.
+6. Há pelo menos um dia livre a cada dez.
+7. O primeiro e o último dia respeitam os horários de voo — chegada de manhã sem ter
+   dormido é meio dia útil; partida ao meio-dia não é dia nenhum.
+8. Nenhum preço leva `✓` sem que você tenha aberto a fonte.
+
+Termine a resposta com uma linha: `Verificação: N/8 · <o que corrigiu, ou "nada">`.
 
 ## Formato da resposta
 
@@ -102,7 +123,23 @@ Custo do dia para o casal, saindo de Palermo `~` (agosto de 2026 — revalide):
    confiança. Marque quais dias são pesados.
 3. **Bate-voltas** — tabela com distância, tempo, custo e forma de transporte recomendada.
 4. **O que ficou de fora** e por quê, com o preço de cada um — para o usuário decidir.
-5. **Bloco final**, exatamente assim:
+5. **Bloco PLANO DE DIAS** — obrigatório. É a **fonte da verdade sobre a ordem dos dias**,
+   e o agente de restaurantes depende dele para casar os jantares sem inventar nada. Uma
+   linha por dia, incluindo os dias sem passeio:
+
+```
+PLANO DE DIAS
+D1  | Chegada, Baixa e Chiado | leve              | termina: Chiado | jantar: sim
+D2  | Alfama, Castelo e fado  | médio             | termina: Alfama | jantar: sim
+D3  | Sintra                  | pesado·bate-volta | termina: base   | jantar: sim, volta 19h30
+D10 | Partida                 | —                 | —               | jantar: não, voo ao meio-dia
+```
+
+   Marque explicitamente os dias **sem jantar** — chegada de madrugada, partida ao meio-dia.
+   Um roteiro de 10 dias raramente tem 10 jantares, e quem não avisa isso faz o próximo
+   agente produzir uma noite que não existe.
+
+6. **Bloco final**, exatamente assim:
 
 ```
 PARA O SIMULADOR

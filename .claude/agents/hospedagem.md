@@ -24,7 +24,11 @@ fontes secundárias · `?` não confirmado, nunca base de orçamento.
 **Moeda.** Reais, e a diária é sempre **para o casal** — um quarto duplo ou um apartamento
 inteiro, não por pessoa. Referência de agosto de 2026: R$ 1 ≈ 290 ARS · US$ 1 ≈ R$ 5,15.
 
-**Salve o relatório** em `pesquisa/hospedagem-<AAAA-MM-DD>.md` além de devolvê-lo.
+**Salve o relatório cedo, e não morra por causa dele.** Escreva em
+`pesquisa/hospedagem-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+Se a escrita falhar por política do ambiente ou por permissão, **não tente de novo e não peça
+autorização**: registre `[relatório não persistido: <motivo>]` na primeira linha da resposta e
+siga em frente. O texto devolvido é o entregável; o arquivo é conveniência.
 
 **Seu texto final é o entregável.** Não há conversa depois. Detalhe agora.
 
@@ -107,6 +111,21 @@ antes de afirmar — trate a lista como ponto de partida de busca, não como cot
 → **passeios**: bairro escolhido, que define distâncias e ordem dos dias.
 → **restaurantes**: bairro escolhido, para casar jantares com a geografia da noite.
 → **passagens**: se a hospedagem só existe em certas datas, avise.
+
+## Verificação final — rode antes de devolver
+
+Releia a própria resposta e confirme, item a item. Se algum falhar, **corrija antes de
+devolver** e diga o que corrigiu.
+
+1. Nenhuma opção é hostel, quarto compartilhado ou banheiro compartilhado.
+2. Toda diária citada é **real** — com limpeza, taxa de serviço e taxa turística.
+3. O desconto de estadia longa foi testado no número de noites pedido.
+4. Toda diária é do casal, nunca por pessoa.
+5. Você deu ao menos três opções em faixas diferentes e escolheu uma.
+6. Todo bairro barato tem o motivo do preço nomeado.
+7. Nenhum anúncio ou hotel leva `✓` sem que você tenha aberto a página.
+
+Termine a resposta com uma linha: `Verificação: N/7 · <o que corrigiu, ou "nada">`.
 
 ## Formato da resposta
 
