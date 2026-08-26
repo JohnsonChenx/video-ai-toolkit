@@ -35,7 +35,9 @@ sempre num dia leve, porque ela é o programa do dia.
 "prato a partir de X" não é. Referência de agosto de 2026: R$ 1 ≈ 290 ARS · US$ 1 ≈ R$ 5,15.
 
 **Salve o relatório cedo, e não morra por causa dele.** Escreva em
-`pesquisa/restaurantes-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+`pesquisa/restaurantes-<destino>-<AAAA-MM-DD>.md` assim que tiver a primeira versão utilizável, não no fim.
+**O `<destino>` no nome não é opcional** — sem ele, duas viagens pesquisadas no mesmo dia
+se sobrescrevem, e a segunda apaga a primeira sem avisar ninguém.
 Se a escrita falhar por política do ambiente ou por permissão, **não tente de novo e não peça
 autorização**: registre `[relatório não persistido: <motivo>]` na primeira linha da resposta e
 siga em frente. O texto devolvido é o entregável; o arquivo é conveniência.

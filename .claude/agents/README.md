@@ -58,7 +58,9 @@ antes de devolver, corrige o que falhou e reporta o placar numa última linha
 rodada real, `restaurantes` escalou duas noites caras consecutivas violando a própria
 regra de serrilhado.
 
-**Relatório salvo cedo** em `pesquisa/<agente>-<AAAA-MM-DD>.md`, não no fim. Se a escrita
+**Relatório salvo cedo** em `pesquisa/<agente>-<destino>-<AAAA-MM-DD>.md`, não no fim. O slug
+do destino é obrigatório: sem ele, duas viagens pesquisadas no mesmo dia se sobrescrevem — foi
+o que aconteceu numa rodada real, e o relatório de Lisboa só sobreviveu porque já estava commitado. Se a escrita
 falhar por política do ambiente, o agente registra `[relatório não persistido: <motivo>]` e
 segue — o texto devolvido é o entregável, o arquivo é conveniência.
 
@@ -71,6 +73,8 @@ Os agentes não conversam entre si. Mesmo com o `PLANO DE DIAS`, quem coordena a
   vez e diga qual removeu.
 - **Conferir a aritmética consolidada.** Cada agente fecha a própria conta; ninguém fecha a
   soma. Rode a soma você.
+- **Conferir se nada foi sobrescrito.** Agentes do mesmo tipo rodando em paralelo para viagens
+  diferentes gravam em caminhos parecidos. Rode `git status` depois de cada rodada.
 - **Reaplicar as regras de sequência depois de mesclar.** Reordenar dias na consolidação
   pode recriar exatamente o problema que a verificação do agente resolveu.
 
