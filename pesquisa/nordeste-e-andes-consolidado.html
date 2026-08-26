@@ -1,0 +1,406 @@
+<title>Nordeste e Andes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#F1F2F4; --surface:#FFFFFF; --surface-2:#E7EAEE;
+  --ink:#13181D; --ink-2:#4A535D; --ink-3:#7B858F;
+  --line:#DCE0E5; --line-strong:#C4CAD1;
+  --areia:#A8681A; --areia-soft:#F6EBDC;
+  --andes:#1F5F86; --andes-soft:#E3EDF4;
+  --alerta:#A33B2A;
+  --bar:#4A535D;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1317; --surface:#161B21; --surface-2:#1F252C;
+    --ink:#EAEDF1; --ink-2:#A3ADB7; --ink-3:#727C87;
+    --line:#272E36; --line-strong:#38404A;
+    --areia:#D9A253; --areia-soft:#2A2013;
+    --andes:#79B2D6; --andes-soft:#132330;
+    --alerta:#E07A64;
+    --bar:#8A95A0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1317; --surface:#161B21; --surface-2:#1F252C;
+  --ink:#EAEDF1; --ink-2:#A3ADB7; --ink-3:#727C87;
+  --line:#272E36; --line-strong:#38404A;
+  --areia:#D9A253; --areia-soft:#2A2013;
+  --andes:#79B2D6; --andes-soft:#132330;
+  --alerta:#E07A64;
+  --bar:#8A95A0;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);margin:0;padding:0 20px 96px;
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,6.5vw,3.9rem);font-weight:700;line-height:1.03;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.5vw,2.1rem);font-weight:600;line-height:1.14;letter-spacing:-.012em}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3}
+p{margin:0}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.prose{max-width:64ch}
+
+header{padding:70px 0 40px;display:flex;flex-direction:column;gap:20px}
+.rule{display:flex;gap:5px;align-items:center}
+.rule i{display:block;height:4px;border-radius:2px}
+.rule i:nth-child(1){width:46px;background:var(--areia)}
+.rule i:nth-child(2){width:46px;background:var(--andes)}
+.lede{font-size:1.13rem;color:var(--ink-2);max-width:60ch}
+.lede b{color:var(--ink);font-weight:600}
+.premise{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.premise span{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.74rem;
+  border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;
+  color:var(--ink-2);background:var(--surface)}
+
+.twoup{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:6px}
+.tu{background:var(--surface);padding:22px;display:flex;flex-direction:column;gap:7px}
+.tu .tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase}
+.tu.a .tag{color:var(--areia)} .tu.c .tag{color:var(--andes)}
+.tu .amt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:2.05rem;font-weight:600;
+  letter-spacing:-.025em;line-height:1;font-variant-numeric:tabular-nums}
+.tu .sub{font-size:.81rem;color:var(--ink-3)}
+.tu h3{font-family:"Fraunces",Georgia,serif;font-size:1.2rem;margin-top:2px}
+@media (max-width:620px){.twoup{grid-template-columns:1fr}}
+
+section{padding:52px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
+.shead{display:flex;flex-direction:column;gap:9px}
+.shead.a .eyebrow{color:var(--areia)} .shead.c .eyebrow{color:var(--andes)}
+
+.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--alerta);
+  border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:9px}
+.callout.a{border-left-color:var(--areia)} .callout.c{border-left-color:var(--andes)}
+.callout h3{font-family:"Archivo",sans-serif;font-size:.95rem;font-weight:600}
+.callout p{font-size:.95rem;color:var(--ink-2)}
+
+ul.clean{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+ul.clean li{position:relative;padding-left:20px;color:var(--ink-2);font-size:.97rem}
+ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
+  border-radius:1.5px;background:var(--ink-3)}
+ul.clean.a li::before{background:var(--areia)} ul.clean.c li::before{background:var(--andes)}
+ul.clean li b{color:var(--ink);font-weight:600}
+
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:520px}
+caption{text-align:left;font-size:.82rem;color:var(--ink-3);padding-bottom:10px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.68rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-strong)}
+td.n,th.n{text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tr.total td{border-top:2px solid var(--line-strong);font-weight:600;padding-top:14px}
+td small{display:block;color:var(--ink-3);font-size:.82rem;margin-top:2px}
+
+.days{display:flex;flex-direction:column}
+.day{display:grid;grid-template-columns:74px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:0}
+.day .d{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.71rem;font-weight:600;
+  letter-spacing:.07em;padding-top:3px;text-transform:uppercase;color:var(--ink-3)}
+.day .d b{display:block;font-size:.78rem}
+.days.a .day .d b{color:var(--areia)} .days.c .day .d b{color:var(--andes)}
+.day .body{display:flex;flex-direction:column;gap:5px}
+.day .t{font-weight:600;font-size:1rem;letter-spacing:-.005em}
+.day .x{font-size:.93rem;color:var(--ink-2)}
+.day.hard{background:var(--surface);margin:0 -14px;padding-left:14px;padding-right:14px;border-radius:6px}
+.dinner{font-size:.86rem;color:var(--ink-2);border-left:2px solid var(--line-strong);padding-left:11px;margin-top:2px}
+.dinner b{color:var(--ink);font-weight:600}
+.days.a .dinner{border-left-color:var(--areia)} .days.c .dinner{border-left-color:var(--andes)}
+
+figure{margin:0;display:flex;flex-direction:column;gap:16px}
+figcaption{font-size:.82rem;color:var(--ink-3)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.brow{display:grid;grid-template-columns:158px 1fr 92px;gap:14px;align-items:center}
+.brow .bl{font-size:.85rem;color:var(--ink-2);text-align:right;line-height:1.25}
+.btrack{height:22px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.bfill{height:100%;width:var(--w);background:var(--bar);border-radius:0 4px 4px 0}
+.bfill.a{background:var(--areia)} .bfill.c{background:var(--andes)}
+.brow .bv{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.83rem;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+@media (max-width:620px){.brow{grid-template-columns:104px 1fr 82px;gap:9px}}
+
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.check{background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:7px}
+.check .h{font-weight:600;font-size:.93rem}
+.check p{font-size:.87rem;color:var(--ink-2)}
+
+footer{padding:44px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+footer p{font-size:.84rem;color:var(--ink-3)}
+@media (max-width:600px){body{padding:0 16px 72px}header{padding:48px 0 32px}
+  .day{grid-template-columns:1fr;gap:5px}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="rule"><i></i><i></i></div>
+  <div class="eyebrow">Dois planejamentos &middot; 10 dias cada &middot; Casal, orçamento único</div>
+  <h1>Nordeste e Andes</h1>
+  <p class="lede">Rota das Emoções e Chile, pesquisados em paralelo pelos mesmos quatro critérios. E o resultado contraria a intuição: <b>a viagem internacional sai R$&nbsp;3.636 mais barata que a doméstica</b>.</p>
+  <div class="premise">
+    <span>2 pessoas · orçamento único</span>
+    <span>Saída de São Paulo</span>
+    <span>Sem hostel · 3★+ ou imóvel inteiro</span>
+    <span>Jantar bom, almoço simples</span>
+    <span>Pesquisado em 26/08/2026</span>
+  </div>
+
+  <div class="twoup">
+    <div class="tu a">
+      <span class="tag">Rota das Emoções</span>
+      <span class="amt">21.995</span>
+      <span class="sub">R$ 10.997 por pessoa · R$ 2.199 por dia</span>
+      <h3>Jericoacoara, Delta e Lençóis</h3>
+      <p class="sub">Três bases, 5 a 14 de agosto de <b>2027</b>. Doméstica, e a mais cara das duas.</p>
+    </div>
+    <div class="tu c">
+      <span class="tag">Chile</span>
+      <span class="amt">18.359</span>
+      <span class="sub">R$ 9.179 por pessoa · R$ 1.836 por dia</span>
+      <h3>Santiago e Valparaíso</h3>
+      <p class="sub">Base em Providencia com uma noite fora. Março de 2027 ou novembro de 2026.</p>
+    </div>
+  </div>
+</header>
+
+<section id="comparacao">
+  <div class="shead">
+    <div class="eyebrow">O quadro completo</div>
+    <h2>As quatro viagens, lado a lado</h2>
+  </div>
+  <p class="prose">Com Buenos Aires e Lisboa já planejadas pelos mesmos critérios, dá para ver a escala inteira. Todas são de 10 dias, para o mesmo casal, com o mesmo padrão de hospedagem e a mesma regra de jantar.</p>
+
+  <figure>
+    <div class="bars" role="img" aria-label="Custo total do casal em 10 dias: Buenos Aires R$ 14.550, Chile R$ 18.359, Rota das Emoções R$ 21.995, Lisboa R$ 30.208.">
+      <div class="brow"><span class="bl">Buenos Aires</span><span class="btrack"><span class="bfill" style="--w:48.2%"></span></span><span class="bv">R$ 14.550</span></div>
+      <div class="brow"><span class="bl">Chile</span><span class="btrack"><span class="bfill c" style="--w:60.8%"></span></span><span class="bv">R$ 18.359</span></div>
+      <div class="brow"><span class="bl">Rota das Emoções</span><span class="btrack"><span class="bfill a" style="--w:72.8%"></span></span><span class="bv">R$ 21.995</span></div>
+      <div class="brow"><span class="bl">Lisboa</span><span class="btrack"><span class="bfill" style="--w:100%"></span></span><span class="bv">R$ 30.208</span></div>
+    </div>
+    <figcaption>Total do casal em 10 dias. As duas viagens novas estão destacadas em cor. Lisboa custa mais que Buenos Aires e Chile somadas.</figcaption>
+  </figure>
+
+  <div class="callout">
+    <h3>Por que a doméstica é mais cara que a internacional</h3>
+    <p>A Rota das Emoções tem a passagem mais barata das duas &mdash; e perde mesmo assim, por dois motivos que não aparecem em nenhum roteiro pronto. <b>Os traslados 4x4 entre as três bases custam R$&nbsp;3.073 sozinhos</b>, porque o veículo precisa encarar areia e balsa, e não há alternativa. E <b>Atins é mais caro que Santiago</b>: uma vila de duas dezenas de pousadas, onde tudo chega por lancha, com demanda internacional de kitesurf comprimindo a oferta. Somados, transporte terrestre e hospedagem são 54% da viagem. No Chile, as mesmas duas linhas são 40%.</p>
+  </div>
+</section>
+
+<section id="rota">
+  <div class="shead a">
+    <div class="eyebrow">Viagem 1 &middot; R$ 21.995</div>
+    <h2>Rota das Emoções</h2>
+  </div>
+  <p class="prose">Jericoacoara, Delta do Parnaíba e Lençóis Maranhenses em três bases, entrando por Jericoacoara e saindo por São Luís. <b>Oito dias cheios dentro de dez</b> &mdash; o dia 1 é meio dia útil e o dia 10 é consumido pela saída.</p>
+
+  <div class="callout a">
+    <h3>Você não tem esta viagem em 2026</h3>
+    <p>As lagoas dos Lençóis só têm água de junho a setembro. Agosto de 2026 já está com evaporação avançada e setembro é loteria: você compraria dentro da janela cara e apostaria em achar lagoa. <b>A janela real é 5 a 14 de agosto de 2027</b>, e as tarifas para essa data só ficam disponíveis a partir de outubro de 2026. A natureza escolheu a data &mdash; trate a compra como data fixa, não como caça a promoção.</p>
+  </div>
+
+  <div class="days a">
+    <div class="day"><div class="d">Dia 1<b>qui 5/8</b></div><div class="body">
+      <div class="t">Chegada e a primeira Duna</div>
+      <div class="x">Voo pousa em Jericoacoara no início da tarde, mais 1h de 4x4 na areia até a vila. Check-in às 15h e a Duna do Pôr do Sol às 16h45, a pé, de graça. Capoeira na areia e o sol caindo no mar.</div>
+      <div class="dinner"><b>Jantar:</b> Na Casa Dela, na Rua Principal &mdash; chão de areia, luz baixa. <span class="num">R$ 300</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 2<b>sex 6/8</b></div><div class="body">
+      <div class="t">Litoral Leste e a Lagoa do Paraíso</div>
+      <div class="x">Buggy até a Praia do Preá e a Árvore da Preguiça, e o dia inteiro na Lagoa do Paraíso: rede dentro d'água, fundo de areia branca. Fique até o sol baixar sobre a lagoa.</div>
+      <div class="dinner"><b>Jantar:</b> Naturalmente &mdash; crepe com os pés na areia, de frente pro mar. <span class="num">R$ 150</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 3<b>sáb 7/8</b></div><div class="body">
+      <div class="t">Litoral Oeste: Mangue Seco e Tatajuba</div>
+      <div class="x">Balsa no Rio Guriú, canoa a remo no mangue com cavalos-marinhos, e as dunas de Tatajuba com a Lagoa Grande. Paisagem completamente diferente da véspera &mdash; é por isso que os dois circuitos cabem.</div>
+      <div class="dinner"><b>Jantar:</b> Pimenta Verde &mdash; moqueca e casquinha de caranguejo. <span class="num">R$ 215</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 4<b>dom 8/8</b></div><div class="body">
+      <div class="t">Dia livre, tudo a pé, tudo de graça</div>
+      <div class="x">Caminhada até a Pedra Furada na maré baixa, 40 min pela praia. Tarde de vila e banho de mar. <em>O sol atravessando o furo é fenômeno de junho e julho &mdash; em agosto você tem a pedra, não o alinhamento.</em></div>
+      <div class="dinner"><b>Jantar:</b> <b>Tamarindo</b>, no jardim &mdash; a noite de destino, e a única noite de Jeri fora de dia de 4x4. <span class="num">R$ 470</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 5<b>seg 9/8</b></div><div class="body">
+      <div class="t">Travessia para o Piauí e a Revoada dos Guarás</div>
+      <div class="x">3h30 de 4x4 pela praia e pelos mangues até Barra Grande. Às 15h, lancha para a revoada: ao entardecer, milhares de guarás-vermelhos chegam para dormir e o mangue fica literalmente vermelho.</div>
+      <div class="dinner"><b>Jantar:</b> barraca de peixe da vila &mdash; Barra Grande não tem faixa boa, e depois da travessia não faz falta. <span class="num">R$ 160</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 6<b>ter 10/8</b></div><div class="body">
+      <div class="t">O dia de deslocamento</div>
+      <div class="x">Este dia é o preço da Rota das Emoções: 5h de estrada com balsas até Barreirinhas, e depois voadeira pelo Rio Preguiças até Atins. <b>O traslado de barco é o passeio do Preguiças</b> &mdash; você passa por Vassouras e pelo farol de Mandacaru sem pagar por isso. <em>Pare no banco em Barreirinhas: é a última chance de sacar.</em></div>
+      <div class="dinner"><b>Jantar:</b> La Pizza, no gramado da Pousada Maresia &mdash; a resposta certa para um dia assim. <span class="num">R$ 175</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 7<b>qua 11/8</b></div><div class="body">
+      <div class="t">Caburé e o Farol de Mandacaru</div>
+      <div class="x">Barco local até Caburé, a língua de areia entre o rio e o mar aberto, e os 160 degraus do farol: lá de cima você vê o rio, o mar e o começo dos Lençóis de uma vez. Tarde livre em praia deserta.</div>
+      <div class="dinner"><b>Jantar:</b> Casa de Juja &mdash; arroz do mar, cozinha maranhense de verdade. <span class="num">R$ 310</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 8<b>qui 12/8</b></div><div class="body">
+      <div class="t">Circuito Betânia, o dia dos Lençóis</div>
+      <div class="x">4x4 até o setor de Betânia: Lagoa Betânia, Lagoa das Andorinhas, almoço no povoado. É o dia em que você entende por que veio &mdash; dunas até o horizonte com água doce entre elas.</div>
+      <div class="dinner"><b>Jantar:</b> Urra Beer ou a cozinha da pousada &mdash; segurar aqui é o que paga a última noite. <span class="num">R$ 165</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 9<b>sex 13/8</b></div><div class="body">
+      <div class="t">Canto do Atins e as lagoas ao pôr do sol</div>
+      <div class="x"><b>Chegue ao Canto do Atins ao meio-dia</b>: o camarão na chapa da Luzia ou do Seu Antônio é a melhor coisa que se come nesta viagem, e custa menos que o jantar mais barato de Jeri. Só depois siga para as lagoas da Esmeralda e Tropical, no fim da tarde.</div>
+      <div class="dinner"><b>Jantar:</b> <b>La Table de Georges</b> &mdash; a melhor mesa de Atins, na última noite. <span class="num">R$ 420</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 10<b>sáb 14/8</b></div><div class="body">
+      <div class="t">Saída de Atins e meio dia em São Luís</div>
+      <div class="x">6h30 de voadeira privativa, 4h de estrada, e você chega em São Luís ao meio-dia. Almoce no restaurante-escola do Senac (fecha domingo, abre sábado) e ande a Praia Grande a pé: são seis quadras e o maior acervo de azulejaria portuguesa fora de Portugal. <em>O city tour a R$ 458 é dinheiro jogado fora.</em></div>
+      <div class="dinner"><b>Sem jantar</b> &mdash; voo depois das 18h.</div></div></div>
+  </div>
+
+  <figure>
+    <div class="bars" role="img" aria-label="Orçamento da Rota das Emoções: passeios e traslados R$ 6.033, hospedagem R$ 5.840, aéreo R$ 3.900, comida R$ 3.665, reserva R$ 2.357, seguro R$ 200.">
+      <div class="brow"><span class="bl">Passeios e traslados</span><span class="btrack"><span class="bfill a" style="--w:100%"></span></span><span class="bv">R$ 6.033</span></div>
+      <div class="brow"><span class="bl">Hospedagem, 9 noites</span><span class="btrack"><span class="bfill a" style="--w:96.8%"></span></span><span class="bv">R$ 5.840</span></div>
+      <div class="brow"><span class="bl">Aéreo</span><span class="btrack"><span class="bfill a" style="--w:64.6%"></span></span><span class="bv">R$ 3.900</span></div>
+      <div class="brow"><span class="bl">Comida</span><span class="btrack"><span class="bfill a" style="--w:60.7%"></span></span><span class="bv">R$ 3.665</span></div>
+      <div class="brow"><span class="bl">Reserva 12%</span><span class="btrack"><span class="bfill a" style="--w:39.1%"></span></span><span class="bv">R$ 2.357</span></div>
+      <div class="brow"><span class="bl">Seguro</span><span class="btrack"><span class="bfill a" style="--w:3.3%"></span></span><span class="bv">R$ 200</span></div>
+    </div>
+    <figcaption>Passeios lidera porque metade dessa linha é traslado 4x4 entre as bases, não passeio. É a assinatura de custo de uma rota linear no Nordeste.</figcaption>
+  </figure>
+
+  <ul class="clean a">
+    <li><b>O compartilhado ganha do privativo aqui</b>, ao contrário da Argentina. O veículo é uma Toyota 4x4 preparada para areia e balsa e custa três vezes um sedã, enquanto a tarifa por pessoa do compartilhado é baixa. Nos trechos longos isso economiza R$&nbsp;1.400. As exceções são a saída de Atins e o trecho até São Luís, onde você não compra conforto &mdash; compra horário, no dia do voo.</li>
+    <li><b>A data de entrada não é livre.</b> O transfer compartilhado Jeri↔Barra Grande roda segunda, quarta e sexta; o Barra Grande↔Barreirinhas roda terça e sexta. Como são consecutivos, a única combinação que funciona é segunda→terça &mdash; e é por isso que a viagem começa numa quinta. Desalinhar custa R$&nbsp;1.040 em transfer privativo.</li>
+    <li><b>Atins, não Barreirinhas.</b> A intuição de que a cidade maior tem melhor jantar está invertida: Atins tem La Pizza, Casa de Juja e La Table de Georges; Barreirinhas tem oferta de cidade de passagem. Atins custa R$&nbsp;340 por noite a mais, e devolve em passeio mais curto e em quatro jantares que entram na viagem.</li>
+    <li><b>Jeri não tem banco nem caixa eletrônico convencional</b>, e Atins é pior. O cash-back de mercado cobra 10% no débito e 15% no crédito &mdash; o pior câmbio da viagem. Saque R$&nbsp;1.200 a 1.500 em Fortaleza e outro tanto em Barreirinhas, no dia 6.</li>
+    <li><b>Lagoa Azul é repetição da Lagoa do Paraíso</b> &mdash; mesma ideia, menor, 15 minutos de distância. Já vem no circuito; não pague entrada nas duas.</li>
+  </ul>
+</section>
+
+<section id="chile">
+  <div class="shead c">
+    <div class="eyebrow">Viagem 2 &middot; R$ 18.359</div>
+    <h2>Chile</h2>
+  </div>
+  <p class="prose">Base em Providencia, no eixo do Metro Manuel Montt–Los Leones, com <b>uma única noite fora</b>, em Cerro Alegre. Atacama e Patagônia foram descartados com número: a Patagônia levaria o aéreo a R$&nbsp;5.700 e consumiria metade das noites; o Atacama custaria mais R$&nbsp;1.800 e três noites.</p>
+
+  <div class="callout c">
+    <h3>Sair da base uma noite sai mais barato que não sair</h3>
+    <p>Nove noites em Santiago mais um bate-volta a Valparaíso custam R$&nbsp;3.691. Oito noites em Santiago mais uma em Cerro Alegre custam R$&nbsp;3.663 &mdash; e entregam uma noite inteira a mais de viagem. A noite economizada quase paga a de Valparaíso, o desconto de estadia longa sobrevive intacto em oito noites, e você elimina um trecho de estrada. <b>Base única deixou de ser dogma</b>: venceu em Lisboa e Buenos Aires, perde aqui por 28 reais.</p>
+  </div>
+
+  <div class="days c">
+    <div class="day"><div class="d">Dia 1<b>sábado</b></div><div class="body">
+      <div class="t">Chegada e aterrissagem suave</div>
+      <div class="x">O voo pousa às 5h30 e vocês não dormiram: isto é meio dia útil. Manhã lenta no Parque Balmaceda, <b>cochilo à tarde, não de manhã</b>, e o Cerro Santa Lucía com o Barrio Lastarria no fim do dia.</div>
+      <div class="dinner"><b>Jantar:</b> Chipe Libre, em Lastarria &mdash; abre 12h30 e não fecha, então às 20h a cozinha já está quente. Ceviche, um pisco sour e cama. <span class="num">R$ 230</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 2<b>domingo</b></div><div class="body">
+      <div class="t">Centro histórico e mercados</div>
+      <div class="x">Tudo a pé num raio de 1,2 km: Plaza de Armas, o <b>Museo Precolombino</b> &mdash; o melhor do Chile e o único que justifica ingresso &mdash; e os pátios de La Moneda. Almoce no <b>Mercado Tirso de Molina</b>, seis minutos a pé do Mercado Central e pela metade do preço, onde os chilenos comem de fato.</div>
+      <div class="dinner"><b>Jantar:</b> Peumayén, em Bellavista &mdash; cozinha ancestral mapuche e rapanui, com a cesta de pães. <span class="num">R$ 440</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 3<b>segunda</b></div><div class="body">
+      <div class="t">Cajón del Maipo e o Embalse el Yeso</div>
+      <div class="x">A única paisagem andina de verdade acessível em bate-volta: sobe de 700 a 2.500 metros, ripio nos últimos 25 km, lagoa turquesa entre paredões. <b>É o passeio que substitui a Patagônia descartada.</b> Segunda-feira é o dia certo: natureza não fecha, museu fecha.</div>
+      <div class="dinner"><b>Jantar:</b> Liguria Manuel Montt &mdash; serve às 19h, ao lado do metrô, e vocês voltam destruídos às 18h30. <span class="num">R$ 226</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 4<b>terça</b></div><div class="body">
+      <div class="t">San Cristóbal, Bellavista e Neruda</div>
+      <div class="x">Funicular na subida e teleférico na descida, que deixa vocês ao lado de Providencia. La Chascona, a casa de Neruda, com audioguia em português. Tudo colado, tudo terça &mdash; porque na segunda o teleférico e as casas fecham.</div>
+      <div class="dinner"><b>Jantar:</b> El Mesón Nerudiano &mdash; peña com música ao vivo, no lado bom de Bellavista. R$ 225 numa peña contra R$ 680 num jantar-show para turista. <span class="num">R$ 270</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 5<b>quarta</b></div><div class="body">
+      <div class="t">Casablanca e a noite em Cerro Alegre</div>
+      <div class="x">Saída com as malas, remis contratado, duas vinícolas de Casablanca no caminho &mdash; Emiliana, orgânica com alpacas no vinhedo, e almoço no Tanino. Chegada em Cerro Alegre às 18h. Casablanca é vale frio, de brancos: o contraponto exato ao Maipo.</div>
+      <div class="dinner"><b>Jantar:</b> <b>Fauna</b>, no Pasaje Dimalow &mdash; terraço sobre o porto, a pé do hotel. <span class="num">R$ 407</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 6<b>quinta</b></div><div class="body">
+      <div class="t">Valparaíso a pé</div>
+      <div class="x">Vocês acordam já dentro de Valparaíso &mdash; é isso que a noite fora compra. Cerros Alegre e Concepción a pé, La Sebastiana no Bellavista, o Museo a Cielo Abierto de graça. <em>Viña del Mar: duas horas no máximo, e é a primeira coisa a cortar.</em> Volta de ônibus, que chega no Terminal Pajaritos &mdash; estação da mesma Linha 1 da base.</div>
+      <div class="dinner"><b>Jantar:</b> Fuente Alemana &mdash; lomito no balcão, 40 minutos, acabou. <span class="num">R$ 215</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 7<b>sexta</b></div><div class="body">
+      <div class="t">Dia livre &mdash; e a noite</div>
+      <div class="x">O amortecedor, depois de dois dias de estrada. Museo Nacional de Bellas Artes de graça, Parque Forestal, e a tarde no Barrio Italia, onde sexta é o dia bom.</div>
+      <div class="dinner"><b>Jantar:</b> <b>99 Restaurante</b> &mdash; catorze lugares, sete mesas, menu de seis a nove tempos, cada um estudando um vale agrícola. É o único dia em que chegam descansados, e três horas de mesa exigem isso. <span class="num">R$ 900</span></div></div></div>
+
+    <div class="day hard"><div class="d">Dia 8<b>sábado</b></div><div class="body">
+      <div class="t">Vale do Maipo e a vendimia</div>
+      <div class="x">Santa Rita, a melhor das três: parque histórico de 40 hectares e o <b>Museo Andino incluído e grátis</b>, com coleção pré-colombina que rivaliza com a do Precolombino. Se a viagem for em março, é aqui que entra a <b>vendimia de Isla de Maipo</b> &mdash; e o roteiro foi montado para que este dia caia num sábado exatamente por isso.</div>
+      <div class="dinner"><b>Jantar:</b> El Huerto &mdash; verde e leve, depois de um dia com vinho no corpo. <span class="num">R$ 203</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 9<b>domingo</b></div><div class="body">
+      <div class="t">Memória e Barrio Yungay</div>
+      <div class="x">O <b>Museo de la Memoria</b>, de graça: duas horas pesadas, e é o museu que explica o Chile contemporâneo. Depois o Barrio Yungay a pé &mdash; o bairro mais bonito e menos visitado de Santiago.</div>
+      <div class="dinner"><b>Jantar:</b> Galindo, em Bellavista &mdash; picada desde 1968, e uma das poucas boas que abrem domingo. <span class="num">R$ 230</span></div></div></div>
+
+    <div class="day"><div class="d">Dia 10<b>segunda</b></div><div class="body">
+      <div class="t">Última manhã e voo noturno</div>
+      <div class="x">Segunda-feira não abre museu nenhum, então o dia é de vista e compras: Sky Costanera, a dez minutos da base, e o Pueblito Los Dominicos. Dia de partida não é dia de atravessar Santiago.</div>
+      <div class="dinner"><b>Sem jantar</b> &mdash; voo noturno, saída para o aeroporto às 18h30.</div></div></div>
+  </div>
+
+  <figure>
+    <div class="bars" role="img" aria-label="Orçamento do Chile: comida R$ 5.321, passeios R$ 3.741, hospedagem R$ 3.550, aéreo R$ 3.300, reserva R$ 1.967, seguro e eSIM R$ 480.">
+      <div class="brow"><span class="bl">Comida</span><span class="btrack"><span class="bfill c" style="--w:100%"></span></span><span class="bv">R$ 5.321</span></div>
+      <div class="brow"><span class="bl">Passeios</span><span class="btrack"><span class="bfill c" style="--w:70.3%"></span></span><span class="bv">R$ 3.741</span></div>
+      <div class="brow"><span class="bl">Hospedagem, 9 noites</span><span class="btrack"><span class="bfill c" style="--w:66.7%"></span></span><span class="bv">R$ 3.550</span></div>
+      <div class="brow"><span class="bl">Aéreo</span><span class="btrack"><span class="bfill c" style="--w:62.0%"></span></span><span class="bv">R$ 3.300</span></div>
+      <div class="brow"><span class="bl">Reserva 12%</span><span class="btrack"><span class="bfill c" style="--w:37.0%"></span></span><span class="bv">R$ 1.967</span></div>
+      <div class="brow"><span class="bl">Seguro e eSIM</span><span class="btrack"><span class="bfill c" style="--w:9.0%"></span></span><span class="bv">R$ 480</span></div>
+    </div>
+    <figcaption>Composição invertida em relação à Rota das Emoções: aqui a comida domina e o transporte é a menor das quatro linhas principais. Santiago é uma cidade de metrô e caminhada.</figcaption>
+  </figure>
+
+  <ul class="clean c">
+    <li><b>A isenção de IVA vale 19% e inverte a escolha de hospedagem.</b> Hotelaria registrada no SII é isenta para turista estrangeiro não residente, mediante passaporte e cartão internacional &mdash; e o anfitrião de Airbnb pessoa física não emite a factura de exportación. Daí a escolha do <b>apart-hotel</b>: é imóvel inteiro, com cozinha e espaço para duas malas, mas operado como hotel. Pergunte por escrito antes de reservar.</li>
+    <li><b>No Cajón del Maipo, a excursão por pessoa bate o remis contratado</b> &mdash; R$ 480 contra R$ 850. São 200 km com 25 de ripio, e o remista cobra caro justamente por isso. Terceiro destino, terceira resposta para a mesma pergunta.</li>
+    <li><b>A Fiesta de la Vendimia de Casablanca é em abril, não em março.</b> Quem pousar em março esperando encontrá-la não a encontra. A que cabe numa viagem de março é a de Isla de Maipo, no fim do mês.</li>
+    <li><b>Novembro dá o Embalse el Yeso melhor, março dá a vendimia.</b> O Yeso está mais cheio e mais azul no degelo de novembro e dezembro; em março o nível já cedeu. Não dá para ter os dois.</li>
+    <li><b>Setembro parece baixa temporada e é o mês mais caro</b>, por causa das Fiestas Patrias &mdash; que em 2026 caem em sexta e sábado, 18 e 19, criando um feriadão longo. Evite 17 a 21 de setembro.</li>
+    <li><b>Não carregue dólar em espécie.</b> O Chile não é a Argentina: não há câmbio paralelo, cartão é aceito em tudo, e os preços de cardápio já incluem o IVA de 19%. Leve peso em espécie só para os mercados.</li>
+  </ul>
+</section>
+
+<section id="exigencias">
+  <div class="shead">
+    <div class="eyebrow">Escolher entre as duas</div>
+    <h2>O que cada uma exige</h2>
+  </div>
+  <div class="checks">
+    <div class="check"><span class="h">Prazo</span><p><b>Rota das Emoções tem prazo imposto pela natureza</b> &mdash; agosto de 2027, e as tarifas só abrem em outubro deste ano. O Chile pode ser em março de 2027 ou já em novembro de 2026, e a janela é ampla.</p></div>
+    <div class="check"><span class="h">Conforto</span><p>Atins tem energia instável, gerador que desliga de madrugada, internet fraca e nenhuma farmácia. Providencia tem metrô na porta e recepção 24h. <b>São duas ideias diferentes de viagem</b>, não duas faixas de preço.</p></div>
+    <div class="check"><span class="h">Ritmo</span><p>A Rota das Emoções tem <b>quatro dias pesados e dois de travessia pura</b>, com um dia inteiro que é só deslocamento. O Chile tem três dias pesados e um dia livre de verdade no meio.</p></div>
+    <div class="check"><span class="h">Mesa</span><p>No Chile a comida é a maior despesa e o marisco é o melhor do continente. Na Rota das Emoções, <b>a melhor refeição da viagem é um almoço de camarão numa barraca</b>, e custa menos que o jantar mais barato de Jeri.</p></div>
+    <div class="check"><span class="h">Dinheiro</span><p>Jeri e Atins são praças de dinheiro vivo, sem caixa eletrônico confiável e com cash-back a 10–15%. No Chile, cartão em tudo e sem câmbio paralelo. <b>É a diferença entre planejar saques e não pensar no assunto.</b></p></div>
+    <div class="check"><span class="h">Se o orçamento apertar</span><p>Na Rota das Emoções, cortar dói: os traslados são fixos e a hospedagem em Atins é escassa. No Chile há folga em três linhas &mdash; trocar dois jantares por picada devolve R$ 400 sem estragar nada.</p></div>
+  </div>
+</section>
+
+<section id="pendencias">
+  <div class="shead">
+    <div class="eyebrow">Rigor</div>
+    <h2>Pendências e limites</h2>
+  </div>
+  <p class="prose">Quatro pesquisas independentes por viagem, e nem todas puderam confirmar tudo. O que segue é o que <b>não</b> está resolvido.</p>
+  <ul class="clean">
+    <li><b>Nenhuma página de reserva ou de tarifa foi aberta.</b> O acesso a Booking, Airbnb, Google Flights, Kayak e agregadores estava bloqueado durante toda a pesquisa. As faixas vêm de fontes secundárias e servem para dimensionar orçamento e decidir bairro, base e formato &mdash; <b>não são cotação</b>. Os hotéis e restaurantes nomeados são ponto de partida de busca.</li>
+    <li><b>O dia 10 da Rota das Emoções depende de um voo que ainda não existe.</b> Ele só funciona se o São Luís–Guarulhos decolar depois das 18h. Com voo de manhã, o dia 10 é zero, São Luís não acontece, e a última noite teria que sair de Atins &mdash; o que quebra o plano de hospedagem. <b>Confirme o horário antes de emitir.</b></li>
+    <li><b>Dois jantares do Chile foram trocados na consolidação.</b> O roteiro foi ancorado em chegada de sábado, por causa dos fechamentos de segunda-feira em Santiago &mdash; o que faz os dias 2 e 9 caírem em domingo, quando Bocanáriz e outras três casas escolhidas fecham. Substituídos por Peumayén e Galindo, que abrem domingo. <b>Se a data de chegada mudar, refaça essa checagem.</b></li>
+    <li><b>Restrição alimentar não foi declarada</b> em nenhuma das duas. Ambas foram montadas como onívoro com peso forte em frutos do mar. No Canto do Atins praticamente não há alternativa ao camarão, e em Atins e Barra Grande uma restrição muda a curadoria inteira.</li>
+    <li><b>Nenhum orçamento-teto foi fixado</b> para estas duas viagens, então não há folga declarada. A referência: Buenos Aires fechou em R$ 14.550 e Lisboa em R$ 30.208.</li>
+    <li><b>Um sushi bar citado em Atins não pôde ser confirmado</b> &mdash; nome, endereço nem se ainda opera. Ficou fora do orçamento.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Sobre os números:</strong> consolidados em 26 de agosto de 2026 a partir de oito pesquisas independentes &mdash; aéreo, hospedagem, passeios e restaurantes para cada viagem &mdash; para duas pessoas saindo de São Paulo. Câmbio: R$ 1 ≈ 177 CLP. Onde os relatórios divergiam ou colidiam, a reconciliação está explicada no texto. Preços de transfer, pousada e restaurante se movem: trate tudo como ordem de grandeza e revalide antes de reservar.</p>
+</footer>
+
+</div>
