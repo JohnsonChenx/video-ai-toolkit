@@ -7,3 +7,10 @@ Audios/
 *.log
 .DS_Store
 Thumbs.db
+Documentarista/projetos/
+Noticiarista/projetos/
+Noticiarista/historico.json
+Noticiarista/*.pendente.json
+Noticiarista/dossie*.md
+Noticiarista/GRAVACAO.md
+Noticiarista/ROTEIRO_GRAVACAO.md
