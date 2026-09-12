@@ -1,6 +1,6 @@
 # 🎬 Video AI Toolkit
 
-**Dê ao seu agente de IA o poder completo sobre vídeos: baixar, assistir e transcrever — tudo local, tudo grátis.**
+**Dê ao seu agente de IA o poder completo sobre vídeos: baixar, assistir, transcrever, editar e produzir do zero — tudo local, tudo grátis.**
 
 > *EN: A one-command toolkit that lets Claude (or any AI agent) download videos (yt-dlp), actually watch them (claude-real-video) and transcribe them with speaker diarization (WhisperX) — fully local, pt-BR first. Install: run `install.ps1` (Windows) or `install.sh` (macOS/Linux).*
 
@@ -14,6 +14,8 @@
 | **Skill `claude-real-video`** | O Claude "assiste" o vídeo: keyframes por detecção de cena + transcrição + grids 3×3 | "resume esse vídeo: \<url\>" |
 | **Agente `escriba`** | Transcrição pt-BR com separação de falantes (WhisperX + pyannote + CUDA); instala a própria pipeline; **analisa a qualidade do áudio e aplica denoise automaticamente** quando necessário; entrega Resumo Estruturado ou Ata de Reunião | "transcreve essa reunião" (Windows) |
 | **Agente `editor`** | Edição de vídeo por conversa: método das 3 passadas (erros → silêncio real → redundância), comando de voz embutido ("pato preto"), plano de cortes para aprovação, render ffmpeg/NVENC, cortes 9:16 com legenda karaokê, split-screen, motion graphics (Remotion/Motion Canvas) e verificação com nota 0-100 | "edita esse bruto, corta os erros" (Windows) |
+| **Agente `documentarista`** | Dark video estilo Discovery a partir de um tema: garimpo do que está em alta por **views/dia** (sem chave de API, multi-idioma), autópsia dos concorrentes, roteiro cena a cena, material licenciado com `CREDITOS.md` automático (Wikimedia/NASA sem chave, Pexels/Pixabay com chave grátis, trecho de YouTube **só** sob Creative Commons) e montagem Ken Burns | "faz um dark video sobre sucuri gigante" (Windows) |
+| **Agente `noticiarista`** | Vídeo de notícia em que **você aparece e fala**: apura as matérias recentes com data e fonte, deduplica contra o histórico de episódios, marca tema sensível para você decidir, escreve o roteiro falado e produz com a sua voz clonada e o seu avatar | "o que saiu de novo sobre X? monta o vídeo" (Windows) |
 | **Skill `invest`** | Estilo de edição "notícia dinâmica": legendas bloco-CAPS, cartões de dados para números, manchetes reais como prova, flash de ênfase, ritmo denso — aplicado pelo agente editor | "edita no estilo invest" |
 | **Skill `agent-browser`** | Automação de browser para o agente: captura prints que exigem **interação antes** (login, fechar banner, clicar numa aba, rolar até um gráfico) — vai além do print de uma tacada | usada pelo agente `editor` (E4b) |
 | **Skill `instalar`** | Instala, verifica e **repara** o toolkit conduzindo passo a passo; diagnostica e corrige as falhas conhecidas automaticamente | "instala o video-ai-toolkit" |
@@ -94,7 +96,15 @@ Claude: [skill claude-real-video] → extrai 17 keyframes + transcrição,
 
 Você: transcreve a reunião de ontem (reuniao.m4a) e identifica quem falou
 Claude: [agente escriba] → reuniao.txt/.srt/.json com tags [SPEAKER_00]...
+
+Você: faz um dark video de 8 minutos sobre sucuri gigante
+Claude: [agente documentarista] → ranking por views/dia, roteiro de 24 cenas
+        com a fonte de cada visual → para e espera sua aprovação
 ```
+
+### As duas peças que o `noticiarista` não traz
+
+Ele narra com a **sua** voz e mostra o **seu** rosto, e nenhuma das duas coisas vem no repositório: a voz precisa de um TTS de clonagem (o [Chatterbox](https://github.com/resemble-ai/chatterbox) é MIT e tem pt-BR nativo) com uma amostra limpa de 30-60 s da sua voz, e o avatar é treinado na interface de uma plataforma paga. Sem avatar, o agente entrega o roteiro e o áudio e **para** — ele não promete vídeo com o seu rosto antes de o avatar existir. O avatar é a única parte paga da suíte, e o agente informa o custo estimado antes de gastar.
 
 ## Privacidade
 
@@ -109,6 +119,6 @@ Todo o processamento (download, extração de frames, transcrição, diarizaçã
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | yt-dlp team | Unlicense |
 | [WhisperX](https://github.com/m-bain/whisperX) / [faster-whisper](https://github.com/SYSTRAN/faster-whisper) | m-bain / SYSTRAN | BSD-2 / MIT |
 | [ffmpeg](https://ffmpeg.org) | FFmpeg team | LGPL/GPL — **não redistribuído aqui**; o instalador baixa das fontes oficiais |
-| Skills, agente Escriba, apps e instaladores | este repositório | MIT |
+| Skills, agentes (escriba, editor, documentarista, noticiarista), apps e instaladores | este repositório | MIT |
 
-⚠️ **Use com responsabilidade:** baixe e transcreva apenas conteúdo que você tem direito de usar.
+⚠️ **Use com responsabilidade:** baixe e transcreva apenas conteúdo que você tem direito de usar. No `documentarista`, material de terceiros entra só com licença compatível e crédito — é por isso que o download de trecho de vídeo é travado fora do Creative Commons, e não apenas avisado.

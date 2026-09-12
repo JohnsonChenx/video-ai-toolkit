@@ -46,7 +46,7 @@
   li { margin: 4px 0; }
   a { color: var(--link); }
   kbd { font-family: Consolas, monospace; font-size: .82em; background: var(--card);
-        border: 1px solid var(--border); border-bottom-width: 2px; padding: 1px 6px; border-radius: 5px; }
+        border: 1px solid var(--border); padding: 1px 6px; border-radius: 5px; }
   code {
     font-family: Consolas, "Cascadia Code", monospace; font-size: .88em;
     background: var(--card); border: 1px solid var(--border);
@@ -68,12 +68,15 @@
     vertical-align: middle; margin-left: 8px; letter-spacing: .03em;
   }
   .box {
-    border-left: 4px solid var(--accent); background: var(--card);
-    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0;
+    border: 1px solid var(--border); background: var(--card);
+    padding: 14px 18px; border-radius: 10px; margin: 16px 0;
   }
-  .box.ok { border-left-color: var(--ok); }
-  .box.warn { border-left-color: var(--warn); }
-  .box b:first-child { display: block; margin-bottom: 4px; }
+  .box > b:first-child {
+    display: block; margin-bottom: 6px; color: var(--accent);
+    font-size: 1rem; letter-spacing: -.005em;
+  }
+  .box.ok > b:first-child { color: var(--ok); }
+  .box.warn > b:first-child { color: var(--warn); }
   .fluxo {
     display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
     background: var(--card); border: 1px solid var(--border);
@@ -116,6 +119,12 @@
   <a href="#editor-fases" class="sub">Fases A/B e 3 passadas</a>
   <a href="#editor-recursos" class="sub">Recursos visuais</a>
   <a href="#editor-extensoes" class="sub">Extensões E1–E5</a>
+  <a href="#agente-documentarista">documentarista (dark video)</a>
+  <a href="#doc-hype" class="sub">Garimpo de hype</a>
+  <a href="#doc-assets" class="sub">Assets licenciados</a>
+  <a href="#agente-noticiarista">noticiarista (notícia)</a>
+  <a href="#not-travas" class="sub">As três leis</a>
+  <a href="#not-roteiro" class="sub">Roteiro para ser falado</a>
   <h2>Ferramentas</h2>
   <a href="#scripts">Scripts do editor</a>
   <a href="#app-baixador">App Baixador (web)</a>
@@ -131,11 +140,12 @@
 <main>
 <h1>🎬 Video AI Toolkit</h1>
 <p class="subtitle">Manual completo — dê ao seu agente de IA o ciclo inteiro sobre vídeos:
-<b>baixar → assistir → transcrever → editar</b>. Tudo local, tudo grátis, pt-BR primeiro.</p>
+<b>baixar → assistir → transcrever → editar → produzir do zero</b>. Tudo local, tudo grátis,
+pt-BR primeiro.</p>
 
 <h2 id="visao-geral">Visão geral</h2>
 
-<p>Esta suíte instala <b>3 skills</b>, <b>2 agentes</b> e <b>2 aplicativos</b> que dão ao
+<p>Esta suíte instala <b>3 skills</b>, <b>4 agentes</b> e <b>2 aplicativos</b> que dão ao
 Claude Code (ou a qualquer agente que leia <code>SKILL.md</code>) a capacidade de trabalhar com
 vídeo de ponta a ponta — sem SaaS, sem upload, sem assinatura.</p>
 
@@ -157,6 +167,12 @@ vídeo de ponta a ponta — sem SaaS, sem upload, sem assinatura.</p>
 <tr><td><b><code>editor</code></b><span class="tag">AGENTE</span></td>
     <td>Edição por conversa: corta erros/silêncios/repetições, legendas, split-screen, cortes 9:16.</td>
     <td>"edita esse bruto"</td></tr>
+<tr><td><b><code>documentarista</code></b><span class="tag">AGENTE</span></td>
+    <td>Dark video estilo Discovery: acha o que está em alta no tema, escreve o roteiro, baixa material licenciado e monta o vídeo narrado.</td>
+    <td>"faz um dark video sobre sucuri gigante"</td></tr>
+<tr><td><b><code>noticiarista</code></b><span class="tag">AGENTE</span></td>
+    <td>Vídeo de notícia em que <i>você</i> aparece e fala: apura as matérias recentes, escreve o roteiro falado e produz com a sua voz e o seu avatar.</td>
+    <td>"o que saiu de novo sobre X? monta o vídeo"</td></tr>
 <tr><td><b>App Baixador</b><span class="tag">APP</span></td>
     <td>Interface web local de download com seletor de pasta e barra de progresso.</td>
     <td>dois cliques em <code>ABRIR.bat</code></td></tr>
@@ -166,7 +182,8 @@ vídeo de ponta a ponta — sem SaaS, sem upload, sem assinatura.</p>
 </table>
 </div>
 
-<h3>O ciclo completo</h3>
+<h3>Os dois ciclos</h3>
+<p><b>1. Você já tem o material</b> — é o caminho do <code>editor</code>:</p>
 <div class="fluxo">
   <span>🔗 link ou arquivo</span><em>→</em>
   <span>⬇️ baixar</span><em>→</em>
@@ -174,6 +191,16 @@ vídeo de ponta a ponta — sem SaaS, sem upload, sem assinatura.</p>
   <span>📝 transcrever</span><em>→</em>
   <span>✂️ editar</span><em>→</em>
   <span>🎬 entregável</span>
+</div>
+<p><b>2. Você só tem o assunto</b> — é o caminho do <code>documentarista</code> e do
+<code>noticiarista</code>:</p>
+<div class="fluxo">
+  <span>💡 tema</span><em>→</em>
+  <span>🔎 pesquisar</span><em>→</em>
+  <span>📄 roteiro</span><em>→</em>
+  <span>✋ aprovação</span><em>→</em>
+  <span>🎙️ narrar</span><em>→</em>
+  <span>🎬 montar</span>
 </div>
 
 <div class="box ok">
@@ -601,6 +628,135 @@ detecta o gatilho, usa e informa o que decidiu.</p>
 <p>Abaixo de 85 ele corrige e re-renderiza (máximo 2 ciclos; depois entrega com ressalvas
 explícitas).</p>
 
+<h2 id="agente-documentarista">Agente <code>documentarista</code> — dark video<span class="tag">AGENTE</span></h2>
+
+<p>Produz <b>dark video</b> (documentário sem rosto, estilo Discovery/Animal Planet) a partir de
+um tema: garimpa o que está em alta, autopsia os concorrentes, escreve o roteiro, baixa material
+licenciado, narra e monta.</p>
+
+<h3 id="doc-hype">Garimpo de hype — views/dia, não views totais</h3>
+<p>O <code>hype.py</code> ranqueia por <b>views por dia</b>, e essa escolha é o ponto todo: views
+totais premiam vídeo antigo e famoso; views/dia mostram o que está quente <i>agora</i>. Roda sem
+chave de API, em vários idiomas ao mesmo tempo — o assunto costuma estourar em inglês antes de
+chegar ao português.</p>
+<pre><code>python Documentarista/hype.py "sucuri gigante" "giant anaconda" "anaconda gigante" `
+  --n 25 --top 10 --duracao-min 120 --saida ranking</code></pre>
+<p><code>--duracao-min 120</code> já descarta Shorts. Vídeos sob licença Creative Commons vêm
+marcados no ranking — são os únicos de que se pode reaproveitar trecho.</p>
+
+<h3 id="doc-assets">Assets licenciados — a licença é uma trava, não um aviso</h3>
+<p>O <code>assets.py</code> busca material em fontes com licença clara e grava
+<code>CREDITOS.md</code> com a atribuição de tudo que entrou no vídeo:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Fonte</th><th>Chave</th><th>O que traz</th></tr>
+<tr><td>Wikimedia Commons</td><td>não precisa</td><td>foto e ilustração com licença declarada</td></tr>
+<tr><td>NASA</td><td>não precisa</td><td>imagem científica e espacial de domínio público</td></tr>
+<tr><td>Pexels / Pixabay</td><td>grátis, 2 min para criar</td><td>foto <b>e vídeo</b> de stock</td></tr>
+<tr><td>Trecho de YouTube</td><td>não precisa</td><td><b>só</b> se o vídeo for Creative Commons</td></tr>
+</table>
+</div>
+<div class="box warn">
+<b>O bloqueio de licença é duro, de propósito</b>
+O modo <code>clipe</code> se recusa a baixar trecho de vídeo que não seja Creative Commons —
+não é um aviso que se possa ignorar. Sem as chaves de Pexels/Pixabay o agente continua
+funcionando com Wikimedia, NASA e clipes CC.
+</div>
+
+<h3>Duas fases, e o roteiro é o contrato</h3>
+<p>Igual ao <code>editor</code>: a FASE A entrega o roteiro cena por cena e <b>para</b>. Cada cena
+carrega a indicação do visual —
+<code>[VISUAL: descrição | busca: "termo em inglês" | fonte: pexels/wikimedia/nasa/clipe CC]</code>
+— e a produção só começa depois da sua aprovação.</p>
+<ul>
+  <li><b>Duração</b>: narração em pt-BR roda a ~150 palavras/min, então 8 min ≈ 1.200 palavras.</li>
+  <li><b>Cena</b>: 15–30 s (2 a 4 frases). Gancho nos primeiros 25 s.</li>
+  <li><b>Concorrente é referência, nunca fonte</b>: o que ele afirma entra no roteiro como
+      "a verificar", e é verificado em fonte primária.</li>
+</ul>
+
+<div class="box">
+<b>A receita do Ken Burns que não treme</b>
+Para dar movimento a imagem parada, o <code>zoompan</code> do ffmpeg precisa de
+<code>scale=8000:-1</code> <b>antes</b> do filtro — sem isso a imagem vibra a cada quadro,
+porque o zoom trabalha em passos inteiros de pixel. E gere o áudio <b>por cena</b>: é o que
+sincroniza narração com imagem e dá controle sobre a duração total.
+</div>
+
+<h2 id="agente-noticiarista">Agente <code>noticiarista</code> — vídeo de notícia<span class="tag">AGENTE</span></h2>
+
+<p>Vídeo em que <b>você aparece e fala</b> sobre as notícias recentes de um tema: o agente apura,
+escreve o roteiro falado, narra com a sua voz clonada e monta com o seu avatar.</p>
+
+<div class="box warn">
+<b>Duas peças não vêm com a suíte</b>
+A <b>voz clonada</b> (qualquer TTS de clonagem que gere MP3/WAV — o Chatterbox é MIT e tem pt-BR
+nativo) e o <b>avatar</b> (plataforma paga, treinado na interface web dela). Sem avatar, o agente
+entrega o roteiro e o áudio e para — ele não promete vídeo com o seu rosto antes de o avatar
+existir.
+</div>
+
+<h3 id="not-travas">As três leis</h3>
+<div class="table-wrap">
+<table>
+<tr><th></th><th>Lei</th><th>Por quê</th></tr>
+<tr><td><b>1</b></td><td>Todo fato vai ao ar com <b>data e fonte</b></td><td>Aqui um erro factual não é bug do sistema: é você afirmando algo falso na frente da câmera. Não confirmou? Não entra.</td></tr>
+<tr><td><b>2</b></td><td>Tema sensível é decisão <b>sua</b>, nunca do agente</td><td>Política, saúde pública e judicial/criminal são marcados automaticamente e vão para a aprovação com aviso explícito.</td></tr>
+<tr><td><b>3</b></td><td>O roteiro é o <b>contrato</b></td><td>Duas fases: nada de áudio, avatar ou crédito gasto antes da sua aprovação.</td></tr>
+</table>
+</div>
+
+<div class="box warn">
+<b>Por que a lei 2 existe</b>
+As plataformas de avatar proíbem conteúdo político <b>a critério exclusivo delas</b>, e a
+penalidade escala até <b>suspensão permanente</b> — você descobre o veredito <i>depois</i> de
+publicar, e perde o avatar treinado junto com a conta. Pior: a política entra sozinha em tema
+técnico. Num teste real, uma busca por "inteligência artificial" trouxe <b>6 itens políticos em
+79</b>. A marcação automática pega padrão, não intenção — leia os títulos você mesmo.
+</div>
+
+<h3>Buscar sem repetir pauta</h3>
+<pre><code>python Noticiarista/noticias.py "&lt;tema&gt;" --horas 48 --max 10 `
+  --historico "C:\Noticiario\&lt;projeto&gt;\historico.json" `
+  --saida "C:\Noticiario\&lt;projeto&gt;\dossie.md"</code></pre>
+<div class="table-wrap">
+<table>
+<tr><th>Saída</th><th>Significa</th></tr>
+<tr><td><code>0</code></td><td>dossiê gerado</td></tr>
+<tr><td><code>1</code></td><td>nada encontrado no período</td></tr>
+<tr><td><code>2</code></td><td><b>nada novo desde o último episódio</b> — não é falha, é a resposta correta "não há o que produzir hoje"</td></tr>
+</table>
+</div>
+<p>No fim do ciclo, e <b>só depois</b> do vídeo aprovado, <code>confirmar.py</code> registra no
+histórico o que foi ao ar — pauta abandonada continua disponível para o próximo episódio.</p>
+<p>O dossiê traz manchete e link, não os fatos apurados. Manchete é isca: roteirizar a partir
+dela é colocar na sua boca uma afirmação que ninguém leu.</p>
+
+<h3 id="not-roteiro">O roteiro é para ser falado</h3>
+<p>Três descobertas de teste real que mudam o texto que se escreve:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Regra</th><th>O que acontece se ignorar</th></tr>
+<tr><td><b>Acentuação é obrigatória</b></td><td>O sintetizador fala o que recebe: "conteudo" sai como "cont-e-u-do", sem tônica. E a transcrição automática <b>não</b> detecta o defeito — ela normaliza a ortografia e devolve "conteúdo" mesmo quando o áudio está errado.</td></tr>
+<tr><td><b>Nome estrangeiro em grafia fonética</b></td><td>Escreva "Báite Dénss", não o nome original. Trocar o idioma do modelo por causa de um nome destrói o português da frase inteira.</td></tr>
+<tr><td><b>Pontuação é partitura</b></td><td>Pergunta sem <code>?</code> sai como afirmação, com o tom achatado. O <code>?</code> sobe o tom; o <code>!</code> solta o ritmo do fecho.</td></tr>
+</table>
+</div>
+<div class="box warn">
+<b>Transcrição não julga pronúncia</b>
+O Whisper reconhece a palavra <i>pretendida</i>, não como ela soou — devolve o texto certo para
+uma pronúncia certa e para uma errada. Use a transcrição só para conferir se o texto está
+<b>completo</b>. Pronúncia e entonação se verificam <b>ouvindo</b>, e não tem atalho.
+</div>
+
+<div class="box">
+<b>Custo: o dinheiro é do usuário</b>
+Avatar é a única parte paga da suíte, cobrada por segundo gerado (na ordem de US$ 1 a US$ 4 por
+minuto, conforme a plataforma e o modelo). O agente <b>informa o custo estimado antes de
+disparar</b>. A narração continua local e grátis: mandar o áudio pronto para a plataforma, em vez
+de deixá-la sintetizar, é o que preserva a sua voz e reduz a fatura.
+</div>
+
 <h2 id="scripts">Scripts do editor <span class="tag">apps/editor/</span></h2>
 <p>Todos recebem caminhos por argumento — nada é fixo no código.</p>
 
@@ -616,7 +772,7 @@ explícitas).</p>
 </table>
 </div>
 
-<h4>Cores aceitas no karaokê</h4>
+<h3>Cores aceitas no karaokê</h3>
 <p><code>amarelo</code> (padrão), <code>azul</code>, <code>ciano</code>, <code>verde</code>,
 <code>vermelho</code>, <code>laranja</code>, <code>rosa</code>, <code>roxo</code>,
 <code>branco</code> — ou hex <code>#RRGGBB</code>. Cor desconhecida cai no amarelo sem quebrar.</p>
@@ -650,7 +806,7 @@ já existe uma instância rodando.
   <li>Escolha de modelo (rápido/preciso) e número de falantes na própria interface</li>
 </ul>
 
-<h4>Resumo Estruturado × Ata de reunião</h4>
+<h3>Resumo Estruturado × Ata de reunião</h3>
 <div class="table-wrap">
 <table>
 <tr><th>Resumo Estruturado</th><th>Ata de reunião</th></tr>

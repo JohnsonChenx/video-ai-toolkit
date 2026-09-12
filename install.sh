@@ -86,7 +86,7 @@ else
     warn "npm nao encontrado - pulando agent-browser (opcional, usado pelo agente editor). Instale o Node.js e rode de novo."
 fi
 
-# --- 6. Skills do Claude Code ---
+# --- 6. Skills + agentes do Claude Code ---
 CLAUDE_DIR="$HOME/.claude"
 if [[ -d "$CLAUDE_DIR" ]]; then
     for skill in youtube claude-real-video invest instalar; do
@@ -108,8 +108,18 @@ if [[ -d "$CLAUDE_DIR" ]]; then
         cp -R "$ROOT/skills/agent-browser/." "$ab_dest/"
         ok "Skill 'agent-browser' instalada"
     fi
+    mkdir -p "$CLAUDE_DIR/agents"
+    for agent in escriba editor documentarista noticiarista; do
+        agent_dest="$CLAUDE_DIR/agents/$agent.md"
+        if [[ -e "$agent_dest" && $FORCE -eq 0 ]]; then
+            warn "Agente '$agent' ja existe — pulando (use --force para sobrescrever)"
+        else
+            cp "$ROOT/agents/$agent.md" "$agent_dest"
+            ok "Agente '$agent' instalado"
+        fi
+    done
 else
-    warn "~/.claude nao encontrado (Claude Code nao instalado?) — copie skills/ manualmente depois."
+    warn "~/.claude nao encontrado (Claude Code nao instalado?) — copie skills/ e agents/ manualmente depois."
 fi
 
 echo ""

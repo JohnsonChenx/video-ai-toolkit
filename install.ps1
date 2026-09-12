@@ -124,7 +124,7 @@ if ([Environment]::GetEnvironmentVariable("PYTHONUTF8", "User") -ne "1") {
     Ok "PYTHONUTF8 ja configurado"
 }
 
-# --- 6. Skills + agente do Claude Code ---
+# --- 6. Skills + agentes do Claude Code ---
 $claudeDir = "$env:USERPROFILE\.claude"
 if (Test-Path $claudeDir) {
     foreach ($skill in @("youtube", "claude-real-video", "invest", "instalar")) {
@@ -147,7 +147,7 @@ if (Test-Path $claudeDir) {
         Ok "Skill 'agent-browser' instalada"
     }
     New-Item -ItemType Directory -Force "$claudeDir\agents" | Out-Null
-    foreach ($agent in @("escriba", "editor")) {
+    foreach ($agent in @("escriba", "editor", "documentarista", "noticiarista")) {
         $agentDest = "$claudeDir\agents\$agent.md"
         if ((Test-Path $agentDest) -and -not $Force) {
             Warn "Agente '$agent' ja existe - pulando (use -Force para sobrescrever)"
