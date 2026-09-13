@@ -261,7 +261,7 @@ $t=0; Get-ChildItem "<pasta>" -Include *.mp3,*.m4a,*.wav,*.mp4,*.ogg,*.opus -Rec
 **2. Calcular ETAs** (referência: GPU classe GTX 1660 Ti; GPUs novas são
 proporcionalmente mais rápidas; CPU = 5-15× mais lento):
 - **Rápido (medium)**: ~10% da duração do áudio (1h → ~6 min)
-- **Máxima precisão (large-v3)**: ~20% da duração (1h → ~12 min)
+- **Máxima precisão (large-v3)**: ~20% da duração (1h → ~12 min) em arquivo avulso; **~30% em lote de arquivos longos** (medido, ver Performance de referência)
 - Diarização: +1-2 min por hora de áudio em ambos
 - Se `nvidia-smi` falhar (CPU): multiplique por ~8 e avise
 
@@ -334,11 +334,29 @@ Controles manuais quando o usuário pedir:
 **Sempre em background** (transcrição é lenta) com Tee-Object para log:
 ```powershell
 $env:HF_TOKEN = "<token>"
-python "<caminho>\transcrever.py" "<arquivo-ou-pasta>" [opções] 2>&1 | Tee-Object -FilePath "<dir>\_run.log"
+python -u "<caminho>\transcrever.py" "<arquivo-ou-pasta>" [opções] 2>&1 | Tee-Object -FilePath "<dir>\_run.log"
 ```
+
+- **`-u` é obrigatório** com a saída indo para pipe ou arquivo: sem ele o Python bufferiza e o log
+  fica vazio por minutos, o que num lote de horas é indistinguível de processo travado.
+- **O lote roda sozinho.** Não disparar em paralelo nada que também use ffmpeg (extração de frames,
+  denoise em lote, edição de vídeo). No Windows, os dois processos esgotam recurso do sistema e todos
+  os arquivos passam a falhar — ver "Erros conhecidos".
 
 ### 4. Pós-processamento
 - Verificar exit code **E** ler últimas linhas do log (exit 0 pode mascarar falha por arquivo no modo lote)
+- **Conferir a cobertura de cada arquivo.** O fim do último segmento do `.json` tem que bater com a
+  duração do áudio. `whisperx.load_audio` devolve áudio **truncado sem erro** quando o ffmpeg morre no
+  meio da leitura: um arquivo de 126 min já entrou como 10,6 min, com exit 0, e a transcrição sairia
+  cobrindo só o começo. Abaixo de ~97%, refazer aquele arquivo sozinho.
+  ```python
+  import json, subprocess, sys
+  audio, js = sys.argv[1], sys.argv[2]
+  dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                              "-of", "csv=p=0", audio], capture_output=True, text=True).stdout)
+  fim = max(s["end"] for s in json.load(open(js, encoding="utf-8"))["segments"])
+  print(f"cobertura {fim / dur:.1%}  ({fim / 60:.1f} de {dur / 60:.1f} min)")
+  ```
 - Confirmar arquivos `.txt`/`.srt`/`.json` gerados
 - Reportar tempo gasto, falantes detectados, caminhos
 
@@ -395,6 +413,8 @@ botões "Resumo Estruturado" e "Ata de reunião".)
 | `RuntimeError: CUDA out of memory` | VRAM insuficiente | Reduzir `--batch-size` (4→2→1), usar `--compute-type int8_float16`, fechar outros apps |
 | `TypeError: ... unexpected keyword 'use_auth_token'` | API antiga no código | Trocar para `token=` (já corrigido no script atual) |
 | Muitos `SPEAKER_XX` (>10 numa conversa de 2-3 pessoas) | Over-segmentation do pyannote | Re-rodar com `--falantes N --forcar` |
+| `RuntimeError: Failed to load audio:` com stderr **vazio** em todos os arquivos, `exit status 3221225794` | Outro processo usando ffmpeg em paralelo esgotou recurso do Windows (0xC0000142, DLL init failed). Não é defeito do áudio, embora a mensagem aponte para ele | Parar o outro processo e rodar o lote sozinho |
+| Linha `duracao:` do log menor que a duração real do arquivo | O ffmpeg morreu no meio da leitura e o áudio foi truncado sem exceção | Descartar a transcrição desse arquivo, rodar de novo sozinho e conferir a cobertura |
 | `SSLCertVerificationError` / `CERTIFICATE_VERIFY_FAILED` ao baixar modelo do HF | Antivírus (ex: Avast) ou proxy intercepta HTTPS com certificado próprio que não está no certifi do Python | `python -m pip install --user pip-system-certs` — faz o Python usar os certificados do Windows |
 | Warning sobre `torchcodec` carregando DLL | Benigno; whisperx usa ffmpeg via subprocess | Ignorar |
 | Warning sobre symlinks no cache | Benigno; cache só usa mais disco | Ignorar ou ativar Developer Mode no Windows |
@@ -407,7 +427,7 @@ botões "Resumo Estruturado" e "Ata de reunião".)
 3. **Token exposto em chat = queimar.** Após validar, pedir para o usuário gerar um novo e revogar o que apareceu na conversa.
 4. **Diarization API mudou no whisperx 3.8.5.** Use `token=` (não `use_auth_token=`). Default model é `community-1` (não `3.1`).
 5. **Áudios longos (>30 min) com large-v3 em 6 GB VRAM exigem fluxo serial** (load → use → unload por etapa) — caso contrário OOM. O script já faz isso.
-6. **Exit code 0 do script ≠ sucesso real** — o modo lote captura erros por arquivo. **Sempre ler a tail do log** após o exit.
+6. **Exit code 0 do script ≠ sucesso real** — o modo lote captura erros por arquivo. **Sempre ler a tail do log** após o exit, e conferir a cobertura de cada arquivo: o "OK" de um arquivo no log não prova que o áudio inteiro foi lido.
 7. **Pasta sincronizada (OneDrive/Dropbox)** — o script roda bem, mas evite armazenar token em texto puro em arquivos sincronizados.
 8. **`--falantes N` é o segredo** para diarização limpa quando o número é conhecido. Sem isso, o pyannote tende a fragmentar.
 
@@ -420,6 +440,13 @@ botões "Resumo Estruturado" e "Ata de reunião".)
 | medium | float16 | 16 | ~5 min (se VRAM sobrar) |
 
 Diarização adiciona ~1-2 min por hora de áudio. GPUs mais novas são proporcionalmente mais rápidas; CPU pura é 5-15× mais lenta.
+
+**A tabela vale para arquivo avulso** (a linha do large-v3 foi validada com um áudio de 63,5 min).
+**Em lote de arquivos longos o custo é maior.** Medição real, na mesma GPU de exemplo: 25 arquivos de
+~2 h cada (48h11min), large-v3 `int8_float16` batch 4 com diarização: **831,6 min de máquina, ~29% da
+duração**, cerca de 17 min por hora de áudio. Entram na conta o carregamento e descarregamento do modelo
+a cada arquivo (feito para caber em 6 GB) e a diarização de áudios longos. Para estimar lote, use ~30% e
+diga que é estimativa.
 
 ## Padrão de comunicação com o usuário
 

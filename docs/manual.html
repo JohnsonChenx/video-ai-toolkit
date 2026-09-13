@@ -462,7 +462,9 @@ via WhisperX + pyannote. Ele instala a própria pipeline se ela não existir.</p
 <b>A única pergunta obrigatória: precisão</b>
 Antes de transcrever, ele mede a duração e <b>pergunta</b>: <i>"Rápido (medium, ~10% da
 duração) ou Máxima precisão (large-v3, ~20%)?"</i>. Essa fica porque muda o resultado e o tempo
-de espera de forma relevante. Ao final, reporta tempo real contra o estimado.
+de espera de forma relevante. Em lote de arquivos longos o large-v3 custa mais, perto de 30% da
+duração, e o agente estima com esse número. Ao final, reporta tempo real contra o estimado e, em lote,
+confere se cada transcrição cobre o áudio inteiro.
 </div>
 
 <h3 id="escriba-flags">Flags e comandos</h3>
